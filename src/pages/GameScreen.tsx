@@ -10,6 +10,7 @@ import { BackButton } from '../components/ui/BackButton'
 import { ProgressBar } from '../components/ui/ProgressBar'
 import { ScoreBadge } from '../components/ui/ScoreBadge'
 import { StreakBadge } from '../components/ui/StreakBadge'
+import { VirtualKeyboard } from '../components/VirtualKeyboard'
 import { WordDisplay } from '../components/WordDisplay'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
@@ -188,16 +189,13 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     }, 500)
   }, [playWrong])
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
+  const handleInput = useCallback(
+    (key: string) => {
       if (isComplete || !currentItem || feedback) {
         return
       }
-      if (e.key.length !== 1) {
-        return
-      }
 
-      const pressed = e.key.toUpperCase()
+      const pressed = key.toUpperCase()
       const expected = getExpectedKey(currentItem, gameType)
 
       // Multi-digit input for counting higher
@@ -215,7 +213,6 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
           } else if (newBuffer.length >= expected.length) {
             handleWrong()
           } else {
-            // Wait for more digits
             digitTimeout.current = setTimeout(() => {
               if (newBuffer !== expected) {
                 handleWrong()
@@ -246,9 +243,14 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   )
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key.length === 1) {
+        handleInput(e.key)
+      }
+    }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [handleKeyDown])
+  }, [handleInput])
 
   // Timer expired handler for timed games
   const handleTimeUp = useCallback(() => {
@@ -307,6 +309,9 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   }
 
   const animKey = `${currentIndex}-${shakeKey}`
+
+  const needsLetters = game.id === 'abc' || game.id === 'lowercase' || game.id === 'mixed'
+  const kbLayout: 'letters' | 'numbers' = needsLetters ? 'letters' : 'numbers'
 
   const renderDisplay = () => {
     if (!currentItem) {
@@ -369,11 +374,23 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
           {renderDisplay()}
           {isMultiDigit && digitBuffer && <div className="digit-preview">{digitBuffer}</div>}
           <div className="game-bottom">
-            <button className="hint-btn" onClick={handleHint} disabled={!!feedback}>
+            <button
+              className="hint-btn"
+              onPointerDown={(e) => {
+                e.preventDefault()
+                handleHint()
+              }}
+              disabled={!!feedback}
+            >
               💡 Hint{hintUsed ? ' (max ★★)' : ''}
             </button>
             <p className="game-progress">{getProgressText()}</p>
           </div>
+          <VirtualKeyboard
+            layout={kbLayout}
+            onKeyPress={handleInput}
+            disabled={!!feedback || isComplete}
+          />
         </div>
       ) : null}
     </div>

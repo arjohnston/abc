@@ -1,0 +1,58 @@
+.vkb {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}
+
+.vkb__row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.vkb__key {
+  flex: 0 1 36px;
+  height: 44px;
+  border: none;
+  border-radius: 8px;
+  background: var(--bg-light);
+  border-bottom: 3px solid rgba(0, 0, 0, 0.3);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, transform 0.1s;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vkb__key:active:not(:disabled) {
+  background: var(--game-color, var(--green));
+  border-bottom-width: 1px;
+  transform: translateY(2px);
+}
+
+.vkb__key:disabled {
+  opacity: 0.4;
+}
+
+/* Number layout: bigger keys */
+.vkb--numbers .vkb__key {
+  flex: 0 1 64px;
+  height: 52px;
+  font-size: 24px;
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  .vkb {
+    display: none;
+  }
+}
