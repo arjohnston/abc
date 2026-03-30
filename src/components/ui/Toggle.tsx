@@ -8,10 +8,7 @@ interface ToggleProps {
 
 export function Toggle({ active, label, onToggle }: ToggleProps) {
   return (
-    <button
-      className={`toggle-btn ${active ? 'active' : ''}`}
-      onClick={onToggle}
-    >
+    <button className={`toggle-btn ${active ? 'active' : ''}`} onClick={onToggle}>
       <span className="toggle-track">
         <span className="toggle-thumb" />
       </span>

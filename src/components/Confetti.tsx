@@ -1,24 +1,27 @@
-import { useMemo } from 'react'
 import './Confetti.css'
+
+import { useState } from 'react'
 
 const COLORS = ['#58cc02', '#1cb0f6', '#ce82ff', '#ff9600', '#ff4b4b', '#ffc800']
 
+function generatePieces() {
+  return Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    left: Math.random() * 100,
+    delay: Math.random() * 2,
+    duration: 1.5 + Math.random() * 2,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)] ?? '#58cc02',
+    size: 6 + Math.random() * 8,
+    rotation: Math.random() * 360,
+  }))
+}
+
 export function Confetti() {
-  const pieces = useMemo(() => {
-    return Array.from({ length: 50 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      delay: Math.random() * 2,
-      duration: 1.5 + Math.random() * 2,
-      color: COLORS[Math.floor(Math.random() * COLORS.length)]!,
-      size: 6 + Math.random() * 8,
-      rotation: Math.random() * 360,
-    }))
-  }, [])
+  const [pieces] = useState(generatePieces)
 
   return (
     <div className="confetti-container" aria-hidden="true">
-      {pieces.map(p => (
+      {pieces.map((p) => (
         <div
           key={p.id}
           className="confetti-piece"

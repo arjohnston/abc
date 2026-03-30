@@ -1,6 +1,7 @@
 export interface CountingItem {
   answer: string
   emoji: string
+  name: string
   count: number
 }
 

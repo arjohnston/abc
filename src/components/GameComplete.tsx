@@ -1,6 +1,7 @@
-import { Button } from './ui/Button'
-import { Confetti } from './Confetti'
 import './GameComplete.css'
+
+import { Confetti } from './Confetti'
+import { Button } from './ui/Button'
 
 interface GameCompleteProps {
   score: number
@@ -20,8 +21,12 @@ export function GameComplete({ score, total, onRestart, onHome }: GameCompletePr
           You got <strong>{score}</strong> out of <strong>{total}</strong>!
         </p>
         <div className="complete-actions">
-          <Button variant="primary" onClick={onRestart}>Play Again</Button>
-          <Button variant="secondary" onClick={onHome}>Home</Button>
+          <Button variant="primary" onClick={onRestart}>
+            Play Again
+          </Button>
+          <Button variant="secondary" onClick={onHome}>
+            Home
+          </Button>
         </div>
       </div>
     </>

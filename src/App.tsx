@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
+
 import { GAMES } from './games/config'
 import { useStats } from './hooks/useStats'
-import { HomeScreen } from './pages/HomeScreen'
 import { GameScreen } from './pages/GameScreen'
+import { HomeScreen } from './pages/HomeScreen'
 
 function App() {
   const [currentGame, setCurrentGame] = useState<string | null>(null)
@@ -11,14 +12,18 @@ function App() {
 
   const game = currentGame ? GAMES[currentGame] : undefined
 
-  const handleSelectGame = useCallback((key: string) => {
-    recordPlay()
-    setCurrentGame(key)
-  }, [recordPlay])
+  const handleSelectGame = useCallback(
+    (key: string) => {
+      recordPlay()
+      setCurrentGame(key)
+    },
+    [recordPlay],
+  )
 
   if (currentGame && game) {
     return (
       <GameScreen
+        key={`${currentGame}-${isRandom}`}
         game={game}
         gameKey={currentGame}
         isRandom={isRandom}

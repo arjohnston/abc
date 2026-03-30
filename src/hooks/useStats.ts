@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
 const STORAGE_KEY = 'abc123-stats'
 
@@ -31,7 +31,7 @@ export function useStats() {
   const [stats, setStats] = useState<Stats>(loadStats)
 
   const recordPlay = useCallback(() => {
-    setStats(prev => {
+    setStats((prev) => {
       const next = { ...prev, totalPlays: prev.totalPlays + 1 }
       saveStats(next)
       return next
@@ -39,7 +39,7 @@ export function useStats() {
   }, [])
 
   const recordCompletion = useCallback(() => {
-    setStats(prev => {
+    setStats((prev) => {
       const next = { ...prev, totalCompletions: prev.totalCompletions + 1 }
       saveStats(next)
       return next

@@ -5,10 +5,8 @@ interface StreakBadgeProps {
 }
 
 export function StreakBadge({ streak }: StreakBadgeProps) {
-  if (streak < 3) return null
-  return (
-    <div className="streak-badge">
-      🔥 {streak} in a row!
-    </div>
-  )
+  if (streak < 3) {
+    return null
+  }
+  return <div className="streak-badge">🔥 {streak} in a row!</div>
 }

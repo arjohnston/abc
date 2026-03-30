@@ -1,5 +1,6 @@
-import type { CountingItem, FeedbackState } from '../types/game'
 import './CountingDisplay.css'
+
+import type { CountingItem, FeedbackState } from '../types/game'
 
 interface CountingDisplayProps {
   item: CountingItem
@@ -9,8 +10,7 @@ interface CountingDisplayProps {
 
 export function CountingDisplay({ item, feedback, animKey }: CountingDisplayProps) {
   const feedbackClass =
-    feedback === 'correct' ? 'pop-correct' :
-    feedback === 'wrong' ? 'shake-wrong' : ''
+    feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
     <div key={animKey} className={`counting-display ${feedbackClass}`}>
