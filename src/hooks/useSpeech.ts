@@ -1,12 +1,42 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 export function useSpeech() {
+  const voiceRef = useRef<SpeechSynthesisVoice | undefined>(undefined)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
+
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = speechSynthesis.getVoices()
+      voiceRef.current =
+        voices.find((v) => v.lang.startsWith('en') && v.localService) ||
+        voices.find((v) => v.lang.startsWith('en'))
+    }
+    loadVoices()
+    speechSynthesis.addEventListener('voiceschanged', loadVoices)
+    return () => {
+      speechSynthesis.removeEventListener('voiceschanged', loadVoices)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
+
   const speak = useCallback((text: string) => {
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.rate = 0.85
-    utterance.pitch = 1.1
-    utterance.volume = 1.0
-    window.speechSynthesis.speak(utterance)
+    speechSynthesis.cancel()
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+    // Delay after cancel so Chrome/Safari don't swallow the utterance
+    timeoutRef.current = setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.rate = 0.85
+      utterance.pitch = 1.1
+      utterance.volume = 1.0
+      if (voiceRef.current) {
+        utterance.voice = voiceRef.current
+      }
+      speechSynthesis.speak(utterance)
+    }, 50)
   }, [])
 
   return speak
