@@ -3,8 +3,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px 20px;
-  gap: 32px;
+  padding: 40px 20px 80px;
+  gap: 24px;
 }
 
 .home-header {
@@ -63,21 +63,64 @@
   justify-content: center;
 }
 
-.game-cards {
+/* Vertical path */
+.path {
   display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 900px;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
   width: 100%;
+  max-width: 400px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.path__nodes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+}
+
+.path__node-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.path__node--left {
+  align-self: center;
+  transform: translateX(-30px);
+}
+
+.path__node--right {
+  align-self: center;
+  transform: translateX(30px);
+}
+
+.path__connector {
+  width: 3px;
+  height: 16px;
+  background: var(--bg-light);
+  border-radius: 2px;
 }
 
 @media (max-width: 480px) {
   .home-title {
     font-size: 48px;
   }
-  .game-cards {
-    flex-direction: column;
-    align-items: center;
+  .path__node--left {
+    transform: translateX(-20px);
+  }
+  .path__node--right {
+    transform: translateX(20px);
   }
 }

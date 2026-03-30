@@ -1,3 +1,14 @@
+// --- Sections ---
+
+export interface Section {
+  id: string
+  title: string
+  emoji: string
+  starsToUnlock: number
+}
+
+// --- Game Items ---
+
 export interface CountingItem {
   answer: string
   emoji: string
@@ -5,9 +16,18 @@ export interface CountingItem {
   count: number
 }
 
-export type GameItem = string | CountingItem
+export interface NumberWordItem {
+  answer: string
+  word: string
+}
+
+export type GameItem = string | CountingItem | NumberWordItem
+
+// --- Game Configs ---
 
 export interface BaseGameConfig {
+  id: string
+  sectionId: string
   title: string
   emoji: string
   description: string
@@ -25,8 +45,31 @@ export interface CountingGameConfig extends BaseGameConfig {
   generateItems: (isRandom: boolean) => CountingItem[]
 }
 
-export type GameConfig = StandardGameConfig | CountingGameConfig
+export interface NumberWordsGameConfig extends BaseGameConfig {
+  type: 'numberWords'
+  generateItems: (isRandom: boolean) => NumberWordItem[]
+}
 
-export type GameKey = string
+export interface TimedGameConfig extends BaseGameConfig {
+  type: 'timed'
+  items: string[]
+  timeLimit: number
+}
+
+export type GameConfig =
+  | StandardGameConfig
+  | CountingGameConfig
+  | NumberWordsGameConfig
+  | TimedGameConfig
 
 export type FeedbackState = 'correct' | 'wrong' | null
+
+// --- Progress ---
+
+export interface GameProgress {
+  bestStars: number
+}
+
+export interface ProgressData {
+  games: Record<string, GameProgress>
+}

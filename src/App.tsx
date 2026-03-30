@@ -1,45 +1,56 @@
 import { useCallback, useState } from 'react'
 
-import { GAMES } from './games/config'
+import { useProgress } from './hooks/useProgress'
 import { useStats } from './hooks/useStats'
 import { GameScreen } from './pages/GameScreen'
 import { HomeScreen } from './pages/HomeScreen'
+import type { GameConfig } from './types/game'
 
 function App() {
-  const [currentGame, setCurrentGame] = useState<string | null>(null)
+  const [currentGame, setCurrentGame] = useState<GameConfig | null>(null)
   const [isRandom, setIsRandom] = useState(false)
-  const { stats, recordPlay, recordCompletion } = useStats()
-
-  const game = currentGame ? GAMES[currentGame] : undefined
+  const { stats, recordPlay } = useStats()
+  const { getStars, getTotalStars, isSectionUnlocked, recordResult } = useProgress()
 
   const handleSelectGame = useCallback(
-    (key: string) => {
+    (game: GameConfig) => {
       recordPlay()
-      setCurrentGame(key)
+      setCurrentGame(game)
     },
     [recordPlay],
   )
 
-  if (currentGame && game) {
+  const handleComplete = useCallback(
+    (score: number, total: number) => {
+      if (!currentGame) {
+        return { stars: 1, isNewBest: false }
+      }
+      return recordResult(currentGame.id, score, total)
+    },
+    [currentGame, recordResult],
+  )
+
+  if (currentGame) {
     return (
       <GameScreen
-        key={`${currentGame}-${isRandom}`}
-        game={game}
-        gameKey={currentGame}
+        key={`${currentGame.id}-${isRandom}`}
+        game={currentGame}
         isRandom={isRandom}
         onBack={() => setCurrentGame(null)}
-        onComplete={recordCompletion}
+        onComplete={handleComplete}
       />
     )
   }
 
   return (
     <HomeScreen
-      games={GAMES}
       isRandom={isRandom}
       onToggleRandom={() => setIsRandom(!isRandom)}
       onSelectGame={handleSelectGame}
       stats={stats}
+      getStars={getStars}
+      getTotalStars={getTotalStars}
+      isSectionUnlocked={isSectionUnlocked}
     />
   )
 }

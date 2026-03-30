@@ -5,13 +5,22 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { CountingDisplay } from '../components/CountingDisplay'
 import { GameComplete } from '../components/GameComplete'
 import { LetterDisplay } from '../components/LetterDisplay'
+import { TimerBar } from '../components/TimerBar'
 import { BackButton } from '../components/ui/BackButton'
 import { ProgressBar } from '../components/ui/ProgressBar'
 import { ScoreBadge } from '../components/ui/ScoreBadge'
 import { StreakBadge } from '../components/ui/StreakBadge'
+import { WordDisplay } from '../components/WordDisplay'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
-import type { CountingItem, FeedbackState, GameConfig, GameItem } from '../types/game'
+import type {
+  CountingItem,
+  FeedbackState,
+  GameConfig,
+  GameItem,
+  NumberWordItem,
+  TimedGameConfig,
+} from '../types/game'
 
 const NUMBER_WORDS: Record<string, string> = {
   '0': 'zero',
@@ -24,6 +33,17 @@ const NUMBER_WORDS: Record<string, string> = {
   '7': 'seven',
   '8': 'eight',
   '9': 'nine',
+  '10': 'ten',
+  '11': 'eleven',
+  '12': 'twelve',
+  '13': 'thirteen',
+  '14': 'fourteen',
+  '15': 'fifteen',
+  '16': 'sixteen',
+  '17': 'seventeen',
+  '18': 'eighteen',
+  '19': 'nineteen',
+  '20': 'twenty',
 }
 
 function shuffle<T>(array: T[]): T[] {
@@ -41,36 +61,51 @@ function buildSequence(game: GameConfig, isRandom: boolean): GameItem[] {
   if (game.type === 'counting') {
     return game.generateItems(isRandom)
   }
+  if (game.type === 'numberWords') {
+    return game.generateItems(isRandom)
+  }
+  if (game.type === 'timed') {
+    return isRandom ? shuffle(game.items) : [...game.items]
+  }
   return isRandom ? shuffle(game.items) : [...game.items]
 }
 
-function getExpectedKey(item: GameItem, isCounting: boolean): string {
-  if (isCounting) {
+function getExpectedKey(item: GameItem, gameType: string | undefined): string {
+  if (gameType === 'counting') {
     return (item as CountingItem).answer
+  }
+  if (gameType === 'numberWords') {
+    return (item as NumberWordItem).answer
   }
   return (item as string).toUpperCase()
 }
 
-function getAnnouncementText(item: GameItem, isCounting: boolean, gameKey: string): string {
-  if (isCounting) {
+function getAnnouncementText(item: GameItem, gameType: string | undefined, gameId: string): string {
+  if (gameType === 'counting') {
     const ci = item as CountingItem
     return `${NUMBER_WORDS[ci.answer] ?? ci.answer} ${ci.name}`
   }
-  if (gameKey === 'numbers') {
-    return NUMBER_WORDS[item as string] ?? (item as string)
+  if (gameType === 'numberWords') {
+    const nw = item as NumberWordItem
+    return nw.word
   }
-  return item as string
+  if (gameId === 'numbers' || gameId === 'mixed') {
+    const s = item as string
+    if (s >= '0' && s <= '9') {
+      return NUMBER_WORDS[s] ?? s
+    }
+  }
+  return (item as string).toLowerCase()
 }
 
 interface GameScreenProps {
   game: GameConfig
-  gameKey: string
   isRandom: boolean
   onBack: () => void
-  onComplete: () => void
+  onComplete: (score: number, total: number) => { stars: number; isNewBest: boolean }
 }
 
-export function GameScreen({ game, gameKey, isRandom, onBack, onComplete }: GameScreenProps) {
+export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenProps) {
   const [sequence, setSequence] = useState<GameItem[]>(() => buildSequence(game, isRandom))
   const [currentIndex, setCurrentIndex] = useState(0)
   const [score, setScore] = useState(0)
@@ -78,36 +113,73 @@ export function GameScreen({ game, gameKey, isRandom, onBack, onComplete }: Game
   const [feedback, setFeedback] = useState<FeedbackState>(null)
   const [isComplete, setIsComplete] = useState(false)
   const [shakeKey, setShakeKey] = useState(0)
+  const [completionResult, setCompletionResult] = useState<{
+    stars: number
+    isNewBest: boolean
+  } | null>(null)
+  const [digitBuffer, setDigitBuffer] = useState('')
   const feedbackTimeout = useRef<ReturnType<typeof setTimeout>>(null)
+  const digitTimeout = useRef<ReturnType<typeof setTimeout>>(null)
 
   const speak = useSpeech()
   const { playCorrect, playWrong, playComplete } = useSoundEffects()
 
-  const isCounting = game.type === 'counting'
+  const gameType = game.type
+  const isCounting = gameType === 'counting'
+  const isNumberWords = gameType === 'numberWords'
+  const isTimed = gameType === 'timed'
   const currentItem = sequence[currentIndex]
 
-  // Announce the current item when it changes
+  const isMultiDigit = isCounting && currentItem && (currentItem as CountingItem).answer.length > 1
+
+  // Announce current item
   useEffect(() => {
     if (currentItem && !isComplete) {
-      speak(getAnnouncementText(currentItem, isCounting, gameKey))
+      speak(getAnnouncementText(currentItem, gameType, game.id))
     }
-  }, [currentIndex, currentItem, isCounting, gameKey, speak, isComplete])
+  }, [currentIndex, currentItem, gameType, game.id, speak, isComplete])
 
-  // Play celebration sound on completion
-  useEffect(() => {
-    if (isComplete) {
+  const finishGame = useCallback(
+    (finalScore: number) => {
+      const total = sequence.length
+      const result = onComplete(finalScore, total)
+      setCompletionResult(result)
+      setIsComplete(true)
       playComplete()
-      onComplete()
-    }
-  }, [isComplete, onComplete, playComplete])
+    },
+    [sequence.length, onComplete, playComplete],
+  )
 
   const advance = useCallback(() => {
     if (currentIndex + 1 >= sequence.length) {
-      setIsComplete(true)
+      finishGame(score + 1)
     } else {
       setCurrentIndex((prev) => prev + 1)
+      setDigitBuffer('')
     }
-  }, [currentIndex, sequence.length])
+  }, [currentIndex, sequence.length, finishGame, score])
+
+  const handleCorrect = useCallback(() => {
+    playCorrect()
+    setScore((prev) => prev + 1)
+    setStreak((prev) => prev + 1)
+    setFeedback('correct')
+    feedbackTimeout.current = setTimeout(() => {
+      setFeedback(null)
+      advance()
+    }, 400)
+  }, [playCorrect, advance])
+
+  const handleWrong = useCallback(() => {
+    playWrong()
+    setStreak(0)
+    setFeedback('wrong')
+    setShakeKey((prev) => prev + 1)
+    setDigitBuffer('')
+    feedbackTimeout.current = setTimeout(() => {
+      setFeedback(null)
+    }, 500)
+  }, [playWrong])
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -119,28 +191,51 @@ export function GameScreen({ game, gameKey, isRandom, onBack, onComplete }: Game
       }
 
       const pressed = e.key.toUpperCase()
-      const expected = getExpectedKey(currentItem, isCounting)
+      const expected = getExpectedKey(currentItem, gameType)
 
+      // Multi-digit input for counting higher
+      if (isMultiDigit) {
+        if (pressed >= '0' && pressed <= '9') {
+          const newBuffer = digitBuffer + pressed
+          setDigitBuffer(newBuffer)
+
+          if (digitTimeout.current) {
+            clearTimeout(digitTimeout.current)
+          }
+
+          if (newBuffer === expected) {
+            handleCorrect()
+          } else if (newBuffer.length >= expected.length) {
+            handleWrong()
+          } else {
+            // Wait for more digits
+            digitTimeout.current = setTimeout(() => {
+              if (newBuffer !== expected) {
+                handleWrong()
+              }
+            }, 1500)
+          }
+        }
+        return
+      }
+
+      // Single key input
       if (pressed === expected) {
-        playCorrect()
-        setScore((prev) => prev + 1)
-        setStreak((prev) => prev + 1)
-        setFeedback('correct')
-        feedbackTimeout.current = setTimeout(() => {
-          setFeedback(null)
-          advance()
-        }, 400)
+        handleCorrect()
       } else {
-        playWrong()
-        setStreak(0)
-        setFeedback('wrong')
-        setShakeKey((prev) => prev + 1)
-        feedbackTimeout.current = setTimeout(() => {
-          setFeedback(null)
-        }, 500)
+        handleWrong()
       }
     },
-    [currentItem, isComplete, advance, isCounting, feedback, playCorrect, playWrong],
+    [
+      currentItem,
+      isComplete,
+      feedback,
+      gameType,
+      isMultiDigit,
+      digitBuffer,
+      handleCorrect,
+      handleWrong,
+    ],
   )
 
   useEffect(() => {
@@ -148,10 +243,20 @@ export function GameScreen({ game, gameKey, isRandom, onBack, onComplete }: Game
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleKeyDown])
 
+  // Timer expired handler for timed games
+  const handleTimeUp = useCallback(() => {
+    if (!isComplete) {
+      finishGame(score)
+    }
+  }, [isComplete, score, finishGame])
+
   useEffect(() => {
     return () => {
       if (feedbackTimeout.current) {
         clearTimeout(feedbackTimeout.current)
+      }
+      if (digitTimeout.current) {
+        clearTimeout(digitTimeout.current)
       }
     }
   }, [])
@@ -166,19 +271,55 @@ export function GameScreen({ game, gameKey, isRandom, onBack, onComplete }: Game
     setStreak(0)
     setFeedback(null)
     setIsComplete(false)
+    setCompletionResult(null)
+    setDigitBuffer('')
   }
 
   const getHintText = () => {
     if (isCounting) {
       return `Round ${currentIndex + 1} of ${sequence.length}`
     }
-    if (gameKey === 'abc') {
+    if (isNumberWords) {
+      return `Word ${currentIndex + 1} of ${sequence.length}`
+    }
+    if (game.id === 'abc' || game.id === 'lowercase') {
       return `Letter ${currentIndex + 1} of ${sequence.length}`
     }
-    return `Number ${currentIndex + 1} of ${sequence.length}`
+    return `${currentIndex + 1} of ${sequence.length}`
+  }
+
+  const getPromptText = () => {
+    if (isCounting) {
+      return 'How many do you see?'
+    }
+    if (isNumberWords) {
+      return 'Press the number!'
+    }
+    return 'Press this key!'
   }
 
   const animKey = `${currentIndex}-${shakeKey}`
+
+  const renderDisplay = () => {
+    if (!currentItem) {
+      return null
+    }
+    if (isCounting) {
+      return (
+        <CountingDisplay item={currentItem as CountingItem} feedback={feedback} animKey={animKey} />
+      )
+    }
+    if (isNumberWords) {
+      return (
+        <WordDisplay
+          word={(currentItem as NumberWordItem).word}
+          feedback={feedback}
+          animKey={animKey}
+        />
+      )
+    }
+    return <LetterDisplay character={currentItem as string} feedback={feedback} animKey={animKey} />
+  }
 
   return (
     <div
@@ -193,31 +334,32 @@ export function GameScreen({ game, gameKey, isRandom, onBack, onComplete }: Game
         <ScoreBadge score={score} />
       </div>
 
+      {isTimed && !isComplete && (
+        <div className="game-timer">
+          <TimerBar
+            duration={(game as TimedGameConfig).timeLimit}
+            running={!isComplete}
+            onTimeUp={handleTimeUp}
+          />
+        </div>
+      )}
+
       {!isComplete && <StreakBadge streak={streak} />}
 
-      {isComplete ? (
+      {isComplete && completionResult ? (
         <GameComplete
           score={score}
           total={sequence.length}
+          stars={completionResult.stars}
+          isNewBest={completionResult.isNewBest}
           onRestart={handleRestart}
           onHome={onBack}
         />
       ) : currentItem ? (
         <div className="game-area">
-          <p className="game-prompt">{isCounting ? 'How many do you see?' : 'Press this key!'}</p>
-          {isCounting ? (
-            <CountingDisplay
-              item={currentItem as CountingItem}
-              feedback={feedback}
-              animKey={animKey}
-            />
-          ) : (
-            <LetterDisplay
-              character={currentItem as string}
-              feedback={feedback}
-              animKey={animKey}
-            />
-          )}
+          <p className="game-prompt">{getPromptText()}</p>
+          {renderDisplay()}
+          {isMultiDigit && digitBuffer && <div className="digit-preview">{digitBuffer}</div>}
           <p className="game-hint">{getHintText()}</p>
         </div>
       ) : null}

@@ -12,6 +12,12 @@
   padding: 16px 20px;
 }
 
+.game-timer {
+  padding: 0 20px 8px;
+  display: flex;
+  justify-content: center;
+}
+
 .game-area {
   flex: 1;
   display: flex;
@@ -32,4 +38,16 @@
   font-size: 16px;
   color: var(--text-muted);
   font-weight: 600;
+}
+
+.digit-preview {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--game-color);
+  background: var(--bg-card);
+  border: 2px solid var(--bg-light);
+  border-radius: 12px;
+  padding: 4px 20px;
+  min-width: 60px;
+  text-align: center;
 }
