@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from 'react'
 
 export function useSpeech() {
   const voiceRef = useRef<SpeechSynthesisVoice | undefined>(undefined)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   useEffect(() => {
     const loadVoices = () => {
@@ -12,18 +13,29 @@ export function useSpeech() {
     }
     loadVoices()
     speechSynthesis.addEventListener('voiceschanged', loadVoices)
-    return () => speechSynthesis.removeEventListener('voiceschanged', loadVoices)
+    return () => {
+      speechSynthesis.removeEventListener('voiceschanged', loadVoices)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
   }, [])
 
   const speak = useCallback((text: string) => {
     speechSynthesis.cancel()
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.rate = 0.85
-    utterance.pitch = 1.1
-    if (voiceRef.current) {
-      utterance.voice = voiceRef.current
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
     }
-    speechSynthesis.speak(utterance)
+    // Small delay after cancel to avoid Chrome swallowing the utterance
+    timeoutRef.current = setTimeout(() => {
+      const utterance = new SpeechSynthesisUtterance(text)
+      utterance.rate = 0.85
+      utterance.pitch = 1.1
+      if (voiceRef.current) {
+        utterance.voice = voiceRef.current
+      }
+      speechSynthesis.speak(utterance)
+    }, 50)
   }, [])
 
   return speak
