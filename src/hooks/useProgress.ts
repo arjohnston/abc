@@ -21,14 +21,14 @@ function saveProgress(data: ProgressData) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
 }
 
-function calculateStars(score: number, total: number): number {
+function calculateStars(score: number, total: number, maxStars: number = 3): number {
+  let stars = 1
   if (score === total) {
-    return 3
+    stars = 3
+  } else if (score >= total * 0.8) {
+    stars = 2
   }
-  if (score >= total * 0.8) {
-    return 2
-  }
-  return 1
+  return Math.min(stars, maxStars)
 }
 
 export function useProgress() {
@@ -53,8 +53,13 @@ export function useProgress() {
   )
 
   const recordResult = useCallback(
-    (gameId: string, score: number, total: number): { stars: number; isNewBest: boolean } => {
-      const stars = calculateStars(score, total)
+    (
+      gameId: string,
+      score: number,
+      total: number,
+      maxStars: number = 3,
+    ): { stars: number; isNewBest: boolean } => {
+      const stars = calculateStars(score, total, maxStars)
       const prevBest = progress.games[gameId]?.bestStars ?? 0
       const isNewBest = stars > prevBest
 

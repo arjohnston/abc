@@ -21,11 +21,11 @@ function App() {
   )
 
   const handleComplete = useCallback(
-    (score: number, total: number) => {
+    (score: number, total: number, maxStars: number) => {
       if (!currentGame) {
         return { stars: 1, isNewBest: false }
       }
-      return recordResult(currentGame.id, score, total)
+      return recordResult(currentGame.id, score, total, maxStars)
     },
     [currentGame, recordResult],
   )

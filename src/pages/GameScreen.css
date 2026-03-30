@@ -34,7 +34,43 @@
   color: var(--text-muted);
 }
 
-.game-hint {
+.game-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.hint-btn {
+  background: var(--bg-card);
+  border: 2px solid var(--bg-light);
+  border-bottom: 3px solid var(--bg-light);
+  border-radius: 12px;
+  padding: 8px 20px;
+  font-family: var(--font);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.hint-btn:hover:not(:disabled) {
+  border-color: var(--yellow);
+  color: var(--text);
+}
+
+.hint-btn:active:not(:disabled) {
+  border-bottom-width: 2px;
+  transform: translateY(1px);
+}
+
+.hint-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.game-progress {
   font-size: 16px;
   color: var(--text-muted);
   font-weight: 600;

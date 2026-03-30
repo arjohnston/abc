@@ -80,7 +80,7 @@ function getExpectedKey(item: GameItem, gameType: string | undefined): string {
   return (item as string).toUpperCase()
 }
 
-function getAnnouncementText(item: GameItem, gameType: string | undefined, gameId: string): string {
+function getHintSpeech(item: GameItem, gameType: string | undefined, gameId: string): string {
   if (gameType === 'counting') {
     const ci = item as CountingItem
     return `${NUMBER_WORDS[ci.answer] ?? ci.answer} ${ci.name}`
@@ -102,7 +102,11 @@ interface GameScreenProps {
   game: GameConfig
   isRandom: boolean
   onBack: () => void
-  onComplete: (score: number, total: number) => { stars: number; isNewBest: boolean }
+  onComplete: (
+    score: number,
+    total: number,
+    maxStars: number,
+  ) => { stars: number; isNewBest: boolean }
 }
 
 export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenProps) {
@@ -118,6 +122,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     isNewBest: boolean
   } | null>(null)
   const [digitBuffer, setDigitBuffer] = useState('')
+  const [hintUsed, setHintUsed] = useState(false)
   const feedbackTimeout = useRef<ReturnType<typeof setTimeout>>(null)
   const digitTimeout = useRef<ReturnType<typeof setTimeout>>(null)
 
@@ -132,22 +137,24 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const isMultiDigit = isCounting && currentItem && (currentItem as CountingItem).answer.length > 1
 
-  // Announce current item
-  useEffect(() => {
-    if (currentItem && !isComplete) {
-      speak(getAnnouncementText(currentItem, gameType, game.id))
+  const handleHint = useCallback(() => {
+    if (!currentItem || isComplete || feedback) {
+      return
     }
-  }, [currentIndex, currentItem, gameType, game.id, speak, isComplete])
+    setHintUsed(true)
+    speak(getHintSpeech(currentItem, gameType, game.id))
+  }, [currentItem, isComplete, feedback, speak, gameType, game.id])
 
   const finishGame = useCallback(
     (finalScore: number) => {
       const total = sequence.length
-      const result = onComplete(finalScore, total)
+      const maxStars = hintUsed ? 2 : 3
+      const result = onComplete(finalScore, total, maxStars)
       setCompletionResult(result)
       setIsComplete(true)
       playComplete()
     },
-    [sequence.length, onComplete, playComplete],
+    [sequence.length, onComplete, playComplete, hintUsed],
   )
 
   const advance = useCallback(() => {
@@ -273,9 +280,10 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     setIsComplete(false)
     setCompletionResult(null)
     setDigitBuffer('')
+    setHintUsed(false)
   }
 
-  const getHintText = () => {
+  const getProgressText = () => {
     if (isCounting) {
       return `Round ${currentIndex + 1} of ${sequence.length}`
     }
@@ -360,7 +368,12 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
           <p className="game-prompt">{getPromptText()}</p>
           {renderDisplay()}
           {isMultiDigit && digitBuffer && <div className="digit-preview">{digitBuffer}</div>}
-          <p className="game-hint">{getHintText()}</p>
+          <div className="game-bottom">
+            <button className="hint-btn" onClick={handleHint} disabled={!!feedback}>
+              💡 Hint{hintUsed ? ' (max ★★)' : ''}
+            </button>
+            <p className="game-progress">{getProgressText()}</p>
+          </div>
         </div>
       ) : null}
     </div>
