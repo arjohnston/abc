@@ -8,7 +8,7 @@ import type { GameConfig } from './types/game'
 
 function App() {
   const [currentGame, setCurrentGame] = useState<GameConfig | null>(null)
-  const [isRandom, setIsRandom] = useState(false)
+  const [isRandom, setIsRandom] = useState(true)
   const { stats, recordPlay } = useStats()
   const { getStars, getTotalStars, isSectionUnlocked, recordResult } = useProgress()
 

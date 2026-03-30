@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef } from 'react'
 
 export function useSpeech() {
   const voiceRef = useRef<SpeechSynthesisVoice | undefined>(undefined)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(null)
 
   useEffect(() => {
     const loadVoices = () => {
@@ -13,30 +12,23 @@ export function useSpeech() {
     }
     loadVoices()
     speechSynthesis.addEventListener('voiceschanged', loadVoices)
-    return () => {
-      speechSynthesis.removeEventListener('voiceschanged', loadVoices)
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
+    return () => speechSynthesis.removeEventListener('voiceschanged', loadVoices)
   }, [])
 
   const speak = useCallback((text: string) => {
-    speechSynthesis.cancel()
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
+    // Only cancel if something is currently speaking to avoid Chrome bug
+    // where cancel() + speak() in quick succession silently drops the utterance
+    if (speechSynthesis.speaking || speechSynthesis.pending) {
+      speechSynthesis.cancel()
     }
-    // Small delay after cancel to avoid Chrome swallowing the utterance
-    timeoutRef.current = setTimeout(() => {
-      const utterance = new SpeechSynthesisUtterance(text)
-      utterance.rate = 0.85
-      utterance.pitch = 1.1
-      utterance.volume = 1.0
-      if (voiceRef.current) {
-        utterance.voice = voiceRef.current
-      }
-      speechSynthesis.speak(utterance)
-    }, 50)
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.rate = 0.85
+    utterance.pitch = 1.1
+    utterance.volume = 1.0
+    if (voiceRef.current) {
+      utterance.voice = voiceRef.current
+    }
+    speechSynthesis.speak(utterance)
   }, [])
 
   return speak
