@@ -1,0 +1,40 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --green: #58cc02;
+  --green-dark: #46a302;
+  --blue: #1cb0f6;
+  --blue-dark: #1899d6;
+  --purple: #ce82ff;
+  --purple-dark: #a855f7;
+  --orange: #ff9600;
+  --orange-dark: #e08600;
+  --red: #ff4b4b;
+  --red-dark: #ea2b2b;
+  --yellow: #ffc800;
+  --bg: #131f24;
+  --bg-card: #1a2c33;
+  --bg-light: #235264;
+  --text: #ffffff;
+  --text-muted: #96b0bc;
+  --border-bottom: 4px;
+  --font: 'Nunito', sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}

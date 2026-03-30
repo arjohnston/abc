@@ -1,0 +1,16 @@
+.score-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-card);
+  border: 2px solid var(--bg-light);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.score-star {
+  font-size: 20px;
+}

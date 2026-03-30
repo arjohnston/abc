@@ -1,0 +1,14 @@
+.progress-bar {
+  flex: 1;
+  height: 16px;
+  background: var(--bg-light);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--game-color);
+  border-radius: 8px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}

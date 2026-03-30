@@ -1,0 +1,83 @@
+.home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  gap: 32px;
+}
+
+.home-header {
+  text-align: center;
+}
+
+.home-title {
+  font-size: 72px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+}
+
+.title-letter {
+  display: inline-block;
+  animation: bounce 0.6s ease infinite;
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+.title-letter:nth-child(1) { --i: 0; }
+.title-letter:nth-child(2) { --i: 1; }
+.title-letter:nth-child(3) { --i: 2; }
+.title-letter:nth-child(5) { --i: 3; }
+.title-letter:nth-child(6) { --i: 4; }
+.title-letter:nth-child(7) { --i: 5; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.home-subtitle {
+  font-size: 20px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.stats-bar {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+}
+
+.stat {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border: 2px solid var(--bg-light);
+  border-radius: 12px;
+  padding: 8px 16px;
+}
+
+.toggle-section {
+  display: flex;
+  justify-content: center;
+}
+
+.game-cards {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 900px;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .home-title {
+    font-size: 48px;
+  }
+  .game-cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
