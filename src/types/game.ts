@@ -33,6 +33,7 @@ export interface BaseGameConfig {
   description: string
   color: string
   colorDark: string
+  autoSpeak?: boolean
 }
 
 export interface StandardGameConfig extends BaseGameConfig {

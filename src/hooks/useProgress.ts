@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import { GAMES, SECTIONS } from '../games/config'
 import type { ProgressData, Section } from '../types/game'
 
 const STORAGE_KEY = 'abc123-progress'
@@ -45,11 +46,23 @@ export function useProgress() {
     return Object.values(progress.games).reduce((sum, g) => sum + g.bestStars, 0)
   }, [progress])
 
+  const getStarsForSection = useCallback(
+    (sectionId: string): number => {
+      const gameIds = GAMES.filter((g) => g.sectionId === sectionId).map((g) => g.id)
+      return gameIds.reduce((sum, id) => sum + (progress.games[id]?.bestStars ?? 0), 0)
+    },
+    [progress],
+  )
+
   const isSectionUnlocked = useCallback(
     (section: Section): boolean => {
-      return getTotalStars() >= section.starsToUnlock
+      if (section.starsToUnlock === 0) return true
+      const sectionIndex = SECTIONS.findIndex((s) => s.id === section.id)
+      if (sectionIndex <= 0) return true
+      const prevSection = SECTIONS[sectionIndex - 1]!
+      return getStarsForSection(prevSection.id) >= section.starsToUnlock
     },
-    [getTotalStars],
+    [getStarsForSection],
   )
 
   const recordResult = useCallback(

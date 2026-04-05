@@ -84,7 +84,7 @@ function getExpectedKey(item: GameItem, gameType: string | undefined): string {
 function getHintSpeech(item: GameItem, gameType: string | undefined, gameId: string): string {
   if (gameType === 'counting') {
     const ci = item as CountingItem
-    return `${NUMBER_WORDS[ci.answer] ?? ci.answer} ${ci.name}`
+    return ci.answer
   }
   if (gameType === 'numberWords') {
     const nw = item as NumberWordItem
@@ -124,6 +124,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   } | null>(null)
   const [digitBuffer, setDigitBuffer] = useState('')
   const [hintUsed, setHintUsed] = useState(false)
+  const [currentItemWrong, setCurrentItemWrong] = useState(false)
   const feedbackTimeout = useRef<ReturnType<typeof setTimeout>>(null)
   const digitTimeout = useRef<ReturnType<typeof setTimeout>>(null)
 
@@ -158,28 +159,36 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     [sequence.length, onComplete, playComplete, hintUsed],
   )
 
-  const advance = useCallback(() => {
-    if (currentIndex + 1 >= sequence.length) {
-      finishGame(score + 1)
-    } else {
-      setCurrentIndex((prev) => prev + 1)
-      setDigitBuffer('')
-    }
-  }, [currentIndex, sequence.length, finishGame, score])
+  const advance = useCallback(
+    (scored: boolean) => {
+      if (currentIndex + 1 >= sequence.length) {
+        finishGame(scored ? score + 1 : score)
+      } else {
+        setCurrentIndex((prev) => prev + 1)
+        setDigitBuffer('')
+        setCurrentItemWrong(false)
+      }
+    },
+    [currentIndex, sequence.length, finishGame, score],
+  )
 
   const handleCorrect = useCallback(() => {
     playCorrect()
-    setScore((prev) => prev + 1)
+    const scored = !currentItemWrong
+    if (scored) {
+      setScore((prev) => prev + 1)
+    }
     setStreak((prev) => prev + 1)
     setFeedback('correct')
     feedbackTimeout.current = setTimeout(() => {
       setFeedback(null)
-      advance()
+      advance(scored)
     }, 400)
-  }, [playCorrect, advance])
+  }, [playCorrect, advance, currentItemWrong])
 
   const handleWrong = useCallback(() => {
     playWrong()
+    setCurrentItemWrong(true)
     setStreak(0)
     setFeedback('wrong')
     setShakeKey((prev) => prev + 1)
@@ -217,7 +226,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
               if (newBuffer !== expected) {
                 handleWrong()
               }
-            }, 1500)
+            }, 10000)
           }
         }
         return
@@ -244,6 +253,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat) return
       if (e.key.length === 1) {
         handleInput(e.key)
       }
@@ -251,6 +261,12 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [handleInput])
+
+  // Auto-speak the item for games that opt in (ABCs, 123s)
+  useEffect(() => {
+    if (!game.autoSpeak || !currentItem || isComplete) return
+    speak(getHintSpeech(currentItem, gameType, game.id))
+  }, [currentIndex, game.autoSpeak, game.id, gameType, isComplete]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer expired handler for timed games
   const handleTimeUp = useCallback(() => {

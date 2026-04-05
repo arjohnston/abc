@@ -7,7 +7,7 @@ import { generateNumberWordItems } from './numberWords'
 export const SECTIONS: Section[] = [
   { id: 'basics', title: 'Basics', emoji: '🌱', starsToUnlock: 0 },
   { id: 'next-steps', title: 'Next Steps', emoji: '🚀', starsToUnlock: 5 },
-  { id: 'challenge', title: 'Challenge', emoji: '🏆', starsToUnlock: 10 },
+  { id: 'challenge', title: 'Challenge', emoji: '🏆', starsToUnlock: 7 },
 ]
 
 export const GAMES: GameConfig[] = [
@@ -21,6 +21,7 @@ export const GAMES: GameConfig[] = [
     color: 'var(--green)',
     colorDark: 'var(--green-dark)',
     items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+    autoSpeak: true,
   },
   {
     id: 'numbers',
@@ -31,6 +32,7 @@ export const GAMES: GameConfig[] = [
     color: 'var(--blue)',
     colorDark: 'var(--blue-dark)',
     items: '1234567890'.split(''),
+    autoSpeak: true,
   },
   {
     id: 'counting',
