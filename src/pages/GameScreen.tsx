@@ -2,101 +2,103 @@ import './GameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { AnimalDisplay } from '../components/AnimalDisplay'
 import { CountingDisplay } from '../components/CountingDisplay'
 import { GameComplete } from '../components/GameComplete'
+import { HearPressDisplay } from '../components/HearPressDisplay'
 import { LetterDisplay } from '../components/LetterDisplay'
+import { NumberBlanksDisplay } from '../components/NumberBlanksDisplay'
 import { TimerBar } from '../components/TimerBar'
 import { BackButton } from '../components/ui/BackButton'
 import { ProgressBar } from '../components/ui/ProgressBar'
 import { ScoreBadge } from '../components/ui/ScoreBadge'
 import { StreakBadge } from '../components/ui/StreakBadge'
 import { VirtualKeyboard } from '../components/VirtualKeyboard'
+import { WhatNextDisplay } from '../components/WhatNextDisplay'
+import { WhichMoreDisplay } from '../components/WhichMoreDisplay'
 import { WordDisplay } from '../components/WordDisplay'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
 import type {
+  AnimalItem,
+  BuildNumberItem,
   CountingItem,
   FeedbackState,
   GameConfig,
   GameItem,
   NumberWordItem,
   TimedGameConfig,
+  WhatNextItem,
+  WhichMoreItem,
 } from '../types/game'
 
 const NUMBER_WORDS: Record<string, string> = {
-  '0': 'zero',
-  '1': 'one',
-  '2': 'two',
-  '3': 'three',
-  '4': 'four',
-  '5': 'five',
-  '6': 'six',
-  '7': 'seven',
-  '8': 'eight',
-  '9': 'nine',
-  '10': 'ten',
-  '11': 'eleven',
-  '12': 'twelve',
-  '13': 'thirteen',
-  '14': 'fourteen',
-  '15': 'fifteen',
-  '16': 'sixteen',
-  '17': 'seventeen',
-  '18': 'eighteen',
-  '19': 'nineteen',
-  '20': 'twenty',
+  '0': 'zero', '1': 'one', '2': 'two', '3': 'three', '4': 'four',
+  '5': 'five', '6': 'six', '7': 'seven', '8': 'eight', '9': 'nine',
+  '10': 'ten', '11': 'eleven', '12': 'twelve', '13': 'thirteen',
+  '14': 'fourteen', '15': 'fifteen', '16': 'sixteen', '17': 'seventeen',
+  '18': 'eighteen', '19': 'nineteen', '20': 'twenty',
 }
 
 function shuffle<T>(array: T[]): T[] {
   const arr = [...array]
   for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    const temp = arr[i]
-    arr[i] = arr[j] as T
-    arr[j] = temp as T
+    const temp = arr[i]; arr[i] = arr[j] as T; arr[j] = temp as T
   }
   return arr
 }
 
 function buildSequence(game: GameConfig, isRandom: boolean): GameItem[] {
-  if (game.type === 'counting') {
-    return game.generateItems(isRandom)
-  }
-  if (game.type === 'numberWords') {
-    return game.generateItems(isRandom)
-  }
-  if (game.type === 'timed') {
-    return isRandom ? shuffle(game.items) : [...game.items]
-  }
+  if (game.type === 'counting') return game.generateItems(isRandom)
+  if (game.type === 'numberWords') return game.generateItems(isRandom)
+  if (game.type === 'buildNumber') return game.generateItems(isRandom)
+  if (game.type === 'whichMore') return game.generateItems(isRandom)
+  if (game.type === 'whatNext') return game.generateItems(isRandom)
+  if (game.type === 'animalSounds') return isRandom ? shuffle(game.items) : [...game.items]
+  if (game.type === 'timed') return isRandom ? shuffle(game.items) : [...game.items]
   return isRandom ? shuffle(game.items) : [...game.items]
 }
 
 function getExpectedKey(item: GameItem, gameType: string | undefined): string {
-  if (gameType === 'counting') {
-    return (item as CountingItem).answer
-  }
-  if (gameType === 'numberWords') {
-    return (item as NumberWordItem).answer
-  }
+  if (gameType === 'counting') return (item as CountingItem).answer
+  if (gameType === 'numberWords') return (item as NumberWordItem).answer
+  if (gameType === 'animalSounds') return (item as AnimalItem).key
+  if (gameType === 'whichMore') return (item as WhichMoreItem).answer
+  if (gameType === 'whatNext') return (item as WhatNextItem).answer.toUpperCase()
   return (item as string).toUpperCase()
 }
 
-function getHintSpeech(item: GameItem, gameType: string | undefined, gameId: string): string {
-  if (gameType === 'counting') {
-    const ci = item as CountingItem
-    return ci.answer
+function getHintSpeech(
+  item: GameItem,
+  gameType: string | undefined,
+  gameId: string,
+  expectLower?: boolean,
+  audioOnly?: boolean,
+): string {
+  if (gameType === 'counting') return (item as CountingItem).answer
+  if (gameType === 'numberWords') return (item as NumberWordItem).word
+  if (gameType === 'animalSounds') return (item as AnimalItem).name
+  if (gameType === 'buildNumber') return (item as BuildNumberItem).word
+  if (gameType === 'whichMore') {
+    const wm = item as WhichMoreItem
+    return `${NUMBER_WORDS[wm.left] ?? wm.left} or ${NUMBER_WORDS[wm.right] ?? wm.right}? Which is more?`
   }
-  if (gameType === 'numberWords') {
-    const nw = item as NumberWordItem
-    return nw.word
+  if (gameType === 'whatNext') {
+    const wn = item as WhatNextItem
+    return `${wn.shown.join(', ')}, what comes next?`
+  }
+  if (audioOnly || gameId === 'hear-press') {
+    const s = item as string
+    return NUMBER_WORDS[s] ?? s.toLowerCase()
   }
   if (gameId === 'numbers' || gameId === 'mixed') {
     const s = item as string
-    if (s >= '0' && s <= '9') {
-      return NUMBER_WORDS[s] ?? s
-    }
+    if (s >= '0' && s <= '9') return NUMBER_WORDS[s] ?? s
   }
-  return (item as string).toLowerCase()
+  const char = (item as string).toLowerCase()
+  if (expectLower) return `lowercase ${char}`
+  return char
 }
 
 interface GameScreenProps {
@@ -118,11 +120,10 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   const [feedback, setFeedback] = useState<FeedbackState>(null)
   const [isComplete, setIsComplete] = useState(false)
   const [shakeKey, setShakeKey] = useState(0)
-  const [completionResult, setCompletionResult] = useState<{
-    stars: number
-    isNewBest: boolean
-  } | null>(null)
+  const [completionResult, setCompletionResult] = useState<{ stars: number; isNewBest: boolean } | null>(null)
   const [digitBuffer, setDigitBuffer] = useState('')
+  const [buildBuffer, setBuildBuffer] = useState('')
+  const [lastPressed, setLastPressed] = useState<string | null>(null)
   const [hintUsed, setHintUsed] = useState(false)
   const [currentItemWrong, setCurrentItemWrong] = useState(false)
   const feedbackTimeout = useRef<ReturnType<typeof setTimeout>>(null)
@@ -135,17 +136,23 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   const isCounting = gameType === 'counting'
   const isNumberWords = gameType === 'numberWords'
   const isTimed = gameType === 'timed'
+  const isBuildNumber = gameType === 'buildNumber'
+  const isAnimalSounds = gameType === 'animalSounds'
+  const isWhichMore = gameType === 'whichMore'
+  const isWhatNext = gameType === 'whatNext'
+  const expectLower = game.type === undefined ? (game as { expectLower?: boolean }).expectLower : false
+  const audioOnly = game.type === undefined ? (game as { audioOnly?: boolean }).audioOnly : false
   const currentItem = sequence[currentIndex]
 
   const isMultiDigit = isCounting && currentItem && (currentItem as CountingItem).answer.length > 1
 
+  const alwaysSpeak = isAnimalSounds || isBuildNumber || isWhichMore || isWhatNext || audioOnly
+
   const handleHint = useCallback(() => {
-    if (!currentItem || isComplete || feedback) {
-      return
-    }
+    if (!currentItem || isComplete || feedback) return
     setHintUsed(true)
-    speak(getHintSpeech(currentItem, gameType, game.id))
-  }, [currentItem, isComplete, feedback, speak, gameType, game.id])
+    speak(getHintSpeech(currentItem, gameType, game.id, expectLower, audioOnly))
+  }, [currentItem, isComplete, feedback, speak, gameType, game.id, expectLower, audioOnly])
 
   const finishGame = useCallback(
     (finalScore: number) => {
@@ -166,6 +173,8 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
       } else {
         setCurrentIndex((prev) => prev + 1)
         setDigitBuffer('')
+        setBuildBuffer('')
+        setLastPressed(null)
         setCurrentItemWrong(false)
       }
     },
@@ -175,9 +184,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   const handleCorrect = useCallback(() => {
     playCorrect()
     const scored = !currentItemWrong
-    if (scored) {
-      setScore((prev) => prev + 1)
-    }
+    if (scored) setScore((prev) => prev + 1)
     setStreak((prev) => prev + 1)
     setFeedback('correct')
     feedbackTimeout.current = setTimeout(() => {
@@ -200,11 +207,26 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const handleInput = useCallback(
     (key: string) => {
-      if (isComplete || !currentItem || feedback) {
+      if (isComplete || !currentItem || feedback) return
+      const pressed = key.toUpperCase()
+
+      // Build-a-number: slot-by-slot digit input
+      if (isBuildNumber) {
+        if (pressed >= '0' && pressed <= '9') {
+          const item = currentItem as BuildNumberItem
+          const expectedDigit = item.digits[buildBuffer.length]
+          if (pressed === expectedDigit) {
+            const newBuffer = buildBuffer + pressed
+            setBuildBuffer(newBuffer)
+            if (newBuffer.length === item.digits.length) handleCorrect()
+          } else {
+            handleWrong()
+          }
+        }
         return
       }
 
-      const pressed = key.toUpperCase()
+      setLastPressed(pressed)
       const expected = getExpectedKey(currentItem, gameType)
 
       // Multi-digit input for counting higher
@@ -212,77 +234,53 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
         if (pressed >= '0' && pressed <= '9') {
           const newBuffer = digitBuffer + pressed
           setDigitBuffer(newBuffer)
-
-          if (digitTimeout.current) {
-            clearTimeout(digitTimeout.current)
-          }
-
+          if (digitTimeout.current) clearTimeout(digitTimeout.current)
           if (newBuffer === expected) {
             handleCorrect()
           } else if (newBuffer.length >= expected.length) {
             handleWrong()
           } else {
-            digitTimeout.current = setTimeout(() => {
-              if (newBuffer !== expected) {
-                handleWrong()
-              }
-            }, 10000)
+            digitTimeout.current = setTimeout(() => handleWrong(), 10000)
           }
         }
         return
       }
 
-      // Single key input
-      if (pressed === expected) {
-        handleCorrect()
-      } else {
-        handleWrong()
-      }
+      if (pressed === expected) handleCorrect()
+      else handleWrong()
     },
     [
-      currentItem,
-      isComplete,
-      feedback,
-      gameType,
-      isMultiDigit,
-      digitBuffer,
-      handleCorrect,
-      handleWrong,
+      currentItem, isComplete, feedback, gameType,
+      isBuildNumber, buildBuffer, isMultiDigit, digitBuffer,
+      handleCorrect, handleWrong,
     ],
   )
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.repeat) return
-      if (e.key.length === 1) {
-        handleInput(e.key)
-      }
+      if (e.key.length === 1) handleInput(e.key)
     }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
   }, [handleInput])
 
-  // Auto-speak the item for games that opt in (ABCs, 123s)
+  // Auto-speak on item change
   useEffect(() => {
-    if (!game.autoSpeak || !currentItem || isComplete) return
-    speak(getHintSpeech(currentItem, gameType, game.id))
-  }, [currentIndex, game.autoSpeak, game.id, gameType, isComplete]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Timer expired handler for timed games
-  const handleTimeUp = useCallback(() => {
-    if (!isComplete) {
-      finishGame(score)
+    if (!currentItem || isComplete) return
+    if (game.autoSpeak || alwaysSpeak) {
+      speak(getHintSpeech(currentItem, gameType, game.id, expectLower, audioOnly))
     }
+  }, [currentIndex, isComplete]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleTimeUp = useCallback(() => {
+    if (!isComplete) finishGame(score)
   }, [isComplete, score, finishGame])
 
   useEffect(() => {
     return () => {
-      if (feedbackTimeout.current) {
-        clearTimeout(feedbackTimeout.current)
-      }
-      if (digitTimeout.current) {
-        clearTimeout(digitTimeout.current)
-      }
+      if (feedbackTimeout.current) clearTimeout(feedbackTimeout.current)
+      if (digitTimeout.current) clearTimeout(digitTimeout.current)
     }
   }, [])
 
@@ -298,64 +296,57 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     setIsComplete(false)
     setCompletionResult(null)
     setDigitBuffer('')
+    setBuildBuffer('')
+    setLastPressed(null)
     setHintUsed(false)
+    setCurrentItemWrong(false)
   }
 
   const getProgressText = () => {
-    if (isCounting) {
-      return `Round ${currentIndex + 1} of ${sequence.length}`
-    }
-    if (isNumberWords) {
-      return `Word ${currentIndex + 1} of ${sequence.length}`
-    }
-    if (game.id === 'abc' || game.id === 'lowercase') {
-      return `Letter ${currentIndex + 1} of ${sequence.length}`
-    }
+    if (isCounting) return `Round ${currentIndex + 1} of ${sequence.length}`
+    if (isNumberWords || isWhichMore) return `${currentIndex + 1} of ${sequence.length}`
+    if (isBuildNumber) return `Number ${currentIndex + 1} of ${sequence.length}`
+    if (isAnimalSounds) return `Animal ${currentIndex + 1} of ${sequence.length}`
+    if (isWhatNext) return `${currentIndex + 1} of ${sequence.length}`
+    if (game.id === 'abc' || game.id === 'lowercase') return `Letter ${currentIndex + 1} of ${sequence.length}`
     return `${currentIndex + 1} of ${sequence.length}`
   }
 
   const getPromptText = () => {
-    if (isCounting) {
-      return 'How many do you see?'
-    }
-    if (isNumberWords) {
-      return 'Press the number!'
-    }
+    if (isCounting) return 'How many do you see?'
+    if (isNumberWords) return 'Press the number!'
+    if (isBuildNumber) return 'Type each digit!'
+    if (isAnimalSounds) return 'Press the first letter!'
+    if (isWhichMore) return 'Press the bigger number!'
+    if (isWhatNext) return 'What comes next?'
+    if (audioOnly) return 'Press what you hear!'
+    if (expectLower) return 'Press the lowercase letter!'
     return 'Press this key!'
   }
 
   const animKey = `${currentIndex}-${shakeKey}`
 
-  const needsLetters = game.id === 'abc' || game.id === 'lowercase' || game.id === 'mixed'
+  const needsLetters =
+    game.id === 'abc' || game.id === 'lowercase' || game.id === 'mixed' ||
+    game.id === 'letter-pairs' || isAnimalSounds || isWhatNext
   const kbLayout: 'letters' | 'numbers' = needsLetters ? 'letters' : 'numbers'
 
   const renderDisplay = () => {
-    if (!currentItem) {
-      return null
-    }
-    if (isCounting) {
-      return (
-        <CountingDisplay item={currentItem as CountingItem} feedback={feedback} animKey={animKey} />
-      )
-    }
-    if (isNumberWords) {
-      return (
-        <WordDisplay
-          word={(currentItem as NumberWordItem).word}
-          feedback={feedback}
-          animKey={animKey}
-        />
-      )
-    }
+    if (!currentItem) return null
+    if (isCounting) return <CountingDisplay item={currentItem as CountingItem} feedback={feedback} animKey={animKey} />
+    if (isNumberWords) return <WordDisplay word={(currentItem as NumberWordItem).word} feedback={feedback} animKey={animKey} />
+    if (isAnimalSounds) return <AnimalDisplay item={currentItem as AnimalItem} feedback={feedback} animKey={animKey} />
+    if (isBuildNumber) return <NumberBlanksDisplay item={currentItem as BuildNumberItem} filled={buildBuffer} feedback={feedback} shakeKey={shakeKey} />
+    if (isWhichMore) return <WhichMoreDisplay item={currentItem as WhichMoreItem} feedback={feedback} pressedKey={lastPressed} animKey={animKey} />
+    if (isWhatNext) return <WhatNextDisplay item={currentItem as WhatNextItem} feedback={feedback} animKey={animKey} />
+    if (audioOnly) return <HearPressDisplay feedback={feedback} animKey={animKey} />
     return <LetterDisplay character={currentItem as string} feedback={feedback} animKey={animKey} />
   }
 
   return (
     <div
       className="game"
-      style={
-        { '--game-color': game.color, '--game-color-dark': game.colorDark } as React.CSSProperties
-      }
+      style={{ '--game-color': game.color, '--game-color-dark': game.colorDark } as React.CSSProperties}
     >
       <div className="game-topbar">
         <BackButton onClick={onBack} />
@@ -365,11 +356,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
       {isTimed && !isComplete && (
         <div className="game-timer">
-          <TimerBar
-            duration={(game as TimedGameConfig).timeLimit}
-            running={!isComplete}
-            onTimeUp={handleTimeUp}
-          />
+          <TimerBar duration={(game as TimedGameConfig).timeLimit} running={!isComplete} onTimeUp={handleTimeUp} />
         </div>
       )}
 
@@ -392,21 +379,14 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
           <div className="game-bottom">
             <button
               className="hint-btn"
-              onPointerDown={(e) => {
-                e.preventDefault()
-                handleHint()
-              }}
+              onPointerDown={(e) => { e.preventDefault(); handleHint() }}
               disabled={!!feedback}
             >
               💡 Hint{hintUsed ? ' (max ★★)' : ''}
             </button>
             <p className="game-progress">{getProgressText()}</p>
           </div>
-          <VirtualKeyboard
-            layout={kbLayout}
-            onKeyPress={handleInput}
-            disabled={!!feedback || isComplete}
-          />
+          <VirtualKeyboard layout={kbLayout} onKeyPress={handleInput} disabled={!!feedback || isComplete} />
         </div>
       ) : null}
     </div>

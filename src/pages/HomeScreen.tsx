@@ -1,7 +1,8 @@
 import './HomeScreen.css'
 
-import { useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef } from 'react'
 
+import { MiniGameNode } from '../components/ui/MiniGameNode'
 import { PathNode } from '../components/ui/PathNode'
 import { SectionBanner } from '../components/ui/SectionBanner'
 import { Toggle } from '../components/ui/Toggle'
@@ -52,6 +53,7 @@ interface HomeScreenProps {
   isRandom: boolean
   onToggleRandom: () => void
   onSelectGame: (game: GameConfig) => void
+  onPlayMiniGame: () => void
   stats: Stats
   getStars: (gameId: string) => number
   getTotalStars: () => number
@@ -62,6 +64,7 @@ export function HomeScreen({
   isRandom,
   onToggleRandom,
   onSelectGame,
+  onPlayMiniGame,
   stats,
   getStars,
   getTotalStars,
@@ -117,7 +120,7 @@ export function HomeScreen({
       </div>
 
       <div className="path">
-        {SECTIONS.map((section) => {
+        {SECTIONS.map((section, sectionIndex) => {
           const games = getGamesForSection(section.id)
           const locked = !isSectionUnlocked(section)
           const sectionStars = games.reduce((sum, g) => sum + getStars(g.id), 0)
@@ -125,9 +128,12 @@ export function HomeScreen({
           const hasIncomplete = games.some((g) => getStars(g.id) < 3)
           const isActive = !locked && hasIncomplete
           const totalHeight = (games.length - 1) * NODE_SPACING
+          const nextSection = SECTIONS[sectionIndex + 1]
+          const showMiniGame = nextSection && isSectionUnlocked(nextSection)
 
           return (
-            <div key={section.id} className={`section ${isActive ? 'section--active' : ''}`}>
+            <Fragment key={section.id}>
+            <div className={`section ${isActive ? 'section--active' : ''}`}>
               <SectionBanner
                 section={section}
                 earnedStars={sectionStars}
@@ -187,6 +193,8 @@ export function HomeScreen({
                 ))}
               </div>
             </div>
+            {showMiniGame && <MiniGameNode onClick={onPlayMiniGame} />}
+            </Fragment>
           )
         })}
       </div>

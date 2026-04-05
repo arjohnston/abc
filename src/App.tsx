@@ -4,10 +4,12 @@ import { useProgress } from './hooks/useProgress'
 import { useStats } from './hooks/useStats'
 import { GameScreen } from './pages/GameScreen'
 import { HomeScreen } from './pages/HomeScreen'
+import { MiniGameScreen } from './pages/MiniGameScreen'
 import type { GameConfig } from './types/game'
 
 function App() {
   const [currentGame, setCurrentGame] = useState<GameConfig | null>(null)
+  const [showMiniGame, setShowMiniGame] = useState(false)
   const [isRandom, setIsRandom] = useState(true)
   const { stats, recordPlay } = useStats()
   const { getStars, getTotalStars, isSectionUnlocked, recordResult } = useProgress()
@@ -42,11 +44,16 @@ function App() {
     )
   }
 
+  if (showMiniGame) {
+    return <MiniGameScreen onBack={() => setShowMiniGame(false)} />
+  }
+
   return (
     <HomeScreen
       isRandom={isRandom}
       onToggleRandom={() => setIsRandom(!isRandom)}
       onSelectGame={handleSelectGame}
+      onPlayMiniGame={() => setShowMiniGame(true)}
       stats={stats}
       getStars={getStars}
       getTotalStars={getTotalStars}

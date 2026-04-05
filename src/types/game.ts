@@ -21,7 +21,37 @@ export interface NumberWordItem {
   word: string
 }
 
-export type GameItem = string | CountingItem | NumberWordItem
+export interface AnimalItem {
+  emoji: string
+  name: string
+  key: string // uppercase first letter
+}
+
+export interface BuildNumberItem {
+  display: string   // e.g. "12"
+  digits: string[]  // e.g. ['1', '2']
+  word: string      // e.g. "twelve" — for TTS
+}
+
+export interface WhichMoreItem {
+  left: string    // digit char
+  right: string   // digit char
+  answer: string  // the larger digit char
+}
+
+export interface WhatNextItem {
+  shown: string[]  // e.g. ['A', 'B'] or ['1', '2']
+  answer: string   // e.g. 'C' or '3'
+}
+
+export type GameItem =
+  | string
+  | CountingItem
+  | NumberWordItem
+  | AnimalItem
+  | BuildNumberItem
+  | WhichMoreItem
+  | WhatNextItem
 
 // --- Game Configs ---
 
@@ -39,6 +69,8 @@ export interface BaseGameConfig {
 export interface StandardGameConfig extends BaseGameConfig {
   type?: undefined
   items: string[]
+  expectLower?: boolean  // show uppercase, speak/label as lowercase
+  audioOnly?: boolean    // hide the character, rely on TTS
 }
 
 export interface CountingGameConfig extends BaseGameConfig {
@@ -57,11 +89,35 @@ export interface TimedGameConfig extends BaseGameConfig {
   timeLimit: number
 }
 
+export interface AnimalSoundsGameConfig extends BaseGameConfig {
+  type: 'animalSounds'
+  items: AnimalItem[]
+}
+
+export interface BuildNumberGameConfig extends BaseGameConfig {
+  type: 'buildNumber'
+  generateItems: (isRandom: boolean) => BuildNumberItem[]
+}
+
+export interface WhichMoreGameConfig extends BaseGameConfig {
+  type: 'whichMore'
+  generateItems: (isRandom: boolean) => WhichMoreItem[]
+}
+
+export interface WhatNextGameConfig extends BaseGameConfig {
+  type: 'whatNext'
+  generateItems: (isRandom: boolean) => WhatNextItem[]
+}
+
 export type GameConfig =
   | StandardGameConfig
   | CountingGameConfig
   | NumberWordsGameConfig
   | TimedGameConfig
+  | AnimalSoundsGameConfig
+  | BuildNumberGameConfig
+  | WhichMoreGameConfig
+  | WhatNextGameConfig
 
 export type FeedbackState = 'correct' | 'wrong' | null
 

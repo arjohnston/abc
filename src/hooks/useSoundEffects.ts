@@ -48,5 +48,52 @@ export function useSoundEffects() {
     })
   }, [getCtx])
 
-  return { playCorrect, playWrong, playComplete }
+  const playChomp = useCallback(() => {
+    const ctx = getCtx()
+    const t = ctx.currentTime
+    // Body sweep: sawtooth crunch down
+    const osc = ctx.createOscillator()
+    osc.type = 'sawtooth'
+    osc.frequency.setValueAtTime(520, t)
+    osc.frequency.exponentialRampToValueAtTime(130, t + 0.11)
+    const gain = ctx.createGain()
+    gain.gain.setValueAtTime(0.55, t)
+    gain.gain.exponentialRampToValueAtTime(0.01, t + 0.13)
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.start(t)
+    osc.stop(t + 0.13)
+    // Click bite accent
+    const osc2 = ctx.createOscillator()
+    osc2.type = 'square'
+    osc2.frequency.setValueAtTime(900, t)
+    osc2.frequency.exponentialRampToValueAtTime(220, t + 0.05)
+    const gain2 = ctx.createGain()
+    gain2.gain.setValueAtTime(0.35, t)
+    gain2.gain.exponentialRampToValueAtTime(0.01, t + 0.05)
+    osc2.connect(gain2)
+    gain2.connect(ctx.destination)
+    osc2.start(t)
+    osc2.stop(t + 0.05)
+  }, [getCtx])
+
+  const playOops = useCallback(() => {
+    const ctx = getCtx()
+    const t = ctx.currentTime
+    // Boing: pitch swoops up then falls
+    const osc = ctx.createOscillator()
+    osc.type = 'sine'
+    osc.frequency.setValueAtTime(190, t)
+    osc.frequency.exponentialRampToValueAtTime(520, t + 0.09)
+    osc.frequency.exponentialRampToValueAtTime(140, t + 0.38)
+    const gain = ctx.createGain()
+    gain.gain.setValueAtTime(0.3, t)
+    gain.gain.exponentialRampToValueAtTime(0.01, t + 0.42)
+    osc.connect(gain)
+    gain.connect(ctx.destination)
+    osc.start(t)
+    osc.stop(t + 0.42)
+  }, [getCtx])
+
+  return { playCorrect, playWrong, playComplete, playChomp, playOops }
 }

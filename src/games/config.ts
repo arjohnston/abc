@@ -1,13 +1,15 @@
 import type { GameConfig, Section } from '../types/game'
+import { ANIMAL_ITEMS } from './animalSounds'
+import { generateBuildNumberItems } from './buildNumber'
 import { generateCountingItems } from './counting'
-import { generateCountingBackwardsItems } from './countingBackwards'
-import { generateCountingHigherItems } from './countingHigher'
-import { generateNumberWordItems } from './numberWords'
+import { generateWhatNextItems } from './whatNext'
+import { generateWhichMoreItems } from './whichMore'
 
 export const SECTIONS: Section[] = [
-  { id: 'basics', title: 'Basics', emoji: '🌱', starsToUnlock: 0 },
+  { id: 'basics',     title: 'Basics',     emoji: '🌱', starsToUnlock: 0 },
+  { id: 'growing',    title: 'Growing',    emoji: '🌿', starsToUnlock: 5 },
   { id: 'next-steps', title: 'Next Steps', emoji: '🚀', starsToUnlock: 5 },
-  { id: 'challenge', title: 'Challenge', emoji: '🏆', starsToUnlock: 7 },
+  { id: 'challenge',  title: 'Challenge',  emoji: '🏆', starsToUnlock: 7 },
 ]
 
 export const GAMES: GameConfig[] = [
@@ -46,38 +48,76 @@ export const GAMES: GameConfig[] = [
     generateItems: generateCountingItems,
   },
 
-  // --- Next Steps ---
+  // --- Growing ---
   {
     id: 'lowercase',
-    sectionId: 'next-steps',
+    sectionId: 'growing',
     title: 'Lowercase',
     emoji: '🔡',
     description: 'Lowercase letters!',
     color: 'var(--purple)',
     colorDark: 'var(--purple-dark)',
     items: 'abcdefghijklmnopqrstuvwxyz'.split(''),
+    autoSpeak: true,
   },
   {
-    id: 'counting-higher',
-    sectionId: 'next-steps',
-    title: 'Count Higher',
-    emoji: '🔢',
-    description: 'Count to 20!',
-    color: 'var(--orange)',
-    colorDark: 'var(--orange-dark)',
-    type: 'counting',
-    generateItems: generateCountingHigherItems,
+    id: 'build-number',
+    sectionId: 'growing',
+    title: 'Build a Number',
+    emoji: '🔨',
+    description: 'Type the big numbers!',
+    color: 'var(--blue)',
+    colorDark: 'var(--blue-dark)',
+    type: 'buildNumber',
+    generateItems: generateBuildNumberItems,
   },
   {
-    id: 'number-words',
+    id: 'animal-sounds',
+    sectionId: 'growing',
+    title: 'Animal Sounds',
+    emoji: '🐾',
+    description: 'What letter does it start with?',
+    color: 'var(--green)',
+    colorDark: 'var(--green-dark)',
+    type: 'animalSounds',
+    items: ANIMAL_ITEMS,
+  },
+
+  // --- Next Steps ---
+  {
+    id: 'letter-pairs',
     sectionId: 'next-steps',
-    title: 'Number Words',
-    emoji: '📝',
-    description: 'Read the word!',
+    title: 'Letter Pairs',
+    emoji: '🔠',
+    description: 'Big letter, small key!',
+    color: 'var(--purple)',
+    colorDark: 'var(--purple-dark)',
+    items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+    expectLower: true,
+    autoSpeak: true,
+  },
+  {
+    id: 'hear-press',
+    sectionId: 'next-steps',
+    title: 'Hear & Press',
+    emoji: '👂',
+    description: 'Listen and press the number!',
     color: 'var(--yellow)',
     colorDark: 'var(--yellow-dark)',
-    type: 'numberWords',
-    generateItems: generateNumberWordItems,
+    items: '123456789'.split(''),
+    audioOnly: true,
+    autoSpeak: true,
+  },
+  {
+    id: 'which-more',
+    sectionId: 'next-steps',
+    title: 'Which is More?',
+    emoji: '⚖️',
+    description: 'Press the bigger number!',
+    color: 'var(--orange)',
+    colorDark: 'var(--orange-dark)',
+    type: 'whichMore',
+    generateItems: generateWhichMoreItems,
   },
 
   // --- Challenge ---
@@ -92,15 +132,15 @@ export const GAMES: GameConfig[] = [
     items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890'.split(''),
   },
   {
-    id: 'counting-backwards',
+    id: 'what-next',
     sectionId: 'challenge',
-    title: 'Backwards',
-    emoji: '🔄',
-    description: 'Count down!',
+    title: 'What Comes Next?',
+    emoji: '🔮',
+    description: 'Finish the pattern!',
     color: 'var(--purple)',
     colorDark: 'var(--purple-dark)',
-    type: 'counting',
-    generateItems: generateCountingBackwardsItems,
+    type: 'whatNext',
+    generateItems: generateWhatNextItems,
   },
   {
     id: 'speed-round',
