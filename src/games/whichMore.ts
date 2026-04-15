@@ -1,5 +1,7 @@
 import type { WhichMoreItem } from '../types/game'
 
+const EMOJIS = ['🍎', '⭐', '🌸', '🐠', '🍪', '🎈', '🦋', '🍓', '🐣', '🐥']
+
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {
@@ -9,18 +11,22 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-// All pairs of digits 1–9 where they differ by at least 2 (easier to judge)
-const BASE_ITEMS: WhichMoreItem[] = []
-for (let a = 1; a <= 9; a++) {
-  for (let b = a + 2; b <= 9; b++) {
-    // Both orderings so the bigger one isn't always on the same side
-    BASE_ITEMS.push({ left: String(a), right: String(b), answer: String(b) })
-    BASE_ITEMS.push({ left: String(b), right: String(a), answer: String(b) })
+// All pairs of digits 1–6 where they differ by at least 1
+const BASE_PAIRS: Array<[number, number]> = []
+for (let a = 1; a <= 6; a++) {
+  for (let b = a + 1; b <= 6; b++) {
+    BASE_PAIRS.push([a, b])
+    BASE_PAIRS.push([b, a])
   }
 }
 
 export function generateWhichMoreItems(isRandom: boolean): WhichMoreItem[] {
-  const items = isRandom ? shuffle(BASE_ITEMS) : [...BASE_ITEMS]
-  // Trim to a reasonable game length
-  return items.slice(0, 20)
+  const pairs = isRandom ? shuffle(BASE_PAIRS) : [...BASE_PAIRS]
+  const trimmed = pairs.slice(0, 10)
+  return trimmed.map(([left, right], i) => ({
+    left: String(left),
+    right: String(right),
+    answer: String(Math.max(left, right)),
+    emoji: EMOJIS[i % EMOJIS.length]!,
+  }))
 }

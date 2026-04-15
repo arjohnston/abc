@@ -8,27 +8,25 @@ import { useSoundEffects } from '../hooks/useSoundEffects'
 
 // Logical canvas dimensions
 const GAME_W = 800
-const GAME_H = 220
-const GROUND_Y = 172      // y-position of the ground surface
+const GAME_H = 480
+const GROUND_Y = 380      // y-position of the ground surface
 
 // Character
 const CHAR_X = 80
 const CHAR_W = 52
-const CHAR_H = 62
+const CHAR_H = 72
 
 // Physics
-const JUMP_VEL = 13.5
-const GRAVITY = 0.65
+const JUMP_VEL = 10
+const GRAVITY = 0.3
 
 // Obstacles
 const OBS_W = 36
-const OBS_MIN_H = 55
-const OBS_MAX_H = 105
+const OBS_MIN_H = 60
+const OBS_MAX_H = 115
 
 // Speed
-const START_SPEED = 4
-const MAX_SPEED = 13
-const SPEED_ACCEL = 0.004  // per frame
+const SPEED = 3
 
 // Spawning
 const OBS_MIN_GAP = 360    // px between obstacles
@@ -43,15 +41,23 @@ interface Obstacle {
   height: number
 }
 
+interface Coin {
+  x: number
+  y: number  // canvas y (fixed height above ground)
+}
+
 interface GameState {
   charY: number        // height above ground (0 = standing, positive = airborne)
   velY: number         // upward velocity
   isGrounded: boolean
   obstacles: Obstacle[]
+  coins: Coin[]
+  nextCoin: number     // frames until next coin spawns
   speed: number
   nextObstacle: number // distance until next obstacle spawns
   invincible: number   // countdown frames
   hearts: number
+  coins_collected: number
   frameCount: number
   running: boolean
 }
@@ -65,14 +71,15 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
   const rafRef = useRef<number>(0)
   const stateRef = useRef<GameState>({
     charY: 0, velY: 0, isGrounded: true,
-    obstacles: [], speed: START_SPEED, nextObstacle: 450,
-    invincible: 0, hearts: MAX_HEARTS, frameCount: 0, running: false,
+    obstacles: [], coins: [], nextCoin: 120,
+    speed: SPEED, nextObstacle: 450,
+    invincible: 0, hearts: MAX_HEARTS, coins_collected: 0, frameCount: 0, running: false,
   })
 
-  const [hearts, setHearts] = useState(MAX_HEARTS)
+  const [, setHearts] = useState(MAX_HEARTS)
   const [gameOver, setGameOver] = useState(false)
   const [started, setStarted] = useState(false)
-  const [score, setScore] = useState(0)
+  const [coinsCollected, setCoinsCollected] = useState(0)
 
   const { playWrong } = useSoundEffects()
 
@@ -89,22 +96,27 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
     ctx.fillStyle = '#111'
     ctx.fillRect(0, 0, GAME_W, GAME_H)
 
-    // Scrolling ground dashes
+    // Ground
     ctx.fillStyle = '#2a2a2a'
+    ctx.fillRect(0, GROUND_Y + 3, GAME_W, GAME_H - GROUND_Y)
+    ctx.fillStyle = '#444'
     ctx.fillRect(0, GROUND_Y + 3, GAME_W, 3)
     ctx.fillStyle = '#333'
     const dashOffset = (s.frameCount * s.speed * 0.4) % 80
     for (let x = -dashOffset; x < GAME_W; x += 80) {
-      ctx.fillRect(x, GROUND_Y + 8, 40, 2)
+      ctx.fillRect(x, GROUND_Y + 10, 40, 2)
     }
 
-    // Character (blink when invincible)
+    // Character (blink when invincible, flip to face right)
     const showChar = s.invincible === 0 || Math.floor(s.invincible / 7) % 2 === 0
     if (showChar) {
-      const feetY = GROUND_Y - s.charY   // canvas y of character feet
+      const feetY = GROUND_Y - s.charY
+      ctx.save()
+      ctx.scale(-1, 1)
       ctx.font = `${CHAR_H}px serif`
       ctx.textBaseline = 'bottom'
-      ctx.fillText('🦕', CHAR_X, feetY)
+      ctx.fillText('🦕', -(CHAR_X + CHAR_W), feetY)
+      ctx.restore()
     }
 
     // Obstacles (cactus style)
@@ -136,6 +148,13 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
       ctx.fillRect(obs.x + OBS_W - 2, armY + 10, 20, 9)
     }
 
+    // Coins (⭐)
+    ctx.font = '28px serif'
+    ctx.textBaseline = 'middle'
+    for (const coin of s.coins) {
+      ctx.fillText('⭐', coin.x, coin.y)
+    }
+
     // Hearts (top-left)
     ctx.font = '26px serif'
     ctx.textBaseline = 'top'
@@ -145,12 +164,11 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
     }
     ctx.globalAlpha = 1
 
-    // Score (top-right)
-    ctx.fillStyle = '#888'
-    ctx.font = 'bold 20px monospace'
-    ctx.textAlign = 'right'
+    // Stars collected (top-right)
+    ctx.font = '24px serif'
     ctx.textBaseline = 'top'
-    ctx.fillText(`${Math.floor(s.frameCount / 6)}m`, GAME_W - 14, 12)
+    ctx.textAlign = 'right'
+    ctx.fillText(`⭐ ${s.coins_collected}`, GAME_W - 14, 12)
     ctx.textAlign = 'left'
   }, [])
 
@@ -167,7 +185,7 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
     if (!s.running) return
 
     s.frameCount++
-    s.speed = Math.min(MAX_SPEED, START_SPEED + s.frameCount * SPEED_ACCEL)
+    s.speed = SPEED
 
     // Physics
     s.velY -= GRAVITY
@@ -188,6 +206,29 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
 
     for (const obs of s.obstacles) obs.x -= s.speed
     s.obstacles = s.obstacles.filter((o) => o.x > -OBS_W - 60)
+
+    // Spawn coins at varying heights
+    s.nextCoin -= s.speed
+    if (s.nextCoin <= 0) {
+      const heightAboveGround = 60 + Math.random() * 100
+      s.coins.push({ x: GAME_W + 20, y: GROUND_Y - heightAboveGround })
+      s.nextCoin = 200 + Math.random() * 300
+    }
+    for (const coin of s.coins) coin.x -= s.speed
+    // Collect coins
+    const charFeetY = GROUND_Y - s.charY
+    const charTopY = charFeetY - CHAR_H
+    const charMidX = CHAR_X + CHAR_W / 2
+    s.coins = s.coins.filter((coin) => {
+      const dx = Math.abs(coin.x + 14 - charMidX)
+      const dy = Math.abs(coin.y - (charTopY + CHAR_H / 2))
+      if (dx < 36 && dy < 36) {
+        s.coins_collected++
+        setCoinsCollected(s.coins_collected)
+        return false
+      }
+      return coin.x > -40
+    })
 
     // Collision
     if (s.invincible > 0) {
@@ -219,7 +260,6 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
       }
     }
 
-    if (s.frameCount % 10 === 0) setScore(Math.floor(s.frameCount / 6))
 
     draw()
     if (s.running) {
@@ -231,12 +271,13 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
     const s = stateRef.current
     Object.assign(s, {
       charY: 0, velY: 0, isGrounded: true,
-      obstacles: [], speed: START_SPEED, nextObstacle: 450,
-      invincible: 0, hearts: MAX_HEARTS, frameCount: 0, running: true,
+      obstacles: [], coins: [], nextCoin: 120,
+      speed: SPEED, nextObstacle: 450,
+      invincible: 0, hearts: MAX_HEARTS, coins_collected: 0, frameCount: 0, running: true,
     })
     setHearts(MAX_HEARTS)
     setGameOver(false)
-    setScore(0)
+    setCoinsCollected(0)
     setStarted(true)
 
     cancelAnimationFrame(rafRef.current)
@@ -283,36 +324,30 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
         <span className="dino-title">🦕 Dino Run</span>
       </div>
 
-      <div className="dino-canvas-wrap" onPointerDown={handlePointer}>
-        <canvas ref={canvasRef} width={GAME_W} height={GAME_H} className="dino-canvas" />
+      <div className="dino-canvas-area">
+        <div className="dino-canvas-wrap" onPointerDown={handlePointer}>
+          <canvas ref={canvasRef} width={GAME_W} height={GAME_H} className="dino-canvas" />
 
-        {!started && (
-          <div className="dino-overlay">
-            <div className="dino-overlay-text">Tap or press Space to start!</div>
-          </div>
-        )}
+          {!started && (
+            <div className="dino-overlay">
+              <div className="dino-overlay-text">Tap or press Space to start!</div>
+            </div>
+          )}
 
-        {gameOver && (
-          <div className="dino-overlay">
-            <div className="dino-gameover-emoji">💀</div>
-            <div className="dino-gameover-title">Game Over!</div>
-            <div className="dino-gameover-score">{score}m</div>
-            <Button variant="primary" onClick={startGame}>
-              Play Again
-            </Button>
-          </div>
-        )}
+          {gameOver && (
+            <div className="dino-overlay">
+              <div className="dino-gameover-emoji">💀</div>
+              <div className="dino-gameover-title">Game Over!</div>
+              <div className="dino-gameover-score">⭐ {coinsCollected}</div>
+              <Button variant="primary" onClick={startGame}>
+                Play Again
+              </Button>
+            </div>
+          )}
+        </div>
+
+        <p className="dino-hint">Tap screen or press Space to jump!</p>
       </div>
-
-      <div className="dino-hearts">
-        {Array.from({ length: MAX_HEARTS }, (_, i) => (
-          <span key={i} className={`dino-heart ${i < hearts ? '' : 'dino-heart--lost'}`}>
-            ❤️
-          </span>
-        ))}
-      </div>
-
-      <p className="dino-hint">Tap screen or press Space to jump!</p>
     </div>
   )
 }

@@ -37,6 +37,7 @@ export interface WhichMoreItem {
   left: string    // digit char
   right: string   // digit char
   answer: string  // the larger digit char
+  emoji: string   // object to display (e.g. '🍎')
 }
 
 export interface WhatNextItem {

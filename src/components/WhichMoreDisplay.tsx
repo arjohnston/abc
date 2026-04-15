@@ -2,6 +2,31 @@ import './WhichMoreDisplay.css'
 
 import type { FeedbackState, WhichMoreItem } from '../types/game'
 
+function CountBox({
+  count,
+  emoji,
+  feedbackClass,
+}: {
+  count: number
+  emoji: string
+  feedbackClass: string
+}) {
+  return (
+    <div className="wm-box-wrap">
+      <div className={`wm-box ${feedbackClass}`}>
+        <div className="wm-objects">
+          {Array.from({ length: count }, (_, i) => (
+            <span key={i} className="wm-object">
+              {emoji}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="wm-number">{count}</div>
+    </div>
+  )
+}
+
 interface WhichMoreDisplayProps {
   item: WhichMoreItem
   feedback: FeedbackState
@@ -12,16 +37,16 @@ interface WhichMoreDisplayProps {
 export function WhichMoreDisplay({ item, feedback, pressedKey, animKey }: WhichMoreDisplayProps) {
   const getClass = (side: string) => {
     if (!feedback) return ''
-    if (side === item.answer) return feedback === 'correct' ? 'choice--correct' : ''
-    if (side === pressedKey && feedback === 'wrong') return 'choice--wrong'
+    if (side === item.answer) return feedback === 'correct' ? 'wm-box--correct' : ''
+    if (side === pressedKey && feedback === 'wrong') return 'wm-box--wrong'
     return ''
   }
 
   return (
     <div key={animKey} className="which-more">
-      <div className={`which-more__choice ${getClass(item.left)}`}>{item.left}</div>
+      <CountBox count={parseInt(item.left)} emoji={item.emoji} feedbackClass={getClass(item.left)} />
       <div className="which-more__vs">or</div>
-      <div className={`which-more__choice ${getClass(item.right)}`}>{item.right}</div>
+      <CountBox count={parseInt(item.right)} emoji={item.emoji} feedbackClass={getClass(item.right)} />
     </div>
   )
 }
