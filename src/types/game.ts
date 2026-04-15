@@ -57,6 +57,14 @@ export interface ColorItem {
   color: string  // CSS value, e.g. 'var(--red)'
 }
 
+export interface ClockItem {
+  emoji: string        // clock emoji e.g. '🕐'
+  display: string      // e.g. '1:00'
+  digits: string[]     // e.g. ['1', '0', '0']
+  speech: string       // e.g. "one o'clock"
+  hourDigitCount: number  // 1 for hours 1-9, 2 for 10-12
+}
+
 export type GameItem =
   | string
   | CountingItem
@@ -67,6 +75,7 @@ export type GameItem =
   | WhatNextItem
   | BuildWordItem
   | ColorItem
+  | ClockItem
 
 // --- Game Configs ---
 
@@ -134,6 +143,11 @@ export interface ColorMatchGameConfig extends BaseGameConfig {
   items: ColorItem[]
 }
 
+export interface ClockGameConfig extends BaseGameConfig {
+  type: 'clock'
+  generateItems: (isRandom: boolean) => ClockItem[]
+}
+
 export type GameConfig =
   | StandardGameConfig
   | CountingGameConfig
@@ -145,6 +159,7 @@ export type GameConfig =
   | WhatNextGameConfig
   | BuildWordGameConfig
   | ColorMatchGameConfig
+  | ClockGameConfig
 
 export type FeedbackState = 'correct' | 'wrong' | null
 

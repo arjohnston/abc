@@ -94,5 +94,10 @@ export function useProgress() {
     [progress],
   )
 
-  return { getStars, getTotalStars, isSectionUnlocked, recordResult }
+  const resetProgress = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY)
+    setProgress({ games: {} })
+  }, [])
+
+  return { getStars, getTotalStars, isSectionUnlocked, recordResult, resetProgress }
 }

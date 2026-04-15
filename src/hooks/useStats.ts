@@ -46,5 +46,10 @@ export function useStats() {
     })
   }, [])
 
-  return { stats, recordPlay, recordCompletion }
+  const resetStats = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY)
+    setStats({ totalPlays: 0, totalCompletions: 0 })
+  }, [])
+
+  return { stats, recordPlay, recordCompletion, resetStats }
 }

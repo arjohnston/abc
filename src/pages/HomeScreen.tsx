@@ -1,11 +1,11 @@
 import './HomeScreen.css'
 
-import { Fragment, useEffect, useRef } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 
+import { SettingsModal } from '../components/SettingsModal'
 import { MiniGameNode } from '../components/ui/MiniGameNode'
 import { PathNode } from '../components/ui/PathNode'
 import { SectionBanner } from '../components/ui/SectionBanner'
-import { Toggle } from '../components/ui/Toggle'
 import { getGamesForSection, SECTIONS } from '../games/config'
 import type { Stats } from '../hooks/useStats'
 import type { GameConfig, Section } from '../types/game'
@@ -54,6 +54,7 @@ interface HomeScreenProps {
   onToggleRandom: () => void
   onSelectGame: (game: GameConfig) => void
   onPlayMiniGame: (sectionIndex: number) => void
+  onReset: () => void
   stats: Stats
   getStars: (gameId: string) => number
   getTotalStars: () => number
@@ -65,12 +66,14 @@ export function HomeScreen({
   onToggleRandom,
   onSelectGame,
   onPlayMiniGame,
+  onReset,
   stats,
   getStars,
   getTotalStars,
   isSectionUnlocked,
 }: HomeScreenProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
     const el = scrollRef.current?.querySelector('.section--active')
@@ -83,6 +86,15 @@ export function HomeScreen({
 
   return (
     <div className="home" ref={scrollRef}>
+      {showSettings && (
+        <SettingsModal
+          isRandom={isRandom}
+          onToggleRandom={onToggleRandom}
+          onReset={onReset}
+          onClose={() => setShowSettings(false)}
+        />
+      )}
+
       <header className="home-header">
         <h1 className="home-title">
           <span className="title-letter" style={{ color: 'var(--green)' }}>
@@ -106,6 +118,7 @@ export function HomeScreen({
           </span>
         </h1>
         <p className="home-subtitle">Pick a game and start learning!</p>
+        <button className="home-settings-btn" onClick={() => setShowSettings(true)}>⚙️</button>
       </header>
 
       {(stats.totalPlays > 0 || totalStars > 0) && (
@@ -114,10 +127,6 @@ export function HomeScreen({
           <span className="stat">⭐ {totalStars} stars</span>
         </div>
       )}
-
-      <div className="toggle-section">
-        <Toggle active={isRandom} label="🎲 Random" onToggle={onToggleRandom} />
-      </div>
 
       <div className="path">
         {SECTIONS.map((section, sectionIndex) => {

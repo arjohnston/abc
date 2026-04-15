@@ -2,6 +2,7 @@ import type { GameConfig, Section } from '../types/game'
 import { ANIMAL_ITEMS } from './animalSounds'
 import { generateBuildNumberItems } from './buildNumber'
 import { generateBuildWordItems } from './buildWord'
+import { generateClockItems } from './clock'
 import { COLOR_ITEMS } from './colorMatch'
 import { generateCountingItems } from './counting'
 import { generateWhatNextItems } from './whatNext'
@@ -120,6 +121,17 @@ export const GAMES: GameConfig[] = [
     colorDark: 'var(--orange-dark)',
     type: 'whichMore',
     generateItems: generateWhichMoreItems,
+  },
+  {
+    id: 'clock',
+    sectionId: 'next-steps',
+    title: 'Tell the Time',
+    emoji: '🕐',
+    description: 'Type the time you hear!',
+    color: 'var(--blue)',
+    colorDark: 'var(--blue-dark)',
+    type: 'clock',
+    generateItems: generateClockItems,
   },
   // --- Challenge ---
   {

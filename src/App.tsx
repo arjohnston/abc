@@ -12,8 +12,13 @@ function App() {
   const [currentGame, setCurrentGame] = useState<GameConfig | null>(null)
   const [miniGameIndex, setMiniGameIndex] = useState<number | null>(null)
   const [isRandom, setIsRandom] = useState(true)
-  const { stats, recordPlay } = useStats()
-  const { getStars, getTotalStars, isSectionUnlocked, recordResult } = useProgress()
+  const { stats, recordPlay, resetStats } = useStats()
+  const { getStars, getTotalStars, isSectionUnlocked, recordResult, resetProgress } = useProgress()
+
+  const handleReset = useCallback(() => {
+    resetProgress()
+    resetStats()
+  }, [resetProgress, resetStats])
 
   const handleSelectGame = useCallback(
     (game: GameConfig) => {
@@ -59,6 +64,7 @@ function App() {
       onToggleRandom={() => setIsRandom(!isRandom)}
       onSelectGame={handleSelectGame}
       onPlayMiniGame={(idx) => setMiniGameIndex(idx)}
+      onReset={handleReset}
       stats={stats}
       getStars={getStars}
       getTotalStars={getTotalStars}

@@ -3,6 +3,7 @@ import './GameScreen.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { AnimalDisplay } from '../components/AnimalDisplay'
+import { ClockBlanksDisplay } from '../components/ClockBlanksDisplay'
 import { ColorDisplay } from '../components/ColorDisplay'
 import { CountingDisplay } from '../components/CountingDisplay'
 import { GameComplete } from '../components/GameComplete'
@@ -24,6 +25,7 @@ import type {
   AnimalItem,
   BuildNumberItem,
   BuildWordItem,
+  ClockItem,
   ColorItem,
   CountingItem,
   FeedbackState,
@@ -61,6 +63,7 @@ function buildSequence(game: GameConfig, isRandom: boolean): GameItem[] {
   if (game.type === 'animalSounds') return isRandom ? shuffle(game.items) : [...game.items]
   if (game.type === 'buildWord') return isRandom ? shuffle(game.items) : [...game.items]
   if (game.type === 'colorMatch') return isRandom ? shuffle(game.items) : [...game.items]
+  if (game.type === 'clock') return game.generateItems(isRandom)
   if (game.type === 'timed') return isRandom ? shuffle(game.items) : [...game.items]
   return isRandom ? shuffle(game.items) : [...game.items]
 }
@@ -96,6 +99,7 @@ function getHintSpeech(
   }
   if (gameType === 'colorMatch') return `${(item as ColorItem).name}! Press the first letter`
   if (gameType === 'buildWord') return (item as BuildWordItem).word
+  if (gameType === 'clock') return (item as ClockItem).speech
   if (audioOnly || gameId === 'hear-press') {
     const s = item as string
     return NUMBER_WORDS[s] ?? s.toLowerCase()
@@ -146,6 +150,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   const isTimed = gameType === 'timed'
   const isBuildNumber = gameType === 'buildNumber'
   const isBuildWord = gameType === 'buildWord'
+  const isClock = gameType === 'clock'
   const isAnimalSounds = gameType === 'animalSounds'
   const isWhichMore = gameType === 'whichMore'
   const isWhatNext = gameType === 'whatNext'
@@ -156,7 +161,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const isMultiDigit = isCounting && currentItem && (currentItem as CountingItem).answer.length > 1
 
-  const alwaysSpeak = isAnimalSounds || isBuildNumber || isBuildWord || isWhatNext || audioOnly || isColorMatch
+  const alwaysSpeak = isAnimalSounds || isBuildNumber || isBuildWord || isWhatNext || audioOnly || isColorMatch || isClock
 
   const handleHint = useCallback(() => {
     if (!currentItem || isComplete || feedback) return
@@ -236,6 +241,22 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
         return
       }
 
+      // Clock: slot-by-slot digit input
+      if (isClock) {
+        if (pressed >= '0' && pressed <= '9') {
+          const item = currentItem as ClockItem
+          const expectedDigit = item.digits[buildBuffer.length]
+          if (pressed === expectedDigit) {
+            const newBuffer = buildBuffer + pressed
+            setBuildBuffer(newBuffer)
+            if (newBuffer.length === item.digits.length) handleCorrect()
+          } else {
+            handleWrong()
+          }
+        }
+        return
+      }
+
       // Build-a-word: slot-by-slot letter input
       if (isBuildWord) {
         const item = currentItem as BuildWordItem
@@ -275,7 +296,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     },
     [
       currentItem, isComplete, feedback, gameType,
-      isBuildNumber, isBuildWord, buildBuffer, isMultiDigit, digitBuffer,
+      isBuildNumber, isBuildWord, isClock, buildBuffer, isMultiDigit, digitBuffer,
       handleCorrect, handleWrong,
     ],
   )
@@ -331,6 +352,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     if (isNumberWords || isWhichMore) return `${currentIndex + 1} of ${sequence.length}`
     if (isBuildNumber) return `Number ${currentIndex + 1} of ${sequence.length}`
     if (isBuildWord) return `Word ${currentIndex + 1} of ${sequence.length}`
+    if (isClock) return `Clock ${currentIndex + 1} of ${sequence.length}`
     if (isAnimalSounds) return `Animal ${currentIndex + 1} of ${sequence.length}`
     if (isColorMatch) return `Color ${currentIndex + 1} of ${sequence.length}`
     if (isWhatNext) return `${currentIndex + 1} of ${sequence.length}`
@@ -343,6 +365,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     if (isNumberWords) return 'Press the number!'
     if (isBuildNumber) return 'Type each digit!'
     if (isBuildWord) return 'Spell the word!'
+    if (isClock) return 'Type the time!'
     if (isAnimalSounds) return 'Press the first letter!'
     if (isColorMatch) return 'Press the first letter!'
     if (isWhichMore) return 'Press the bigger number!'
@@ -373,6 +396,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
       return <NumberBlanksDisplay display={bw.emoji} label={bw.word.toUpperCase()} slots={bw.letters} filled={buildBuffer} feedback={feedback} shakeKey={shakeKey} />
     }
     if (isColorMatch) return <ColorDisplay item={currentItem as ColorItem} feedback={feedback} animKey={animKey} />
+    if (isClock) return <ClockBlanksDisplay item={currentItem as ClockItem} filled={buildBuffer} feedback={feedback} shakeKey={shakeKey} />
     if (isWhichMore) return <WhichMoreDisplay item={currentItem as WhichMoreItem} feedback={feedback} pressedKey={lastPressed} animKey={animKey} />
     if (isWhatNext) return <WhatNextDisplay item={currentItem as WhatNextItem} feedback={feedback} animKey={animKey} />
     if (audioOnly) return <HearPressDisplay feedback={feedback} animKey={animKey} />
