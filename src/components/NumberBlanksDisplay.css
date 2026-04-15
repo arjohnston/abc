@@ -17,7 +17,7 @@
   font-size: clamp(100px, 26vw, 180px);
   font-weight: 900;
   color: var(--game-color);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.18em;
   line-height: 1;
   user-select: none;
 }
