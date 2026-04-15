@@ -17,7 +17,7 @@ const CHAR_W = 52
 const CHAR_H = 72
 
 // Physics
-const JUMP_VEL = 10
+const JUMP_VEL = 13
 const GRAVITY = 0.3
 
 // Obstacles
