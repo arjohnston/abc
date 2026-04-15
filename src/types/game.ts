@@ -44,6 +44,18 @@ export interface WhatNextItem {
   answer: string   // e.g. 'C' or '3'
 }
 
+export interface BuildWordItem {
+  emoji: string    // e.g. '🐱'
+  letters: string[] // e.g. ['C', 'A', 'T']
+  word: string     // e.g. 'cat' — for TTS
+}
+
+export interface ColorItem {
+  name: string   // e.g. 'red'
+  key: string    // uppercase first letter, e.g. 'R'
+  color: string  // CSS value, e.g. 'var(--red)'
+}
+
 export type GameItem =
   | string
   | CountingItem
@@ -52,6 +64,8 @@ export type GameItem =
   | BuildNumberItem
   | WhichMoreItem
   | WhatNextItem
+  | BuildWordItem
+  | ColorItem
 
 // --- Game Configs ---
 
@@ -109,6 +123,16 @@ export interface WhatNextGameConfig extends BaseGameConfig {
   generateItems: (isRandom: boolean) => WhatNextItem[]
 }
 
+export interface BuildWordGameConfig extends BaseGameConfig {
+  type: 'buildWord'
+  items: BuildWordItem[]
+}
+
+export interface ColorMatchGameConfig extends BaseGameConfig {
+  type: 'colorMatch'
+  items: ColorItem[]
+}
+
 export type GameConfig =
   | StandardGameConfig
   | CountingGameConfig
@@ -118,6 +142,8 @@ export type GameConfig =
   | BuildNumberGameConfig
   | WhichMoreGameConfig
   | WhatNextGameConfig
+  | BuildWordGameConfig
+  | ColorMatchGameConfig
 
 export type FeedbackState = 'correct' | 'wrong' | null
 

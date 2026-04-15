@@ -1,25 +1,26 @@
 import './NumberBlanksDisplay.css'
 
-import type { BuildNumberItem, FeedbackState } from '../types/game'
+import type { FeedbackState } from '../types/game'
 
 interface NumberBlanksDisplayProps {
-  item: BuildNumberItem
-  filled: string        // digits typed so far, e.g. "1" or "12"
+  display: string    // big label at top (number string or emoji)
+  slots: string[]    // expected chars (digits or letters)
+  filled: string     // chars typed so far
   feedback: FeedbackState
   shakeKey: number
 }
 
-export function NumberBlanksDisplay({ item, filled, feedback, shakeKey }: NumberBlanksDisplayProps) {
+export function NumberBlanksDisplay({ display, slots, filled, feedback, shakeKey }: NumberBlanksDisplayProps) {
   const activeSlot = filled.length
 
   return (
     <div className="number-blanks">
-      <div className="number-blanks__display">{item.display}</div>
+      <div className="number-blanks__display">{display}</div>
       <div className="number-blanks__slots">
-        {item.digits.map((_, i) => {
+        {slots.map((_, i) => {
           const isActive = i === activeSlot
           const isFilled = i < filled.length
-          const digit = filled[i] ?? ''
+          const char = filled[i] ?? ''
           const isWrong = feedback === 'wrong' && isActive
 
           return (
@@ -34,7 +35,7 @@ export function NumberBlanksDisplay({ item, filled, feedback, shakeKey }: Number
                 .filter(Boolean)
                 .join(' ')}
             >
-              {digit}
+              {char}
             </div>
           )
         })}

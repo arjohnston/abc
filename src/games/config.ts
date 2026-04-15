@@ -1,6 +1,8 @@
 import type { GameConfig, Section } from '../types/game'
 import { ANIMAL_ITEMS } from './animalSounds'
 import { generateBuildNumberItems } from './buildNumber'
+import { generateBuildWordItems } from './buildWord'
+import { COLOR_ITEMS } from './colorMatch'
 import { generateCountingItems } from './counting'
 import { generateWhatNextItems } from './whatNext'
 import { generateWhichMoreItems } from './whichMore'
@@ -72,15 +74,26 @@ export const GAMES: GameConfig[] = [
     generateItems: generateBuildNumberItems,
   },
   {
-    id: 'animal-sounds',
+    id: 'build-word',
     sectionId: 'growing',
-    title: 'Animal Sounds',
-    emoji: '🐾',
-    description: 'What letter does it start with?',
-    color: 'var(--green)',
-    colorDark: 'var(--green-dark)',
-    type: 'animalSounds',
-    items: ANIMAL_ITEMS,
+    title: 'Build a Word',
+    emoji: '✏️',
+    description: 'Spell the animal!',
+    color: 'var(--orange)',
+    colorDark: 'var(--orange-dark)',
+    type: 'buildWord',
+    items: generateBuildWordItems(false),
+  },
+  {
+    id: 'color-match',
+    sectionId: 'growing',
+    title: 'Color Match',
+    emoji: '🎨',
+    description: 'Press the first letter!',
+    color: 'var(--red)',
+    colorDark: 'var(--red-dark)',
+    type: 'colorMatch',
+    items: COLOR_ITEMS,
   },
 
   // --- Next Steps ---
@@ -118,6 +131,17 @@ export const GAMES: GameConfig[] = [
     colorDark: 'var(--orange-dark)',
     type: 'whichMore',
     generateItems: generateWhichMoreItems,
+  },
+  {
+    id: 'animal-sounds',
+    sectionId: 'next-steps',
+    title: 'Animal Sounds',
+    emoji: '🐾',
+    description: 'What letter does it start with?',
+    color: 'var(--green)',
+    colorDark: 'var(--green-dark)',
+    type: 'animalSounds',
+    items: ANIMAL_ITEMS,
   },
 
   // --- Challenge ---
