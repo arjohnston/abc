@@ -84,17 +84,6 @@ export const GAMES: GameConfig[] = [
     type: 'buildWord',
     items: generateBuildWordItems(false),
   },
-  {
-    id: 'color-match',
-    sectionId: 'growing',
-    title: 'Color Match',
-    emoji: '🎨',
-    description: 'Press the first letter!',
-    color: 'var(--red)',
-    colorDark: 'var(--red-dark)',
-    type: 'colorMatch',
-    items: COLOR_ITEMS,
-  },
 
   // --- Next Steps ---
   {
@@ -132,9 +121,10 @@ export const GAMES: GameConfig[] = [
     type: 'whichMore',
     generateItems: generateWhichMoreItems,
   },
+  // --- Challenge ---
   {
     id: 'animal-sounds',
-    sectionId: 'next-steps',
+    sectionId: 'challenge',
     title: 'Animal Sounds',
     emoji: '🐾',
     description: 'What letter does it start with?',
@@ -143,8 +133,17 @@ export const GAMES: GameConfig[] = [
     type: 'animalSounds',
     items: ANIMAL_ITEMS,
   },
-
-  // --- Challenge ---
+  {
+    id: 'color-match',
+    sectionId: 'challenge',
+    title: 'Color Match',
+    emoji: '🎨',
+    description: 'Press the first letter!',
+    color: 'var(--red)',
+    colorDark: 'var(--red-dark)',
+    type: 'colorMatch',
+    items: COLOR_ITEMS,
+  },
   {
     id: 'mixed',
     sectionId: 'challenge',

@@ -53,7 +53,7 @@ interface HomeScreenProps {
   isRandom: boolean
   onToggleRandom: () => void
   onSelectGame: (game: GameConfig) => void
-  onPlayMiniGame: () => void
+  onPlayMiniGame: (sectionIndex: number) => void
   stats: Stats
   getStars: (gameId: string) => number
   getTotalStars: () => number
@@ -193,7 +193,13 @@ export function HomeScreen({
                 ))}
               </div>
             </div>
-            {showMiniGame && <MiniGameNode onClick={onPlayMiniGame} />}
+            {showMiniGame && (
+              <MiniGameNode
+                emoji={sectionIndex === 0 ? '🐛' : '🦕'}
+                title={sectionIndex === 0 ? 'Letter Muncher' : 'Dino Run'}
+                onClick={() => onPlayMiniGame(sectionIndex)}
+              />
+            )}
             </Fragment>
           )
         })}

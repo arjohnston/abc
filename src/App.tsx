@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { useProgress } from './hooks/useProgress'
 import { useStats } from './hooks/useStats'
+import { DinoGameScreen } from './pages/DinoGameScreen'
 import { GameScreen } from './pages/GameScreen'
 import { HomeScreen } from './pages/HomeScreen'
 import { MiniGameScreen } from './pages/MiniGameScreen'
@@ -9,7 +10,7 @@ import type { GameConfig } from './types/game'
 
 function App() {
   const [currentGame, setCurrentGame] = useState<GameConfig | null>(null)
-  const [showMiniGame, setShowMiniGame] = useState(false)
+  const [miniGameIndex, setMiniGameIndex] = useState<number | null>(null)
   const [isRandom, setIsRandom] = useState(true)
   const { stats, recordPlay } = useStats()
   const { getStars, getTotalStars, isSectionUnlocked, recordResult } = useProgress()
@@ -44,8 +45,12 @@ function App() {
     )
   }
 
-  if (showMiniGame) {
-    return <MiniGameScreen onBack={() => setShowMiniGame(false)} />
+  if (miniGameIndex === 0) {
+    return <MiniGameScreen onBack={() => setMiniGameIndex(null)} />
+  }
+
+  if (miniGameIndex === 1) {
+    return <DinoGameScreen onBack={() => setMiniGameIndex(null)} />
   }
 
   return (
@@ -53,7 +58,7 @@ function App() {
       isRandom={isRandom}
       onToggleRandom={() => setIsRandom(!isRandom)}
       onSelectGame={handleSelectGame}
-      onPlayMiniGame={() => setShowMiniGame(true)}
+      onPlayMiniGame={(idx) => setMiniGameIndex(idx)}
       stats={stats}
       getStars={getStars}
       getTotalStars={getTotalStars}

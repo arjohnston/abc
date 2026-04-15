@@ -11,7 +11,7 @@ import { useSpeech } from '../hooks/useSpeech'
 const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 const GRID_SIZE = 5
 const TILE_COUNT = 6 // how many tiles are visible at once
-const WIN_SCORE = 5
+const WIN_SCORE = 7
 const COLORS = ['green', 'blue', 'purple', 'orange', 'red', 'yellow'] as const
 type TileColor = (typeof COLORS)[number]
 
