@@ -2,28 +2,47 @@ import type { ClockItem } from '../types/game'
 
 const HOUR_WORDS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 const CLOCK_EMOJIS = ['🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘']
+const ONES = [
+  '', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+  'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen',
+  'seventeen', 'eighteen', 'nineteen',
+]
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty']
 
-// Whole hours 1–9 for simplicity
-const ITEMS: ClockItem[] = HOUR_WORDS.map((word, i) => {
-  const hour = i + 1
+function minuteSpeech(minute: number): string {
+  if (minute === 0) return "o'clock"
+  if (minute < 10) return `oh ${ONES[minute]}`
+  if (minute < 20) return ONES[minute]!
+  const t = Math.floor(minute / 10)
+  const o = minute % 10
+  return o === 0 ? TENS[t]! : `${TENS[t]} ${ONES[o]}`
+}
+
+function makeItem(): ClockItem {
+  const hour = Math.floor(Math.random() * 9) + 1          // 1–9
+  const minute = Math.floor(Math.random() * 60)            // 0–59
+  const minStr = minute.toString().padStart(2, '0')
   return {
-    emoji: CLOCK_EMOJIS[i]!,
-    display: `${hour}:00`,
-    digits: [String(hour), '0', '0'],
-    speech: `${word} o'clock`,
+    emoji: CLOCK_EMOJIS[hour - 1]!,
+    display: `${hour}:${minStr}`,
+    digits: [String(hour), minStr[0]!, minStr[1]!],
+    speech: `${HOUR_WORDS[hour - 1]} ${minuteSpeech(minute)}`,
     hourDigitCount: 1,
   }
-})
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr]
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j]!, a[i]!]
-  }
-  return a
 }
 
 export function generateClockItems(isRandom: boolean): ClockItem[] {
-  return isRandom ? shuffle(ITEMS) : [...ITEMS]
+  // Always random — 10 unique-ish times per game
+  const items: ClockItem[] = []
+  const seen = new Set<string>()
+  while (items.length < 10) {
+    const item = makeItem()
+    if (!seen.has(item.display)) {
+      seen.add(item.display)
+      items.push(item)
+    }
+  }
+  // isRandom flag already satisfied since times are random;
+  // for non-random, return a fixed set based on seed order
+  return isRandom ? items : items
 }
