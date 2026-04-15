@@ -13,6 +13,15 @@
   user-select: none;
 }
 
+.number-blanks__label {
+  font-size: clamp(100px, 26vw, 180px);
+  font-weight: 900;
+  color: var(--game-color);
+  letter-spacing: 0.05em;
+  line-height: 1;
+  user-select: none;
+}
+
 .number-blanks__slots {
   display: flex;
   gap: 16px;

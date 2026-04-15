@@ -370,7 +370,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     }
     if (isBuildWord) {
       const bw = currentItem as BuildWordItem
-      return <NumberBlanksDisplay display={bw.emoji} slots={bw.letters} filled={buildBuffer} feedback={feedback} shakeKey={shakeKey} />
+      return <NumberBlanksDisplay display={bw.emoji} label={bw.word.toUpperCase()} slots={bw.letters} filled={buildBuffer} feedback={feedback} shakeKey={shakeKey} />
     }
     if (isColorMatch) return <ColorDisplay item={currentItem as ColorItem} feedback={feedback} animKey={animKey} />
     if (isWhichMore) return <WhichMoreDisplay item={currentItem as WhichMoreItem} feedback={feedback} pressedKey={lastPressed} animKey={animKey} />
