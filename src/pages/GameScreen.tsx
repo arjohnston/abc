@@ -156,7 +156,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const isMultiDigit = isCounting && currentItem && (currentItem as CountingItem).answer.length > 1
 
-  const alwaysSpeak = isAnimalSounds || isBuildNumber || isBuildWord || isWhichMore || isWhatNext || audioOnly || isColorMatch
+  const alwaysSpeak = isAnimalSounds || isBuildNumber || isBuildWord || isWhatNext || audioOnly || isColorMatch
 
   const handleHint = useCallback(() => {
     if (!currentItem || isComplete || feedback) return
