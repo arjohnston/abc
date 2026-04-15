@@ -5,6 +5,7 @@ import { generateBuildWordItems } from './buildWord'
 import { generateClockItems } from './clock'
 import { COLOR_ITEMS } from './colorMatch'
 import { generateCountingItems } from './counting'
+import { generateWhatBeforeItems } from './whatBefore'
 import { generateWhatNextItems } from './whatNext'
 import { generateWhichMoreItems } from './whichMore'
 
@@ -88,16 +89,15 @@ export const GAMES: GameConfig[] = [
 
   // --- Next Steps ---
   {
-    id: 'letter-pairs',
+    id: 'what-before',
     sectionId: 'next-steps',
-    title: 'Letter Pairs',
-    emoji: '🔠',
-    description: 'Big letter, small key!',
+    title: 'What Comes Before?',
+    emoji: '⬅️',
+    description: 'Finish the pattern!',
     color: 'var(--purple)',
     colorDark: 'var(--purple-dark)',
-    items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
-    expectLower: true,
-    autoSpeak: true,
+    type: 'whatBefore',
+    generateItems: generateWhatBeforeItems,
   },
   {
     id: 'hear-press',

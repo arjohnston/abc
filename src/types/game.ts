@@ -133,6 +133,11 @@ export interface WhatNextGameConfig extends BaseGameConfig {
   generateItems: (isRandom: boolean) => WhatNextItem[]
 }
 
+export interface WhatBeforeGameConfig extends BaseGameConfig {
+  type: 'whatBefore'
+  generateItems: (isRandom: boolean) => WhatNextItem[]
+}
+
 export interface BuildWordGameConfig extends BaseGameConfig {
   type: 'buildWord'
   items: BuildWordItem[]
@@ -160,6 +165,7 @@ export type GameConfig =
   | BuildWordGameConfig
   | ColorMatchGameConfig
   | ClockGameConfig
+  | WhatBeforeGameConfig
 
 export type FeedbackState = 'correct' | 'wrong' | null
 
