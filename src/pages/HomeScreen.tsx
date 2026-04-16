@@ -6,7 +6,7 @@ import { SettingsModal } from '../components/SettingsModal'
 import { MiniGameNode } from '../components/ui/MiniGameNode'
 import { PathNode } from '../components/ui/PathNode'
 import { SectionBanner } from '../components/ui/SectionBanner'
-import { getGamesForSection, SECTIONS } from '../games/config'
+import { getGamesForSection, MINI_GAMES, SECTIONS } from '../games/config'
 import type { Stats } from '../hooks/useStats'
 import type { GameConfig, Section } from '../types/game'
 
@@ -138,7 +138,8 @@ export function HomeScreen({
           const isActive = !locked && hasIncomplete
           const totalHeight = (games.length - 1) * NODE_SPACING
           const nextSection = SECTIONS[sectionIndex + 1]
-          const showMiniGame = sectionIndex <= 3 && nextSection && isSectionUnlocked(nextSection)
+          const miniGame = MINI_GAMES.find((mg) => mg.afterSectionIndex === sectionIndex)
+          const showMiniGame = miniGame && nextSection && isSectionUnlocked(nextSection)
 
           return (
             <Fragment key={section.id}>
@@ -202,10 +203,10 @@ export function HomeScreen({
                 ))}
               </div>
             </div>
-            {showMiniGame && (
+            {showMiniGame && miniGame && (
               <MiniGameNode
-                emoji={sectionIndex === 0 ? '🐛' : sectionIndex === 1 ? '🦕' : sectionIndex === 2 ? '🎯' : '🎮'}
-                title={sectionIndex === 0 ? 'Letter Muncher' : sectionIndex === 1 ? 'Dino Run' : sectionIndex === 2 ? 'Click the Circle' : 'Tic Tac Toe'}
+                emoji={miniGame.emoji}
+                title={miniGame.title}
                 onClick={() => onPlayMiniGame(sectionIndex)}
               />
             )}

@@ -1,29 +1,4 @@
-.cls {
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-  background: var(--bg);
-  color: var(--text);
-}
-
-.cls-topbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-}
-
-.cls-title {
-  flex: 1;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.cls-score {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--text-muted);
-}
+/* .cls uses .game-shell from index.css */
 
 .cls-prompt {
   display: flex;
@@ -68,10 +43,10 @@
 }
 
 .cls-tile {
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1;
   border: none;
   border-radius: 16px;
   font-family: inherit;
@@ -94,24 +69,5 @@
 .cls-tile--red    { background: var(--red); }
 .cls-tile--yellow { background: var(--yellow); }
 
-.cls-tile--correct {
-  animation: cls-correct 0.45s ease;
-}
-
-.cls-tile--wrong {
-  animation: cls-wrong 0.4s ease;
-}
-
-@keyframes cls-correct {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.25); filter: brightness(1.5); }
-  100% { transform: scale(1); }
-}
-
-@keyframes cls-wrong {
-  0%, 100% { transform: translateX(0); }
-  20%       { transform: translateX(-8px); }
-  40%       { transform: translateX(8px); }
-  60%       { transform: translateX(-6px); }
-  80%       { transform: translateX(6px); }
-}
+.cls-tile--correct { animation: anim-pop 0.45s ease; }
+.cls-tile--wrong   { animation: anim-shake 0.4s ease; }

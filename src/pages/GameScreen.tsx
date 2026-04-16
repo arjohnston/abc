@@ -11,9 +11,7 @@ import { HearPressDisplay } from '../components/HearPressDisplay'
 import { LetterDisplay } from '../components/LetterDisplay'
 import { NumberBlanksDisplay } from '../components/NumberBlanksDisplay'
 import { TimerBar } from '../components/TimerBar'
-import { BackButton } from '../components/ui/BackButton'
-import { ProgressBar } from '../components/ui/ProgressBar'
-import { ScoreBadge } from '../components/ui/ScoreBadge'
+import { GameTopbar } from '../components/ui/GameTopbar'
 import { StreakBadge } from '../components/ui/StreakBadge'
 import { VirtualKeyboard } from '../components/VirtualKeyboard'
 import { WhatNextDisplay } from '../components/WhatNextDisplay'
@@ -418,11 +416,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
       className="game"
       style={{ '--game-color': game.color, '--game-color-dark': game.colorDark } as React.CSSProperties}
     >
-      <div className="game-topbar">
-        <BackButton onClick={onBack} />
-        <ProgressBar percent={progress} />
-        <ScoreBadge score={score} />
-      </div>
+      <GameTopbar onBack={onBack} percent={progress} score={score} />
 
       {isTimed && !isComplete && (
         <div className="game-timer">

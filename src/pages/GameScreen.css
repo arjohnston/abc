@@ -5,13 +5,6 @@
   min-height: 100dvh;
 }
 
-.game-topbar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-}
-
 .game-timer {
   padding: 0 20px 8px;
   display: flex;

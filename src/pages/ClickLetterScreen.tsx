@@ -1,63 +1,37 @@
 import './ClickLetterScreen.css'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { GameComplete } from '../components/GameComplete'
-import { BackButton } from '../components/ui/BackButton'
-import { ProgressBar } from '../components/ui/ProgressBar'
-import { useSoundEffects } from '../hooks/useSoundEffects'
+import { GameTopbar } from '../components/ui/GameTopbar'
+import { useRound } from '../hooks/useRound'
 import { useSpeech } from '../hooks/useSpeech'
-import type { ClickLetterGameConfig } from '../types/game'
+import type { ClickLetterGameConfig, CustomGameScreenProps } from '../types/game'
 
 const TOTAL = 10
 const GRID_COUNT = 16
-
 const COLORS = ['green', 'blue', 'purple', 'orange', 'red', 'yellow'] as const
 type TileColor = (typeof COLORS)[number]
 
-interface Tile {
-  char: string
-  color: TileColor
-}
-
-function randomColor(): TileColor {
-  return COLORS[Math.floor(Math.random() * COLORS.length)]!
-}
+interface Tile { char: string; color: TileColor }
 
 function buildGrid(items: string[]): { tiles: Tile[]; target: string } {
-  const shuffled = [...items].sort(() => Math.random() - 0.5)
-  const pool = shuffled.slice(0, GRID_COUNT)
-  // ensure pool has GRID_COUNT items (pad if pool < GRID_COUNT)
-  while (pool.length < GRID_COUNT) {
-    pool.push(items[Math.floor(Math.random() * items.length)]!)
-  }
-  const tiles = pool.map((char) => ({ char, color: randomColor() }))
-  const target = tiles[Math.floor(Math.random() * tiles.length)]!.char
-  return { tiles, target }
+  const pool = [...items].sort(() => Math.random() - 0.5).slice(0, GRID_COUNT)
+  while (pool.length < GRID_COUNT) pool.push(items[Math.floor(Math.random() * items.length)]!)
+  const tiles = pool.map((char) => ({ char, color: COLORS[Math.floor(Math.random() * COLORS.length)]! }))
+  return { tiles, target: tiles[Math.floor(Math.random() * tiles.length)]!.char }
 }
 
-interface Props {
-  game: ClickLetterGameConfig
-  onBack: () => void
-  onComplete: (score: number, total: number, maxStars: number) => { stars: number; isNewBest: boolean }
-}
-
-export function ClickLetterScreen({ game, onBack, onComplete }: Props) {
-  const [score, setScore] = useState(0)
-  const [round, setRound] = useState(0)
-  const [{ tiles, target }, setGrid] = useState(() => buildGrid(game.items))
+export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreenProps) {
+  const { items } = game as ClickLetterGameConfig
+  const [{ tiles, target }, setGrid] = useState(() => buildGrid(items))
   const [wrongIndex, setWrongIndex] = useState<number | null>(null)
   const [correctIndex, setCorrectIndex] = useState<number | null>(null)
-  const [completionResult, setCompletionResult] = useState<{ stars: number; isNewBest: boolean } | null>(null)
 
-  const lockedRef = useRef(false)
+  const { score, round, lockedRef, completionResult, advance, restart } = useRound(TOTAL, onComplete)
   const speak = useSpeech()
-  const { playCorrect, playWrong, playComplete } = useSoundEffects()
 
-  // Announce target whenever it changes
-  useEffect(() => {
-    speak(target)
-  }, [target, speak])
+  useEffect(() => { speak(target) }, [target, speak])
 
   const handleClick = useCallback(
     (tile: Tile, index: number) => {
@@ -66,68 +40,31 @@ export function ClickLetterScreen({ game, onBack, onComplete }: Props) {
 
       if (tile.char === target) {
         setCorrectIndex(index)
-        playCorrect()
-
-        const newScore = score + 1
-        const newRound = round + 1
-
-        setTimeout(() => {
-          setCorrectIndex(null)
-          if (newRound >= TOTAL) {
-            playComplete()
-            const result = onComplete(newScore, TOTAL, 3)
-            setCompletionResult(result)
-          } else {
-            setScore(newScore)
-            setRound(newRound)
-            setGrid(buildGrid(game.items))
-            lockedRef.current = false
-          }
-        }, 500)
+        advance(true)
+        setTimeout(() => { setCorrectIndex(null); setGrid(buildGrid(items)) }, 520)
       } else {
         setWrongIndex(index)
-        playWrong()
-
-        setTimeout(() => {
-          setWrongIndex(null)
-          lockedRef.current = false
-        }, 400)
+        advance(false)
+        setTimeout(() => { setWrongIndex(null) }, 420)
       }
     },
-    [target, score, round, playCorrect, playWrong, playComplete, onComplete, game.items],
+    [target, items, lockedRef, advance],
   )
 
   const handleRestart = useCallback(() => {
-    setScore(0)
-    setRound(0)
-    setGrid(buildGrid(game.items))
+    restart()
+    setGrid(buildGrid(items))
     setWrongIndex(null)
     setCorrectIndex(null)
-    setCompletionResult(null)
-    lockedRef.current = false
-  }, [game.items])
+  }, [restart, items])
 
   if (completionResult) {
-    return (
-      <GameComplete
-        score={score}
-        total={TOTAL}
-        stars={completionResult.stars}
-        isNewBest={completionResult.isNewBest}
-        onRestart={handleRestart}
-        onHome={onBack}
-      />
-    )
+    return <GameComplete score={score} total={TOTAL} stars={completionResult.stars} isNewBest={completionResult.isNewBest} onRestart={handleRestart} onHome={onBack} />
   }
 
   return (
-    <div className="cls">
-      <div className="cls-topbar">
-        <BackButton onClick={onBack} />
-        <span className="cls-title">{game.emoji} {game.title}</span>
-        <span className="cls-score">{score}/{TOTAL}</span>
-      </div>
-      <ProgressBar percent={(round / TOTAL) * 100} />
+    <div className="game-shell cls">
+      <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
 
       <div className="cls-prompt">
         Click: <span className="cls-target">{target}</span>
@@ -138,10 +75,7 @@ export function ClickLetterScreen({ game, onBack, onComplete }: Props) {
         {tiles.map((tile, i) => (
           <button
             key={i}
-            className={`cls-tile cls-tile--${tile.color} ${
-              correctIndex === i ? 'cls-tile--correct' :
-              wrongIndex === i   ? 'cls-tile--wrong'   : ''
-            }`}
+            className={`cls-tile cls-tile--${tile.color} ${correctIndex === i ? 'cls-tile--correct' : wrongIndex === i ? 'cls-tile--wrong' : ''}`}
             onClick={() => handleClick(tile, i)}
           >
             {tile.char}

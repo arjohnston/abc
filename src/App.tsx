@@ -4,16 +4,34 @@ import { useProgress } from './hooks/useProgress'
 import { useStats } from './hooks/useStats'
 import { ChaseBallScreen } from './pages/ChaseBallScreen'
 import { ClickCircleScreen } from './pages/ClickCircleScreen'
-import { FollowArrowScreen } from './pages/FollowArrowScreen'
-import { SimonSaysScreen } from './pages/SimonSaysScreen'
 import { ClickLetterScreen } from './pages/ClickLetterScreen'
 import { DinoGameScreen } from './pages/DinoGameScreen'
+import { FollowArrowScreen } from './pages/FollowArrowScreen'
 import { GameScreen } from './pages/GameScreen'
 import { HomeScreen } from './pages/HomeScreen'
 import { MiniGameScreen } from './pages/MiniGameScreen'
 import { MouseDirectionScreen } from './pages/MouseDirectionScreen'
+import { SimonSaysScreen } from './pages/SimonSaysScreen'
 import { TicTacToeScreen } from './pages/TicTacToeScreen'
-import type { GameConfig } from './types/game'
+import type { CustomGameScreenProps, GameConfig } from './types/game'
+
+// Registry: game type → custom screen component.
+// Adding a new custom game only requires one entry here + a new screen file.
+const CUSTOM_SCREENS: Partial<Record<string, React.ComponentType<CustomGameScreenProps>>> = {
+  arrowGame:       FollowArrowScreen as React.ComponentType<CustomGameScreenProps>,
+  simonSays:       SimonSaysScreen   as React.ComponentType<CustomGameScreenProps>,
+  mouseDirection:  MouseDirectionScreen as React.ComponentType<CustomGameScreenProps>,
+  chaseBall:       ChaseBallScreen   as React.ComponentType<CustomGameScreenProps>,
+  clickLetter:     ClickLetterScreen as React.ComponentType<CustomGameScreenProps>,
+}
+
+// Registry: mini-game index → standalone screen component.
+const MINI_GAME_SCREENS: Array<React.ComponentType<{ onBack: () => void }>> = [
+  MiniGameScreen,
+  DinoGameScreen,
+  ClickCircleScreen,
+  TicTacToeScreen,
+]
 
 function App() {
   const [currentGame, setCurrentGame] = useState<GameConfig | null>(null)
@@ -37,61 +55,23 @@ function App() {
 
   const handleComplete = useCallback(
     (score: number, total: number, maxStars: number) => {
-      if (!currentGame) {
-        return { stars: 1, isNewBest: false }
-      }
+      if (!currentGame) return { stars: 1, isNewBest: false }
       return recordResult(currentGame.id, score, total, maxStars)
     },
     [currentGame, recordResult],
   )
 
+  const handleBack = useCallback(() => setCurrentGame(null), [])
+
+  // Route to custom game screen if registered, otherwise use GameScreen
   if (currentGame) {
-    if (currentGame.type === 'arrowGame') {
+    const CustomScreen = CUSTOM_SCREENS[currentGame.type ?? '']
+    if (CustomScreen) {
       return (
-        <FollowArrowScreen
+        <CustomScreen
           key={currentGame.id}
           game={currentGame}
-          onBack={() => setCurrentGame(null)}
-          onComplete={handleComplete}
-        />
-      )
-    }
-    if (currentGame.type === 'simonSays') {
-      return (
-        <SimonSaysScreen
-          key={currentGame.id}
-          game={currentGame}
-          onBack={() => setCurrentGame(null)}
-          onComplete={handleComplete}
-        />
-      )
-    }
-    if (currentGame.type === 'mouseDirection') {
-      return (
-        <MouseDirectionScreen
-          key={currentGame.id}
-          game={currentGame}
-          onBack={() => setCurrentGame(null)}
-          onComplete={handleComplete}
-        />
-      )
-    }
-    if (currentGame.type === 'chaseBall') {
-      return (
-        <ChaseBallScreen
-          key={currentGame.id}
-          game={currentGame}
-          onBack={() => setCurrentGame(null)}
-          onComplete={handleComplete}
-        />
-      )
-    }
-    if (currentGame.type === 'clickLetter') {
-      return (
-        <ClickLetterScreen
-          key={currentGame.id}
-          game={currentGame}
-          onBack={() => setCurrentGame(null)}
+          onBack={handleBack}
           onComplete={handleComplete}
         />
       )
@@ -101,26 +81,18 @@ function App() {
         key={`${currentGame.id}-${isRandom}`}
         game={currentGame}
         isRandom={isRandom}
-        onBack={() => setCurrentGame(null)}
+        onBack={handleBack}
         onComplete={handleComplete}
       />
     )
   }
 
-  if (miniGameIndex === 0) {
-    return <MiniGameScreen onBack={() => setMiniGameIndex(null)} />
-  }
-
-  if (miniGameIndex === 1) {
-    return <DinoGameScreen onBack={() => setMiniGameIndex(null)} />
-  }
-
-  if (miniGameIndex === 2) {
-    return <ClickCircleScreen onBack={() => setMiniGameIndex(null)} />
-  }
-
-  if (miniGameIndex === 3) {
-    return <TicTacToeScreen onBack={() => setMiniGameIndex(null)} />
+  // Route to mini-game screen by index
+  if (miniGameIndex !== null) {
+    const MiniScreen = MINI_GAME_SCREENS[miniGameIndex]
+    if (MiniScreen) {
+      return <MiniScreen onBack={() => setMiniGameIndex(null)} />
+    }
   }
 
   return (

@@ -1,50 +1,4 @@
-.fa {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100dvh;
-  background: var(--bg);
-  color: var(--text);
-}
-
-.fa-topbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  width: 100%;
-}
-
-.fa-title {
-  flex: 1;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.fa-score {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--text-muted);
-}
-
-.fa-pips {
-  display: flex;
-  gap: 6px;
-  padding: 4px 16px 16px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.fa-pip {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--bg-light);
-  transition: background 0.2s;
-}
-
-.fa-pip--done   { background: var(--green); }
-.fa-pip--active { background: var(--yellow); transform: scale(1.2); }
+/* .fa layout uses .game-shell from index.css */
 
 .fa-arena {
   flex: 1;
@@ -56,7 +10,6 @@
   padding: 20px;
 }
 
-/* Big arrow box */
 .fa-arrow-wrap {
   width: clamp(180px, 40vw, 280px);
   height: clamp(180px, 40vw, 280px);
@@ -69,49 +22,17 @@
   transition: background 0.15s;
 }
 
-.fa-arrow-wrap--correct {
-  animation: fa-pop 0.45s ease;
-  filter: brightness(1.2);
-}
-
-.fa-arrow-wrap--wrong {
-  animation: fa-shake 0.4s ease;
-  background: var(--red) !important;
-}
-
-@keyframes fa-pop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-@keyframes fa-shake {
-  0%, 100% { transform: translateX(0); }
-  25%       { transform: translateX(-14px); }
-  75%       { transform: translateX(14px); }
-}
+.fa-arrow-wrap--correct { animation: anim-pop 0.45s ease; filter: brightness(1.2); }
+.fa-arrow-wrap--wrong   { animation: anim-shake 0.4s ease; background: var(--red) !important; }
 
 .fa-arrow {
   font-size: clamp(80px, 20vw, 140px);
   line-height: 1;
   color: #fff;
   font-weight: 900;
-  /* Use a system font so arrow renders cleanly */
   font-family: system-ui, sans-serif;
 }
 
-.fa-label {
-  font-size: clamp(1rem, 3.5vw, 1.4rem);
-  font-weight: 600;
-  color: var(--text-muted);
-  text-align: center;
-}
-
-.fa-label strong {
-  color: var(--text);
-}
-
-/* The 4 key hint pills */
 .fa-key-hints {
   display: flex;
   gap: 10px;

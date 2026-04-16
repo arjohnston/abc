@@ -1,53 +1,5 @@
-.ss {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100dvh;
-  background: var(--bg);
-  color: var(--text);
-}
+/* .ss layout uses .game-shell.game-shell--center from index.css */
 
-.ss-topbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  width: 100%;
-}
-
-.ss-title {
-  flex: 1;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.ss-score {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: var(--text-muted);
-}
-
-/* Round pip indicators */
-.ss-progress-row {
-  display: flex;
-  gap: 6px;
-  padding: 4px 16px 12px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.ss-pip {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: var(--bg-light);
-  transition: background 0.2s;
-}
-
-.ss-pip--done   { background: var(--green); }
-.ss-pip--active { background: var(--yellow); transform: scale(1.2); }
-
-/* Banner */
 .ss-banner {
   font-size: clamp(1.6rem, 6vw, 2.4rem);
   font-weight: 900;
@@ -55,22 +7,12 @@
   border-radius: 20px;
   margin: 8px 0 20px;
   text-align: center;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.2s;
 }
 
-.ss-banner--do {
-  background: var(--green);
-  color: #fff;
-  box-shadow: 0 6px 0 var(--green-dark);
-}
+.ss-banner--do   { background: var(--green);  color: #fff; box-shadow: 0 6px 0 var(--green-dark); }
+.ss-banner--dont { background: var(--red);    color: #fff; box-shadow: 0 6px 0 var(--red-dark); }
 
-.ss-banner--dont {
-  background: var(--red);
-  color: #fff;
-  box-shadow: 0 6px 0 var(--red-dark);
-}
-
-/* Character display */
 .ss-char-wrap {
   display: flex;
   align-items: center;
@@ -84,57 +26,20 @@
   transition: background 0.15s;
 }
 
-.ss-char-wrap.ss-char--correct {
-  background: var(--green);
-  border-color: var(--green-dark);
-  animation: ss-pop 0.5s ease;
-}
+.ss-char-wrap.ss-char--correct { background: var(--green); border-color: var(--green-dark); animation: anim-pop 0.5s ease; }
+.ss-char-wrap.ss-char--wrong   { background: var(--red);   border-color: var(--red-dark);   animation: anim-shake 0.4s ease; }
 
-.ss-char-wrap.ss-char--wrong {
-  background: var(--red);
-  border-color: var(--red-dark);
-  animation: ss-shake 0.4s ease;
-}
-
-.ss-char {
-  font-size: clamp(100px, 22vw, 150px);
-  font-weight: 900;
-  line-height: 1;
-  color: var(--text);
-}
-
+.ss-char { font-size: clamp(100px, 22vw, 150px); font-weight: 900; line-height: 1; color: var(--text); }
 .ss-char--correct .ss-char,
-.ss-char--wrong   .ss-char {
-  color: #fff;
-}
+.ss-char--wrong   .ss-char { color: #fff; }
 
-@keyframes ss-pop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.15); }
-  100% { transform: scale(1); }
-}
-
-@keyframes ss-shake {
-  0%, 100% { transform: translateX(0); }
-  25%       { transform: translateX(-12px); }
-  75%       { transform: translateX(12px); }
-}
-
-/* Hint text */
-.ss-hint {
-  font-size: clamp(1rem, 3.5vw, 1.4rem);
-  font-weight: 700;
-  color: var(--text-muted);
-  margin-bottom: 20px;
-}
-
-/* Hold-off progress bar (dont rounds) */
 .ss-hold-bar-wrap {
   width: min(340px, 85vw);
   height: 18px;
   background: var(--bg-light);
   border-radius: 9px;
   overflow: hidden;
+  margin-top: 8px;
 }
 
 .ss-hold-bar-fill {

@@ -196,6 +196,13 @@ export type GameConfig =
 
 export type FeedbackState = 'correct' | 'wrong' | null
 
+/** Standard props contract for all custom game screens (non-GameScreen). */
+export interface CustomGameScreenProps {
+  game: GameConfig
+  onBack: () => void
+  onComplete: (score: number, total: number, maxStars: number) => { stars: number; isNewBest: boolean }
+}
+
 // --- Progress ---
 
 export interface GameProgress {

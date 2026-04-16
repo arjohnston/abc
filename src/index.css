@@ -39,3 +39,58 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+/* ─── Shared game layout ───────────────────────────────── */
+
+.game-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.game-shell--center {
+  align-items: center;
+}
+
+.game-instruction {
+  text-align: center;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  font-weight: 600;
+  padding: 8px 20px 12px;
+  color: var(--text-muted);
+}
+
+.game-arena {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-card);
+  margin: 8px 16px 16px;
+  border-radius: 20px;
+  border: 3px solid var(--bg-light);
+  min-height: 300px;
+}
+
+/* ─── Shared feedback animations ───────────────────────── */
+
+.anim-pop {
+  animation: anim-pop 0.45s ease;
+}
+
+.anim-shake {
+  animation: anim-shake 0.4s ease;
+}
+
+@keyframes anim-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes anim-shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-12px); }
+  75%       { transform: translateX(12px); }
+}

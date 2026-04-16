@@ -1,4 +1,19 @@
 import type { GameConfig, Section } from '../types/game'
+
+/** Bonus mini-games that appear between sections once the next section is unlocked. */
+export interface MiniGameEntry {
+  /** Index of the section this mini-game appears AFTER. */
+  afterSectionIndex: number
+  emoji: string
+  title: string
+}
+
+export const MINI_GAMES: MiniGameEntry[] = [
+  { afterSectionIndex: 0, emoji: '🐛', title: 'Letter Muncher' },
+  { afterSectionIndex: 1, emoji: '🦕', title: 'Dino Run' },
+  { afterSectionIndex: 2, emoji: '🎯', title: 'Click the Circle' },
+  { afterSectionIndex: 3, emoji: '🎮', title: 'Tic Tac Toe' },
+]
 import { ANIMAL_ITEMS } from './animalSounds'
 import { generateBuildNumberItems } from './buildNumber'
 import { generateBuildWordItems } from './buildWord'
