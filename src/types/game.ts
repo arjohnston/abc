@@ -153,7 +153,31 @@ export interface ClockGameConfig extends BaseGameConfig {
   generateItems: (isRandom: boolean) => ClockItem[]
 }
 
+export interface ArrowGameConfig extends BaseGameConfig {
+  type: 'arrowGame'
+}
+
+export interface SimonSaysGameConfig extends BaseGameConfig {
+  type: 'simonSays'
+  items: string[]
+}
+
+export interface MouseDirectionGameConfig extends BaseGameConfig {
+  type: 'mouseDirection'
+}
+
+export interface ChaseBallGameConfig extends BaseGameConfig {
+  type: 'chaseBall'
+}
+
+export interface ClickLetterGameConfig extends BaseGameConfig {
+  type: 'clickLetter'
+  items: string[]
+}
+
 export type GameConfig =
+  | ArrowGameConfig
+  | SimonSaysGameConfig
   | StandardGameConfig
   | CountingGameConfig
   | NumberWordsGameConfig
@@ -166,6 +190,9 @@ export type GameConfig =
   | ColorMatchGameConfig
   | ClockGameConfig
   | WhatBeforeGameConfig
+  | MouseDirectionGameConfig
+  | ChaseBallGameConfig
+  | ClickLetterGameConfig
 
 export type FeedbackState = 'correct' | 'wrong' | null
 

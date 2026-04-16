@@ -138,7 +138,7 @@ export function HomeScreen({
           const isActive = !locked && hasIncomplete
           const totalHeight = (games.length - 1) * NODE_SPACING
           const nextSection = SECTIONS[sectionIndex + 1]
-          const showMiniGame = nextSection && isSectionUnlocked(nextSection)
+          const showMiniGame = sectionIndex <= 3 && nextSection && isSectionUnlocked(nextSection)
 
           return (
             <Fragment key={section.id}>
@@ -204,8 +204,8 @@ export function HomeScreen({
             </div>
             {showMiniGame && (
               <MiniGameNode
-                emoji={sectionIndex === 0 ? '🐛' : '🦕'}
-                title={sectionIndex === 0 ? 'Letter Muncher' : 'Dino Run'}
+                emoji={sectionIndex === 0 ? '🐛' : sectionIndex === 1 ? '🦕' : sectionIndex === 2 ? '🎯' : '🎮'}
+                title={sectionIndex === 0 ? 'Letter Muncher' : sectionIndex === 1 ? 'Dino Run' : sectionIndex === 2 ? 'Click the Circle' : 'Tic Tac Toe'}
                 onClick={() => onPlayMiniGame(sectionIndex)}
               />
             )}

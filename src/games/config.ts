@@ -5,15 +5,15 @@ import { generateBuildWordItems } from './buildWord'
 import { generateClockItems } from './clock'
 import { COLOR_ITEMS } from './colorMatch'
 import { generateCountingItems } from './counting'
-import { generateWhatBeforeItems } from './whatBefore'
 import { generateWhatNextItems } from './whatNext'
 import { generateWhichMoreItems } from './whichMore'
 
 export const SECTIONS: Section[] = [
-  { id: 'basics',     title: 'Basics',     emoji: '🌱', starsToUnlock: 0 },
-  { id: 'growing',    title: 'Growing',    emoji: '🌿', starsToUnlock: 5 },
-  { id: 'next-steps', title: 'Next Steps', emoji: '🚀', starsToUnlock: 5 },
-  { id: 'challenge',  title: 'Challenge',  emoji: '🏆', starsToUnlock: 7 },
+  { id: 'basics',       title: 'Basics',       emoji: '🌱', starsToUnlock: 0 },
+  { id: 'growing',      title: 'Growing',      emoji: '🌿', starsToUnlock: 5 },
+  { id: 'next-steps',   title: 'Next Steps',   emoji: '🚀', starsToUnlock: 5 },
+  { id: 'mouse-skills', title: 'Mouse Skills', emoji: '🖱️',  starsToUnlock: 7 },
+  { id: 'challenge',    title: 'Challenge',    emoji: '🏆', starsToUnlock: 5 },
 ]
 
 export const GAMES: GameConfig[] = [
@@ -89,15 +89,14 @@ export const GAMES: GameConfig[] = [
 
   // --- Next Steps ---
   {
-    id: 'what-before',
+    id: 'follow-arrow',
     sectionId: 'next-steps',
-    title: 'What Comes Before?',
-    emoji: '⬅️',
-    description: 'Finish the pattern!',
+    title: 'Follow the Arrow',
+    emoji: '🏹',
+    description: 'Press the matching arrow key!',
     color: 'var(--purple)',
     colorDark: 'var(--purple-dark)',
-    type: 'whatBefore',
-    generateItems: generateWhatBeforeItems,
+    type: 'arrowGame',
   },
   {
     id: 'hear-press',
@@ -133,6 +132,51 @@ export const GAMES: GameConfig[] = [
     type: 'clock',
     generateItems: generateClockItems,
   },
+  {
+    id: 'simon-says',
+    sectionId: 'next-steps',
+    title: 'Simon Says',
+    emoji: '🤖',
+    description: 'Only press when Simon says!',
+    color: 'var(--yellow)',
+    colorDark: 'var(--yellow-dark)',
+    type: 'simonSays',
+    items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+  },
+
+  // --- Mouse Skills ---
+  {
+    id: 'mouse-mover',
+    sectionId: 'mouse-skills',
+    title: 'Mouse Mover',
+    emoji: '🎯',
+    description: 'Move your mouse to the target!',
+    color: 'var(--green)',
+    colorDark: 'var(--green-dark)',
+    type: 'mouseDirection',
+  },
+  {
+    id: 'chase-the-ball',
+    sectionId: 'mouse-skills',
+    title: 'Chase the Ball',
+    emoji: '🎾',
+    description: 'Hover over the bouncing ball!',
+    color: 'var(--blue)',
+    colorDark: 'var(--blue-dark)',
+    type: 'chaseBall',
+  },
+  {
+    id: 'click-it',
+    sectionId: 'mouse-skills',
+    title: 'Click It!',
+    emoji: '👆',
+    description: 'Click the right letter!',
+    color: 'var(--purple)',
+    colorDark: 'var(--purple-dark)',
+    type: 'clickLetter',
+    items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(''),
+  },
+
   // --- Challenge ---
   {
     id: 'animal-sounds',

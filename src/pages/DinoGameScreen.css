@@ -24,7 +24,7 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  max-width: 800px;
+  align-self: flex-start;
 }
 
 .dino-title {

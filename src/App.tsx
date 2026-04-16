@@ -2,10 +2,17 @@ import { useCallback, useState } from 'react'
 
 import { useProgress } from './hooks/useProgress'
 import { useStats } from './hooks/useStats'
+import { ChaseBallScreen } from './pages/ChaseBallScreen'
+import { ClickCircleScreen } from './pages/ClickCircleScreen'
+import { FollowArrowScreen } from './pages/FollowArrowScreen'
+import { SimonSaysScreen } from './pages/SimonSaysScreen'
+import { ClickLetterScreen } from './pages/ClickLetterScreen'
 import { DinoGameScreen } from './pages/DinoGameScreen'
 import { GameScreen } from './pages/GameScreen'
 import { HomeScreen } from './pages/HomeScreen'
 import { MiniGameScreen } from './pages/MiniGameScreen'
+import { MouseDirectionScreen } from './pages/MouseDirectionScreen'
+import { TicTacToeScreen } from './pages/TicTacToeScreen'
 import type { GameConfig } from './types/game'
 
 function App() {
@@ -39,6 +46,56 @@ function App() {
   )
 
   if (currentGame) {
+    if (currentGame.type === 'arrowGame') {
+      return (
+        <FollowArrowScreen
+          key={currentGame.id}
+          game={currentGame}
+          onBack={() => setCurrentGame(null)}
+          onComplete={handleComplete}
+        />
+      )
+    }
+    if (currentGame.type === 'simonSays') {
+      return (
+        <SimonSaysScreen
+          key={currentGame.id}
+          game={currentGame}
+          onBack={() => setCurrentGame(null)}
+          onComplete={handleComplete}
+        />
+      )
+    }
+    if (currentGame.type === 'mouseDirection') {
+      return (
+        <MouseDirectionScreen
+          key={currentGame.id}
+          game={currentGame}
+          onBack={() => setCurrentGame(null)}
+          onComplete={handleComplete}
+        />
+      )
+    }
+    if (currentGame.type === 'chaseBall') {
+      return (
+        <ChaseBallScreen
+          key={currentGame.id}
+          game={currentGame}
+          onBack={() => setCurrentGame(null)}
+          onComplete={handleComplete}
+        />
+      )
+    }
+    if (currentGame.type === 'clickLetter') {
+      return (
+        <ClickLetterScreen
+          key={currentGame.id}
+          game={currentGame}
+          onBack={() => setCurrentGame(null)}
+          onComplete={handleComplete}
+        />
+      )
+    }
     return (
       <GameScreen
         key={`${currentGame.id}-${isRandom}`}
@@ -56,6 +113,14 @@ function App() {
 
   if (miniGameIndex === 1) {
     return <DinoGameScreen onBack={() => setMiniGameIndex(null)} />
+  }
+
+  if (miniGameIndex === 2) {
+    return <ClickCircleScreen onBack={() => setMiniGameIndex(null)} />
+  }
+
+  if (miniGameIndex === 3) {
+    return <TicTacToeScreen onBack={() => setMiniGameIndex(null)} />
   }
 
   return (

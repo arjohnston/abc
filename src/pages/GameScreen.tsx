@@ -66,6 +66,8 @@ function buildSequence(game: GameConfig, isRandom: boolean): GameItem[] {
   if (game.type === 'colorMatch') return isRandom ? shuffle(game.items) : [...game.items]
   if (game.type === 'clock') return game.generateItems(isRandom)
   if (game.type === 'timed') return isRandom ? shuffle(game.items) : [...game.items]
+  if (game.type === 'mouseDirection' || game.type === 'chaseBall' || game.type === 'arrowGame' || game.type === 'simonSays') return []
+  if (game.type === 'clickLetter') return isRandom ? shuffle(game.items) : [...game.items]
   return isRandom ? shuffle(game.items) : [...game.items]
 }
 
@@ -171,7 +173,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const handleHint = useCallback(() => {
     if (!currentItem || isComplete || feedback) return
-    setHintUsed(true)
+    if (!audioOnly) setHintUsed(true)
     speak(getHintSpeech(currentItem, gameType, game.id, expectLower, audioOnly))
   }, [currentItem, isComplete, feedback, speak, gameType, game.id, expectLower, audioOnly])
 

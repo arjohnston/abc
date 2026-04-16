@@ -1,16 +1,14 @@
 import type { BuildNumberItem } from '../types/game'
 
-const NUMBER_WORDS: Record<number, string> = {
-  11: 'eleven',
-  12: 'twelve',
-  13: 'thirteen',
-  14: 'fourteen',
-  15: 'fifteen',
-  16: 'sixteen',
-  17: 'seventeen',
-  18: 'eighteen',
-  19: 'nineteen',
-  20: 'twenty',
+const ONES = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+  'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
+
+function numberToWord(n: number): string {
+  if (n < 20) return ONES[n]!
+  const t = TENS[Math.floor(n / 10)]!
+  const o = ONES[n % 10]
+  return o ? `${t}-${o}` : t
 }
 
 function shuffle<T>(arr: T[]): T[] {
@@ -22,16 +20,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-const BASE_ITEMS: BuildNumberItem[] = Array.from({ length: 10 }, (_, i) => {
-  const n = i + 11 // 11–20
-  const display = String(n)
-  return {
-    display,
-    digits: display.split(''),
-    word: NUMBER_WORDS[n] ?? display,
-  }
-})
+// All two-digit numbers 10–99
+const ALL_NUMBERS = Array.from({ length: 90 }, (_, i) => i + 10)
 
 export function generateBuildNumberItems(isRandom: boolean): BuildNumberItem[] {
-  return isRandom ? shuffle(BASE_ITEMS) : [...BASE_ITEMS]
+  const pool = isRandom ? shuffle(ALL_NUMBERS).slice(0, 10) : ALL_NUMBERS.slice(0, 10)
+  return pool.map((n) => {
+    const display = String(n)
+    return { display, digits: display.split(''), word: numberToWord(n) }
+  })
 }
