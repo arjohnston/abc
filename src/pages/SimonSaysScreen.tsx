@@ -87,23 +87,25 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
     <div className="game-shell game-shell--center ss">
       <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
 
-      <div className={`ss-banner ${isDo ? 'ss-banner--do' : 'ss-banner--dont'}`}>
-        {isDo ? '🤖 Simon Says!' : '🚫 Freeze!'}
-      </div>
-
-      <div className={`ss-char-wrap ${feedback === 'correct' ? 'ss-char--correct' : feedback === 'wrong' ? 'ss-char--wrong' : ''}`}>
-        <span className="ss-char">{currentRound.char}</span>
-      </div>
-
-      <p className="game-instruction">
-        {isDo ? `Press  ${currentRound.char}` : "Don't press anything!"}
-      </p>
-
-      {!isDo && (
-        <div className="ss-hold-bar-wrap">
-          <div className="ss-hold-bar-fill" style={{ width: `${holdProgress}%` }} />
+      <div className="ss-content">
+        <div className={`ss-banner ${isDo ? 'ss-banner--do' : 'ss-banner--dont'}`}>
+          {isDo ? '🤖 Simon Says!' : '🚫 Freeze!'}
         </div>
-      )}
+
+        <div className={`ss-char-wrap ${feedback === 'correct' ? 'ss-char--correct' : feedback === 'wrong' ? 'ss-char--wrong' : ''}`}>
+          <span className="ss-char">{currentRound.char}</span>
+        </div>
+
+        <p className="game-instruction">
+          {isDo ? `Press  ${currentRound.char}` : "Don't press anything!"}
+        </p>
+
+        {!isDo && (
+          <div className="ss-hold-bar-wrap">
+            <div className="ss-hold-bar-fill" style={{ width: `${holdProgress}%` }} />
+          </div>
+        )}
+      </div>
     </div>
   )
 }
