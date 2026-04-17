@@ -8,20 +8,6 @@
   padding-bottom: 24px;
 }
 
-.ttt-topbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  width: 100%;
-}
-
-.ttt-title {
-  flex: 1;
-  font-size: 1.3rem;
-  font-weight: 800;
-}
-
 .ttt-status {
   font-size: clamp(1.1rem, 4vw, 1.6rem);
   font-weight: 700;

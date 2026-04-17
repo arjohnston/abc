@@ -3,8 +3,8 @@ import './TicTacToeScreen.css'
 import { useCallback, useEffect, useState } from 'react'
 
 import { Confetti } from '../components/Confetti'
-import { BackButton } from '../components/ui/BackButton'
 import { Button } from '../components/ui/Button'
+import { GameTopbar } from '../components/ui/GameTopbar'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
 
@@ -177,10 +177,7 @@ export function TicTacToeScreen({ onBack }: Props) {
     <div className="ttt">
       {result === 'win' && <Confetti />}
 
-      <div className="ttt-topbar">
-        <BackButton onClick={onBack} />
-        <span className="ttt-title">🎮 Tic Tac Toe</span>
-      </div>
+      <GameTopbar onBack={onBack} percent={0} score={0} />
 
       <p className="ttt-status">{status}</p>
 

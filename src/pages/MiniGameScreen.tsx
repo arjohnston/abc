@@ -3,8 +3,8 @@ import './MiniGameScreen.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Confetti } from '../components/Confetti'
-import { BackButton } from '../components/ui/BackButton'
 import { Button } from '../components/ui/Button'
+import { GameTopbar } from '../components/ui/GameTopbar'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
 
@@ -221,6 +221,7 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
       <>
         <Confetti />
         <div className="mini-game">
+          <GameTopbar onBack={onBack} percent={100} score={WIN_SCORE} />
           <div className="mini-game-complete">
             <div className="mini-complete-emoji">🐛</div>
             <h2 className="mini-complete-title">Yummy!</h2>
@@ -241,10 +242,7 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
 
   return (
     <div className="mini-game">
-      <div className="mini-game-topbar">
-        <BackButton onClick={onBack} />
-        <span className="mini-game-title">Letter Muncher</span>
-      </div>
+      <GameTopbar onBack={onBack} percent={(score / WIN_SCORE) * 100} score={score} />
 
       <div className="mini-game-area">
         <div className="mini-game-target">

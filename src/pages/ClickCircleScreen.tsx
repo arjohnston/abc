@@ -3,8 +3,8 @@ import './ClickCircleScreen.css'
 import { useCallback, useRef, useState } from 'react'
 
 import { Confetti } from '../components/Confetti'
-import { BackButton } from '../components/ui/BackButton'
 import { Button } from '../components/ui/Button'
+import { GameTopbar } from '../components/ui/GameTopbar'
 import { usePhysicsObject } from '../hooks/usePhysicsObject'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
@@ -70,10 +70,7 @@ export function ClickCircleScreen({ onBack }: Props) {
     return (
       <div className="game-shell game-shell--center cc">
         <Confetti />
-        <div className="cc-topbar">
-          <BackButton onClick={onBack} />
-          <span className="cc-title">🎯 Click the Circle</span>
-        </div>
+        <GameTopbar onBack={onBack} percent={100} score={TOTAL} />
         <div className="cc-complete">
           <div className="cc-complete-emoji">🎉</div>
           <h2 className="cc-complete-title">You got them all!</h2>
@@ -89,11 +86,7 @@ export function ClickCircleScreen({ onBack }: Props) {
 
   return (
     <div className="game-shell cc">
-      <div className="cc-topbar">
-        <BackButton onClick={onBack} />
-        <span className="cc-title">🎯 Click the Circle</span>
-        <span className="cc-score">{score}/{TOTAL}</span>
-      </div>
+      <GameTopbar onBack={onBack} percent={(score / TOTAL) * 100} score={score} />
 
       <p className="game-instruction">Click the moving circle!</p>
 
