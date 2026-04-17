@@ -1,6 +1,6 @@
 import './FollowArrowScreen.css'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { GameComplete } from '../components/GameComplete'
 import { GameTopbar } from '../components/ui/GameTopbar'
@@ -17,11 +17,6 @@ type Dir = (typeof DIRECTIONS)[number]
 const ARROW: Record<Dir, string> = { left: '←', right: '→', up: '↑', down: '↓' }
 const KEY:   Record<Dir, string> = { left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown' }
 const COLOR: Record<Dir, string> = { left: 'var(--blue)', right: 'var(--green)', up: 'var(--orange)', down: 'var(--purple)' }
-const SPEECH: Record<Dir, string> = {
-  left: 'Press the left arrow!', right: 'Press the right arrow!',
-  up: 'Press the up arrow!',    down: 'Press the down arrow!',
-}
-
 function buildSequence(): Dir[] {
   const seq: Dir[] = []
   for (let i = 0; i < TOTAL; i++) {
@@ -43,7 +38,11 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
 
   const currentDir = sequence[round] ?? sequence[TOTAL - 1]!
 
-  useEffect(() => { speak(SPEECH[currentDir]) }, [currentDir, speak])
+  // Speak once on mount only
+  const spokenRef = useRef(false)
+  useEffect(() => {
+    if (!spokenRef.current) { spokenRef.current = true; speak('Press the matching arrow key!') }
+  }, [speak])
 
   useKeyInput((key) => {
     const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']

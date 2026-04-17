@@ -25,12 +25,13 @@ const CUSTOM_SCREENS: Partial<Record<string, React.ComponentType<CustomGameScree
   clickLetter:     ClickLetterScreen as React.ComponentType<CustomGameScreenProps>,
 }
 
-// Registry: mini-game index → standalone screen component.
-const MINI_GAME_SCREENS: Array<React.ComponentType<{ onBack: () => void }>> = [
-  MiniGameScreen,
-  DinoGameScreen,
-  ClickCircleScreen,
-  TicTacToeScreen,
+// Registry: sectionIndex → standalone screen component (matches MINI_GAMES afterSectionIndex).
+const MINI_GAME_SCREENS: Array<React.ComponentType<{ onBack: () => void }> | undefined> = [
+  MiniGameScreen,    // 0: after Basics
+  DinoGameScreen,    // 1: after Growing
+  undefined,         // 2: no mini-game between Next Steps and Mouse Skills
+  ClickCircleScreen, // 3: after Mouse Skills
+  TicTacToeScreen,   // 4: after Challenge
 ]
 
 function App() {

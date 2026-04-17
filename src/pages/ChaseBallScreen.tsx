@@ -11,7 +11,7 @@ import type { CustomGameScreenProps } from '../types/game'
 
 const TOTAL = 10
 const BALL_R = 40
-const SPEED = 2.5
+const SPEED = 1.5
 
 export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
   const arenaRef = useRef<HTMLDivElement>(null)
@@ -58,8 +58,6 @@ export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
   return (
     <div className="game-shell cbs">
       <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
-      <p className="game-instruction">Hover over the ball to catch it!</p>
-
       <div className="game-arena cbs-arena" ref={arenaRef} onMouseMove={handleMouseMove}>
         <div
           ref={ballRef}

@@ -15,10 +15,6 @@ type Dir = (typeof DIRECTIONS)[number]
 
 const LABELS: Record<Dir, string> = { left: '← Left', right: 'Right →', up: '↑ Up', down: '↓ Down' }
 const COLOR:  Record<Dir, string> = { left: 'var(--blue)', right: 'var(--green)', up: 'var(--orange)', down: 'var(--purple)' }
-const SPEECH: Record<Dir, string> = {
-  left: 'Move your mouse to the left box',   right: 'Move your mouse to the right box',
-  up:   'Move your mouse to the top box',    down:  'Move your mouse to the bottom box',
-}
 
 function pickNext(prev: Dir): Dir {
   const choices = DIRECTIONS.filter((d) => d !== prev)
@@ -33,7 +29,10 @@ export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenPro
   const speak = useSpeech()
   const prevDirRef = useRef(currentDir)
 
-  useEffect(() => { speak(SPEECH[currentDir]) }, [currentDir, speak])
+  const spokenRef = useRef(false)
+  useEffect(() => {
+    if (!spokenRef.current) { spokenRef.current = true; speak('Move your mouse to the highlighted box!') }
+  }, [speak])
 
   const handleHit = (dir: Dir) => {
     if (lockedRef.current || dir !== currentDir) return

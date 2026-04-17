@@ -92,7 +92,7 @@ function getHintSpeech(
   if (gameType === 'buildNumber') return (item as BuildNumberItem).word
   if (gameType === 'whichMore') {
     const wm = item as WhichMoreItem
-    return `${NUMBER_WORDS[wm.left] ?? wm.left} or ${NUMBER_WORDS[wm.right] ?? wm.right}? Which is more?`
+    return NUMBER_WORDS[wm.answer] ?? wm.answer
   }
   if (gameType === 'whatNext') {
     const wn = item as WhatNextItem
@@ -171,7 +171,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const handleHint = useCallback(() => {
     if (!currentItem || isComplete || feedback) return
-    if (!audioOnly) setHintUsed(true)
+    if (!alwaysSpeak) setHintUsed(true)
     speak(getHintSpeech(currentItem, gameType, game.id, expectLower, audioOnly))
   }, [currentItem, isComplete, feedback, speak, gameType, game.id, expectLower, audioOnly])
 

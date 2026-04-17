@@ -139,7 +139,8 @@ export function HomeScreen({
           const totalHeight = (games.length - 1) * NODE_SPACING
           const nextSection = SECTIONS[sectionIndex + 1]
           const miniGame = MINI_GAMES.find((mg) => mg.afterSectionIndex === sectionIndex)
-          const showMiniGame = miniGame && nextSection && isSectionUnlocked(nextSection)
+          const isLastSection = sectionIndex === SECTIONS.length - 1
+          const showMiniGame = miniGame && (isLastSection ? !locked : nextSection && isSectionUnlocked(nextSection))
 
           return (
             <Fragment key={section.id}>

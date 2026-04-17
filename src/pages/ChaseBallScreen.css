@@ -1,6 +1,6 @@
 /* .cbs uses .game-shell and .game-arena from index.css */
 
-.cbs-arena { cursor: none; }
+.cbs-arena { cursor: crosshair; }
 
 .cbs-ball {
   position: absolute;

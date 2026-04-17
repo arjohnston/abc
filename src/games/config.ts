@@ -11,8 +11,8 @@ export interface MiniGameEntry {
 export const MINI_GAMES: MiniGameEntry[] = [
   { afterSectionIndex: 0, emoji: '🐛', title: 'Letter Muncher' },
   { afterSectionIndex: 1, emoji: '🦕', title: 'Dino Run' },
-  { afterSectionIndex: 2, emoji: '🎯', title: 'Click the Circle' },
-  { afterSectionIndex: 3, emoji: '🎮', title: 'Tic Tac Toe' },
+  { afterSectionIndex: 3, emoji: '🎯', title: 'Click the Circle' },
+  { afterSectionIndex: 4, emoji: '🎮', title: 'Tic Tac Toe' },
 ]
 import { ANIMAL_ITEMS } from './animalSounds'
 import { generateBuildNumberItems } from './buildNumber'
