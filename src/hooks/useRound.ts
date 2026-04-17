@@ -9,6 +9,7 @@ interface UseRoundReturn {
   lockedRef: React.MutableRefObject<boolean>
   completionResult: { stars: number; isNewBest: boolean } | null
   advance: (correct: boolean) => void
+  flashWrong: () => void
   restart: () => void
 }
 
@@ -67,6 +68,17 @@ export function useRound(
     [total, maxStars, onComplete, playCorrect, playWrong, playComplete],
   )
 
+  // Flash wrong feedback without advancing the round (e.g. retry-on-wrong games)
+  const flashWrong = useCallback(() => {
+    setFeedback('wrong')
+    playWrong()
+    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    timeoutRef.current = setTimeout(() => {
+      setFeedback(null)
+      lockedRef.current = false
+    }, 500)
+  }, [playWrong])
+
   const restart = useCallback(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
     scoreRef.current = 0
@@ -81,5 +93,5 @@ export function useRound(
   // Clean up on unmount
   useEffect(() => () => { if (timeoutRef.current) clearTimeout(timeoutRef.current) }, [])
 
-  return { score, round, feedback, lockedRef, completionResult, advance, restart }
+  return { score, round, feedback, lockedRef, completionResult, advance, flashWrong, restart }
 }

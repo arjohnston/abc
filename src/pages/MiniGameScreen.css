@@ -60,8 +60,8 @@
 .mini-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 6px;
-  width: min(310px, 88vw);
+  gap: 10px;
+  width: min(500px, 95vw);
   background: var(--bg-card);
   border-radius: 16px;
   padding: 10px;
@@ -71,11 +71,11 @@
 /* Base cell — all cells are this size */
 .mini-cell {
   aspect-ratio: 1;
-  border-radius: 8px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(1rem, 4vw, 1.4rem);
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
   font-weight: 900;
   user-select: none;
 }
@@ -90,7 +90,7 @@
 /* Player cell */
 .mini-cell--player {
   background: var(--bg-light);
-  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  font-size: clamp(1.6rem, 6vw, 2.6rem);
   animation: player-pulse 0.7s ease-in-out infinite alternate;
 }
 

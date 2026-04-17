@@ -10,7 +10,7 @@ import { useSpeech } from '../hooks/useSpeech'
 import type { CustomGameScreenProps } from '../types/game'
 
 const TOTAL = 10
-const BALL_R = 40
+const BALL_R = 56
 const SPEED = 1.5
 
 export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {

@@ -33,7 +33,7 @@ import { useState } from 'react'
 
 export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps) {
   const [sequence] = useState(buildSequence)
-  const { score, round, feedback, lockedRef, completionResult, advance, restart } = useRound(TOTAL, onComplete)
+  const { score, round, feedback, lockedRef, completionResult, advance, flashWrong, restart } = useRound(TOTAL, onComplete)
   const speak = useSpeech()
 
   const currentDir = sequence[round] ?? sequence[TOTAL - 1]!
@@ -49,7 +49,8 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
     if (!arrowKeys.includes(key)) return
     if (lockedRef.current) return
     lockedRef.current = true
-    advance(key === KEY[currentDir])
+    if (key === KEY[currentDir]) advance(true)
+    else flashWrong()
   })
 
   if (completionResult) {
