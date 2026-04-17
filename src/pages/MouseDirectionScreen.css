@@ -34,7 +34,7 @@
   border-radius: 20px;
   border: 4px solid transparent;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
-  cursor: none;
+  cursor: crosshair;
   user-select: none;
 }
 
