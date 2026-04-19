@@ -2,17 +2,22 @@ import type { GameConfig, Section } from '../types/game'
 
 /** Bonus mini-games that appear between sections once the next section is unlocked. */
 export interface MiniGameEntry {
+  id: string
   /** Index of the section this mini-game appears AFTER. */
   afterSectionIndex: number
   emoji: string
   title: string
+  description: string
+  color: string
+  colorDark: string
 }
 
 export const MINI_GAMES: MiniGameEntry[] = [
-  { afterSectionIndex: 0, emoji: '🐛', title: 'Letter Muncher' },
-  { afterSectionIndex: 1, emoji: '🦕', title: 'Dino Run' },
-  { afterSectionIndex: 3, emoji: '🎯', title: 'Click the Circle' },
-  { afterSectionIndex: 4, emoji: '🎮', title: 'Tic Tac Toe' },
+  { id: 'letterMuncher', afterSectionIndex: 0, emoji: '🐛', title: 'Letter Muncher',    description: 'Eat the right letters!',    color: 'var(--green)',  colorDark: 'var(--green-dark)' },
+  { id: 'dinoRun',       afterSectionIndex: 1, emoji: '🦕', title: 'Dino Run',          description: 'Jump over the cacti!',       color: 'var(--orange)', colorDark: 'var(--orange-dark)' },
+  { id: 'clickCircle',   afterSectionIndex: 3, emoji: '🎯', title: 'Click the Circle',  description: 'Click the moving circle!',   color: 'var(--blue)',   colorDark: 'var(--blue-dark)' },
+  { id: 'ticTacToe',     afterSectionIndex: 4, emoji: '🎮', title: 'Tic Tac Toe',       description: 'Beat the computer!',         color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
+  { id: 'frogger',       afterSectionIndex: 4, emoji: '🐸', title: 'Frogger',           description: 'Cross the road safely!',     color: 'var(--green)',  colorDark: 'var(--green-dark)' },
 ]
 import { ANIMAL_ITEMS } from './animalSounds'
 import { generateBuildNumberItems } from './buildNumber'

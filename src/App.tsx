@@ -2,11 +2,13 @@ import { useCallback, useState } from 'react'
 
 import { useProgress } from './hooks/useProgress'
 import { useStats } from './hooks/useStats'
+import { BonusScreen } from './pages/BonusScreen'
 import { ChaseBallScreen } from './pages/ChaseBallScreen'
 import { ClickCircleScreen } from './pages/ClickCircleScreen'
 import { ClickLetterScreen } from './pages/ClickLetterScreen'
 import { DinoGameScreen } from './pages/DinoGameScreen'
 import { FollowArrowScreen } from './pages/FollowArrowScreen'
+import { FroggerScreen } from './pages/FroggerScreen'
 import { GameScreen } from './pages/GameScreen'
 import { HomeScreen } from './pages/HomeScreen'
 import { MiniGameScreen } from './pages/MiniGameScreen'
@@ -16,7 +18,6 @@ import { TicTacToeScreen } from './pages/TicTacToeScreen'
 import type { CustomGameScreenProps, GameConfig } from './types/game'
 
 // Registry: game type → custom screen component.
-// Adding a new custom game only requires one entry here + a new screen file.
 const CUSTOM_SCREENS: Partial<Record<string, React.ComponentType<CustomGameScreenProps>>> = {
   arrowGame:       FollowArrowScreen as React.ComponentType<CustomGameScreenProps>,
   simonSays:       SimonSaysScreen   as React.ComponentType<CustomGameScreenProps>,
@@ -25,19 +26,22 @@ const CUSTOM_SCREENS: Partial<Record<string, React.ComponentType<CustomGameScree
   clickLetter:     ClickLetterScreen as React.ComponentType<CustomGameScreenProps>,
 }
 
-// Registry: sectionIndex → standalone screen component (matches MINI_GAMES afterSectionIndex).
-const MINI_GAME_SCREENS: Array<React.ComponentType<{ onBack: () => void }> | undefined> = [
-  MiniGameScreen,    // 0: after Basics
-  DinoGameScreen,    // 1: after Growing
-  undefined,         // 2: no mini-game between Next Steps and Mouse Skills
-  ClickCircleScreen, // 3: after Mouse Skills
-  TicTacToeScreen,   // 4: after Challenge
-]
+// Registry: mini-game id → standalone screen component.
+const MINI_GAME_SCREENS: Partial<Record<string, React.ComponentType<{ onBack: () => void }>>> = {
+  letterMuncher: MiniGameScreen,
+  dinoRun:       DinoGameScreen,
+  clickCircle:   ClickCircleScreen,
+  ticTacToe:     TicTacToeScreen,
+  frogger:       FroggerScreen,
+}
 
 function App() {
-  const [currentGame, setCurrentGame] = useState<GameConfig | null>(null)
-  const [miniGameIndex, setMiniGameIndex] = useState<number | null>(null)
-  const [isRandom, setIsRandom] = useState(true)
+  const [currentGame, setCurrentGame]       = useState<GameConfig | null>(null)
+  const [miniGameId, setMiniGameId]         = useState<string | null>(null)
+  const [miniGameOrigin, setMiniGameOrigin] = useState<'path' | 'bonus'>('path')
+  const [showBonus, setShowBonus]           = useState(false)
+  const [isRandom, setIsRandom]             = useState(true)
+
   const { stats, recordPlay, resetStats } = useStats()
   const { getStars, getTotalStars, isSectionUnlocked, recordResult, resetProgress } = useProgress()
 
@@ -47,10 +51,7 @@ function App() {
   }, [resetProgress, resetStats])
 
   const handleSelectGame = useCallback(
-    (game: GameConfig) => {
-      recordPlay()
-      setCurrentGame(game)
-    },
+    (game: GameConfig) => { recordPlay(); setCurrentGame(game) },
     [recordPlay],
   )
 
@@ -64,7 +65,17 @@ function App() {
 
   const handleBack = useCallback(() => setCurrentGame(null), [])
 
-  // Route to custom game screen if registered, otherwise use GameScreen
+  const handlePlayMiniGame = useCallback((id: string, origin: 'path' | 'bonus' = 'path') => {
+    setMiniGameOrigin(origin)
+    setMiniGameId(id)
+  }, [])
+
+  const handleMiniGameBack = useCallback(() => {
+    setMiniGameId(null)
+    if (miniGameOrigin === 'bonus') setShowBonus(true)
+  }, [miniGameOrigin])
+
+  // Route: regular game
   if (currentGame) {
     const CustomScreen = CUSTOM_SCREENS[currentGame.type ?? '']
     if (CustomScreen) {
@@ -88,12 +99,21 @@ function App() {
     )
   }
 
-  // Route to mini-game screen by index
-  if (miniGameIndex !== null) {
-    const MiniScreen = MINI_GAME_SCREENS[miniGameIndex]
-    if (MiniScreen) {
-      return <MiniScreen onBack={() => setMiniGameIndex(null)} />
-    }
+  // Route: mini-game
+  if (miniGameId !== null) {
+    const MiniScreen = MINI_GAME_SCREENS[miniGameId]
+    if (MiniScreen) return <MiniScreen onBack={handleMiniGameBack} />
+  }
+
+  // Route: bonus collection page
+  if (showBonus) {
+    return (
+      <BonusScreen
+        onBack={() => setShowBonus(false)}
+        onPlay={(id) => handlePlayMiniGame(id, 'bonus')}
+        isSectionUnlocked={isSectionUnlocked}
+      />
+    )
   }
 
   return (
@@ -101,7 +121,8 @@ function App() {
       isRandom={isRandom}
       onToggleRandom={() => setIsRandom(!isRandom)}
       onSelectGame={handleSelectGame}
-      onPlayMiniGame={(idx) => setMiniGameIndex(idx)}
+      onPlayMiniGame={(id) => handlePlayMiniGame(id, 'path')}
+      onShowBonus={() => setShowBonus(true)}
       onReset={handleReset}
       stats={stats}
       getStars={getStars}

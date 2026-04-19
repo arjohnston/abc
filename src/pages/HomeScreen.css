@@ -12,10 +12,16 @@
   position: relative;
 }
 
-.home-settings-btn {
+.home-icon-btns {
   position: fixed;
   top: 16px;
   right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.home-icon-btn {
   background: var(--bg-card);
   border: 3px solid var(--bg-light);
   border-radius: 50%;
@@ -26,9 +32,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s;
-  z-index: 10;
+  transition: background 0.15s, transform 0.1s;
 }
+
+.home-icon-btn:hover  { background: var(--bg-light); }
+.home-icon-btn:active { transform: scale(0.9); }
 
 .home-title {
   font-size: 72px;

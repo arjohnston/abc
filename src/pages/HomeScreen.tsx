@@ -53,7 +53,8 @@ interface HomeScreenProps {
   isRandom: boolean
   onToggleRandom: () => void
   onSelectGame: (game: GameConfig) => void
-  onPlayMiniGame: (sectionIndex: number) => void
+  onPlayMiniGame: (id: string) => void
+  onShowBonus: () => void
   onReset: () => void
   stats: Stats
   getStars: (gameId: string) => number
@@ -66,6 +67,7 @@ export function HomeScreen({
   onToggleRandom,
   onSelectGame,
   onPlayMiniGame,
+  onShowBonus,
   onReset,
   stats,
   getStars,
@@ -118,7 +120,10 @@ export function HomeScreen({
           </span>
         </h1>
         <p className="home-subtitle">Pick a game and start learning!</p>
-        <button className="home-settings-btn" onClick={() => setShowSettings(true)}>⚙️</button>
+        <div className="home-icon-btns">
+          <button className="home-icon-btn" onClick={onShowBonus} title="Bonus Games">🎁</button>
+          <button className="home-icon-btn" onClick={() => setShowSettings(true)} title="Settings">⚙️</button>
+        </div>
       </header>
 
       {(stats.totalPlays > 0 || totalStars > 0) && (
@@ -138,9 +143,9 @@ export function HomeScreen({
           const isActive = !locked && hasIncomplete
           const totalHeight = (games.length - 1) * NODE_SPACING
           const nextSection = SECTIONS[sectionIndex + 1]
-          const miniGame = MINI_GAMES.find((mg) => mg.afterSectionIndex === sectionIndex)
+          const miniGamesHere = MINI_GAMES.filter((mg) => mg.afterSectionIndex === sectionIndex)
           const isLastSection = sectionIndex === SECTIONS.length - 1
-          const showMiniGame = miniGame && (isLastSection ? !locked : nextSection && isSectionUnlocked(nextSection))
+          const showMiniGames = miniGamesHere.length > 0 && (isLastSection ? !locked : nextSection && isSectionUnlocked(nextSection))
 
           return (
             <Fragment key={section.id}>
@@ -204,13 +209,14 @@ export function HomeScreen({
                 ))}
               </div>
             </div>
-            {showMiniGame && miniGame && (
+            {showMiniGames && miniGamesHere.map(mg => (
               <MiniGameNode
-                emoji={miniGame.emoji}
-                title={miniGame.title}
-                onClick={() => onPlayMiniGame(sectionIndex)}
+                key={mg.id}
+                emoji={mg.emoji}
+                title={mg.title}
+                onClick={() => onPlayMiniGame(mg.id)}
               />
-            )}
+            ))}
             </Fragment>
           )
         })}
