@@ -15,12 +15,21 @@ import { MiniGameScreen } from './pages/MiniGameScreen'
 import { MouseDirectionScreen } from './pages/MouseDirectionScreen'
 import { SimonSaysScreen } from './pages/SimonSaysScreen'
 import { TicTacToeScreen } from './pages/TicTacToeScreen'
-import type { CustomGameScreenProps, GameConfig } from './types/game'
+import type { CustomGameScreenProps, GameConfig, SimonSaysGameConfig } from './types/game'
+
+// Thin wrapper so SimonSaysScreen can live as a standalone bonus game
+const SIMON_GAME: SimonSaysGameConfig = {
+  id: 'simon-says', sectionId: '', title: 'Simon Says', emoji: '🤖',
+  description: '', color: 'var(--yellow)', colorDark: 'var(--yellow-dark)',
+  type: 'simonSays', items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+}
+function SimonSaysBonusScreen({ onBack }: { onBack: () => void }) {
+  return <SimonSaysScreen game={SIMON_GAME} onBack={onBack} onComplete={() => ({ stars: 1, isNewBest: false })} />
+}
 
 // Registry: game type → custom screen component.
 const CUSTOM_SCREENS: Partial<Record<string, React.ComponentType<CustomGameScreenProps>>> = {
   arrowGame:       FollowArrowScreen as React.ComponentType<CustomGameScreenProps>,
-  simonSays:       SimonSaysScreen   as React.ComponentType<CustomGameScreenProps>,
   mouseDirection:  MouseDirectionScreen as React.ComponentType<CustomGameScreenProps>,
   chaseBall:       ChaseBallScreen   as React.ComponentType<CustomGameScreenProps>,
   clickLetter:     ClickLetterScreen as React.ComponentType<CustomGameScreenProps>,
@@ -30,6 +39,7 @@ const CUSTOM_SCREENS: Partial<Record<string, React.ComponentType<CustomGameScree
 const MINI_GAME_SCREENS: Partial<Record<string, React.ComponentType<{ onBack: () => void }>>> = {
   letterMuncher: MiniGameScreen,
   dinoRun:       DinoGameScreen,
+  simonSays:     SimonSaysBonusScreen,
   clickCircle:   ClickCircleScreen,
   ticTacToe:     TicTacToeScreen,
   frogger:       FroggerScreen,
