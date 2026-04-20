@@ -17,9 +17,27 @@ export const MINI_GAMES: MiniGameEntry[] = [
   { id: 'dinoRun',       afterSectionIndex: 1, emoji: '🦕', title: 'Dino Run',          description: 'Jump over the cacti!',       color: 'var(--orange)', colorDark: 'var(--orange-dark)' },
   { id: 'simonSays',     afterSectionIndex: 2, emoji: '🤖', title: 'Simon Says',        description: 'Only press when Simon says!', color: 'var(--yellow)', colorDark: 'var(--yellow-dark)' },
   { id: 'clickCircle',   afterSectionIndex: 3, emoji: '🎯', title: 'Click the Circle',  description: 'Click the moving circle!',   color: 'var(--blue)',   colorDark: 'var(--blue-dark)' },
-  { id: 'ticTacToe',     afterSectionIndex: 4, emoji: '🎮', title: 'Tic Tac Toe',       description: 'Beat the computer!',         color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
-  { id: 'frogger',       afterSectionIndex: 4, emoji: '🐸', title: 'Frogger',           description: 'Cross the road safely!',     color: 'var(--green)',  colorDark: 'var(--green-dark)' },
+  { id: 'playGames',     afterSectionIndex: 4, emoji: '🎮', title: 'Play Games',        description: 'All your bonus games!',      color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
 ]
+/** All individual bonus games shown in the Play Games hub. */
+export interface BonusGameEntry {
+  id: string
+  emoji: string
+  title: string
+  description: string
+  color: string
+  colorDark: string
+}
+
+export const BONUS_GAMES: BonusGameEntry[] = [
+  { id: 'letterMuncher', emoji: '🐛', title: 'Letter Muncher',   description: 'Eat the right letters!',      color: 'var(--green)',  colorDark: 'var(--green-dark)' },
+  { id: 'dinoRun',       emoji: '🦕', title: 'Dino Run',         description: 'Jump over the cacti!',        color: 'var(--orange)', colorDark: 'var(--orange-dark)' },
+  { id: 'simonSays',     emoji: '🤖', title: 'Simon Says',       description: 'Only press when Simon says!', color: 'var(--yellow)', colorDark: 'var(--yellow-dark)' },
+  { id: 'clickCircle',   emoji: '🎯', title: 'Click the Circle', description: 'Click the moving circle!',    color: 'var(--blue)',   colorDark: 'var(--blue-dark)' },
+  { id: 'ticTacToe',     emoji: '🎮', title: 'Tic Tac Toe',      description: 'Beat the computer!',          color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
+  { id: 'frogger',       emoji: '🐸', title: 'Frogger',          description: 'Cross the road safely!',      color: 'var(--green)',  colorDark: 'var(--green-dark)' },
+]
+
 import { ANIMAL_ITEMS } from './animalSounds'
 import { generateBuildNumberItems } from './buildNumber'
 import { generateBuildWordItems } from './buildWord'

@@ -15,6 +15,7 @@ import { MiniGameScreen } from './pages/MiniGameScreen'
 import { MouseDirectionScreen } from './pages/MouseDirectionScreen'
 import { SimonSaysScreen } from './pages/SimonSaysScreen'
 import { TicTacToeScreen } from './pages/TicTacToeScreen'
+import { SECTIONS } from './games/config'
 import type { CustomGameScreenProps, GameConfig, SimonSaysGameConfig } from './types/game'
 
 // Thin wrapper so SimonSaysScreen can live as a standalone bonus game
@@ -76,6 +77,7 @@ function App() {
   const handleBack = useCallback(() => setCurrentGame(null), [])
 
   const handlePlayMiniGame = useCallback((id: string, origin: 'path' | 'bonus' = 'path') => {
+    if (id === 'playGames') { setShowBonus(true); return }
     setMiniGameOrigin(origin)
     setMiniGameId(id)
   }, [])
@@ -115,16 +117,18 @@ function App() {
     if (MiniScreen) return <MiniScreen onBack={handleMiniGameBack} />
   }
 
-  // Route: bonus collection page
+  // Route: Play Games hub
   if (showBonus) {
     return (
       <BonusScreen
         onBack={() => setShowBonus(false)}
         onPlay={(id) => handlePlayMiniGame(id, 'bonus')}
-        isSectionUnlocked={isSectionUnlocked}
       />
     )
   }
+
+  // Play Games hub unlocked when Challenge section is unlocked
+  const bonusUnlocked = isSectionUnlocked(SECTIONS[SECTIONS.length - 1]!)
 
   return (
     <HomeScreen
@@ -133,6 +137,7 @@ function App() {
       onSelectGame={handleSelectGame}
       onPlayMiniGame={(id) => handlePlayMiniGame(id, 'path')}
       onShowBonus={() => setShowBonus(true)}
+      bonusUnlocked={bonusUnlocked}
       onReset={handleReset}
       stats={stats}
       getStars={getStars}

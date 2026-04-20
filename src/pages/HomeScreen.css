@@ -37,6 +37,8 @@
 
 .home-icon-btn:hover  { background: var(--bg-light); }
 .home-icon-btn:active { transform: scale(0.9); }
+.home-icon-btn--locked { opacity: 0.45; cursor: default; }
+.home-icon-btn--locked:hover { background: var(--bg-card); transform: none; }
 
 .home-title {
   font-size: 72px;

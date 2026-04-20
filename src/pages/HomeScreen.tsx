@@ -55,6 +55,7 @@ interface HomeScreenProps {
   onSelectGame: (game: GameConfig) => void
   onPlayMiniGame: (id: string) => void
   onShowBonus: () => void
+  bonusUnlocked: boolean
   onReset: () => void
   stats: Stats
   getStars: (gameId: string) => number
@@ -68,6 +69,7 @@ export function HomeScreen({
   onSelectGame,
   onPlayMiniGame,
   onShowBonus,
+  bonusUnlocked,
   onReset,
   stats,
   getStars,
@@ -121,7 +123,13 @@ export function HomeScreen({
         </h1>
         <p className="home-subtitle">Pick a game and start learning!</p>
         <div className="home-icon-btns">
-          <button className="home-icon-btn" onClick={onShowBonus} title="Bonus Games">🎁</button>
+          <button
+            className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}
+            onClick={bonusUnlocked ? onShowBonus : undefined}
+            title={bonusUnlocked ? 'Play Games' : 'Complete Challenge to unlock!'}
+          >
+            {bonusUnlocked ? '🎮' : '🔒'}
+          </button>
           <button className="home-icon-btn" onClick={() => setShowSettings(true)} title="Settings">⚙️</button>
         </div>
       </header>
