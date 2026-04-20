@@ -46,10 +46,11 @@ export function FroggerScreen({ onBack }: Props) {
   const hitRef      = useRef(false)
   const rafRef      = useRef<number>(0)
 
-  const [frogPos, setFrogPos] = useState<Pos>({ ...START })
-  const [score, setScore]     = useState(0)
-  const [done, setDone]       = useState(false)
-  const [hit, setHit]         = useState(false)
+  const [frogPos, setFrogPos]       = useState<Pos>({ ...START })
+  const [score, setScore]           = useState(0)
+  const [done, setDone]             = useState(false)
+  const [hit, setHit]               = useState(false)
+  const [celebrating, setCelebrating] = useState(false)
 
   const { playCorrect, playWrong, playComplete } = useSoundEffects()
 
@@ -66,18 +67,27 @@ export function FroggerScreen({ onBack }: Props) {
     if (newRow === row && newCol === col) return
 
     if (newRow === 0) {
-      // Reached the goal!
+      // Reached the goal — celebrate briefly before resetting
       const newScore = scoreRef.current + 1
       scoreRef.current = newScore
-      sfxRef.current.playCorrect()
-      frogRef.current = { ...START }
+      hitRef.current = true // block movement + collision during celebration
+      frogRef.current = { row: 0, col: newCol }
+      setFrogPos({ row: 0, col: newCol })
       setScore(newScore)
-      if (newScore >= GOAL_SCORE) {
-        setDone(true)
-        sfxRef.current.playComplete()
-      } else {
-        setFrogPos({ ...START })
-      }
+      setCelebrating(true)
+      sfxRef.current.playCorrect()
+
+      setTimeout(() => {
+        setCelebrating(false)
+        hitRef.current = false
+        if (newScore >= GOAL_SCORE) {
+          setDone(true)
+          sfxRef.current.playComplete()
+        } else {
+          frogRef.current = { ...START }
+          setFrogPos({ ...START })
+        }
+      }, 900)
       return
     }
 
@@ -162,6 +172,7 @@ export function FroggerScreen({ onBack }: Props) {
     setScore(0)
     setDone(false)
     setHit(false)
+    setCelebrating(false)
     setFrogPos({ ...START })
   }, [])
 
@@ -188,7 +199,7 @@ export function FroggerScreen({ onBack }: Props) {
             {Array.from({ length: ROWS }, (_, i) => (
               <div
                 key={i}
-                className={`fg-lane ${i === 0 ? 'fg-lane--goal' : i === ROWS - 1 ? 'fg-lane--start' : i % 2 === 0 ? 'fg-lane--road-a' : 'fg-lane--road-b'}`}
+                className={`fg-lane ${i === 0 ? `fg-lane--goal ${celebrating ? 'fg-lane--celebrate' : ''}` : i === ROWS - 1 ? 'fg-lane--start' : i % 2 === 0 ? 'fg-lane--road-a' : 'fg-lane--road-b'}`}
                 style={{ height: CELL_H }}
               >
                 {i === 0         && <span className="fg-zone-label">🏁 Cross here!</span>}
@@ -216,7 +227,7 @@ export function FroggerScreen({ onBack }: Props) {
 
             {/* Frog */}
             <div
-              className={`fg-frog ${hit ? 'fg-frog--hit' : ''}`}
+              className={`fg-frog ${hit ? 'fg-frog--hit' : ''} ${celebrating ? 'fg-frog--celebrate' : ''}`}
               style={{
                 top:  frogPos.row * CELL_H + CELL_H / 2,
                 left: `${(frogPos.col + 0.5) / COLS * 100}%`,
