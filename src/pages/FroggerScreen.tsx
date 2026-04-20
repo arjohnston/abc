@@ -9,7 +9,7 @@ import { useSoundEffects } from '../hooks/useSoundEffects'
 
 const ROWS = 6       // 0 = goal, 1-4 = road, 5 = start
 const COLS = 5
-const CELL_H = 78    // px per row
+const CELL_H = 96    // px per row
 const GOAL_SCORE = 5
 
 interface Car {
@@ -25,14 +25,14 @@ const START: Pos = { row: ROWS - 1, col: Math.floor(COLS / 2) }
 
 // Hardcoded for ~360px wide arena — will wrap naturally once RAF starts
 const INITIAL_CARS: Car[] = [
-  { row: 1, x: 10,  speed: 2.2,  width: 66, emoji: '🚗' },
-  { row: 1, x: 200, speed: 2.2,  width: 66, emoji: '🚗' },
-  { row: 2, x: 280, speed: -2.8, width: 66, emoji: '🚕' },
-  { row: 2, x: 80,  speed: -2.8, width: 66, emoji: '🚕' },
-  { row: 3, x: 50,  speed: 3.5,  width: 70, emoji: '🚙' },
-  { row: 3, x: 240, speed: 3.5,  width: 70, emoji: '🚙' },
-  { row: 4, x: 30,  speed: -1.6, width: 98, emoji: '🚛' },
-  { row: 4, x: 230, speed: -1.6, width: 98, emoji: '🚛' },
+  { row: 1, x: 10,  speed: 1.1,  width: 66, emoji: '🚗' },
+  { row: 1, x: 210, speed: 1.1,  width: 66, emoji: '🚗' },
+  { row: 2, x: 280, speed: -1.4, width: 66, emoji: '🚕' },
+  { row: 2, x: 80,  speed: -1.4, width: 66, emoji: '🚕' },
+  { row: 3, x: 50,  speed: 1.7,  width: 70, emoji: '🚙' },
+  { row: 3, x: 250, speed: 1.7,  width: 70, emoji: '🚙' },
+  { row: 4, x: 30,  speed: -0.9, width: 98, emoji: '🚛' },
+  { row: 4, x: 230, speed: -0.9, width: 98, emoji: '🚛' },
 ]
 
 interface Props { onBack: () => void }

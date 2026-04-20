@@ -13,7 +13,7 @@
 .fg-arena {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
   border-radius: 20px;
   overflow: hidden;
   border: 3px solid var(--bg-light);
