@@ -11,12 +11,23 @@
   transition: transform 0.15s;
 }
 
-.mini-game-node:hover {
-  transform: scale(1.08);
+.mini-game-node:not(.mini-game-node--locked):hover  { transform: scale(1.08); }
+.mini-game-node:not(.mini-game-node--locked):active { transform: scale(0.95); }
+
+.mini-game-node--locked {
+  cursor: default;
+  opacity: 0.5;
+  filter: grayscale(0.6);
 }
 
-.mini-game-node:active {
-  transform: scale(0.95);
+.mini-game-node--locked .mini-game-node__circle {
+  border-color: var(--bg-light);
+  box-shadow: none;
+  animation: none;
+}
+
+.mini-game-node--locked .mini-game-node__sub {
+  color: var(--text-muted);
 }
 
 .mini-game-node__circle {

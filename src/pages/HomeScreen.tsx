@@ -150,10 +150,10 @@ export function HomeScreen({
           const hasIncomplete = games.some((g) => getStars(g.id) < 3)
           const isActive = !locked && hasIncomplete
           const totalHeight = (games.length - 1) * NODE_SPACING
-          const nextSection = SECTIONS[sectionIndex + 1]
           const miniGamesHere = MINI_GAMES.filter((mg) => mg.afterSectionIndex === sectionIndex)
-          const isLastSection = sectionIndex === SECTIONS.length - 1
-          const showMiniGames = miniGamesHere.length > 0 && (isLastSection ? !locked : nextSection && isSectionUnlocked(nextSection))
+          // Bonus unlocked when every game in this section has ≥1 star
+          const bonusUnlocked = !locked && games.every((g) => getStars(g.id) >= 1)
+          const lockHint = `Get 1 star in every ${section.title} game!`
 
           return (
             <Fragment key={section.id}>
@@ -217,11 +217,13 @@ export function HomeScreen({
                 ))}
               </div>
             </div>
-            {showMiniGames && miniGamesHere.map(mg => (
+            {miniGamesHere.map(mg => (
               <MiniGameNode
                 key={mg.id}
                 emoji={mg.emoji}
                 title={mg.title}
+                locked={!bonusUnlocked}
+                lockHint={lockHint}
                 onClick={() => onPlayMiniGame(mg.id)}
               />
             ))}

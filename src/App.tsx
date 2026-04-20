@@ -15,7 +15,7 @@ import { MiniGameScreen } from './pages/MiniGameScreen'
 import { MouseDirectionScreen } from './pages/MouseDirectionScreen'
 import { SimonSaysScreen } from './pages/SimonSaysScreen'
 import { TicTacToeScreen } from './pages/TicTacToeScreen'
-import { SECTIONS } from './games/config'
+import { getGamesForSection } from './games/config'
 import type { CustomGameScreenProps, GameConfig, SimonSaysGameConfig } from './types/game'
 
 // Thin wrapper so SimonSaysScreen can live as a standalone bonus game
@@ -127,8 +127,9 @@ function App() {
     )
   }
 
-  // Play Games hub unlocked when Challenge section is unlocked
-  const bonusUnlocked = isSectionUnlocked(SECTIONS[SECTIONS.length - 1]!)
+  // Play Games hub unlocked when every Challenge game has ≥1 star
+  const challengeGames = getGamesForSection('challenge')
+  const bonusUnlocked = challengeGames.length > 0 && challengeGames.every(g => getStars(g.id) >= 1)
 
   return (
     <HomeScreen
