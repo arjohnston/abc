@@ -1,12 +1,11 @@
 import './TicTacToeScreen.css'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { Confetti } from '../components/Confetti'
 import { Button } from '../components/ui/Button'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { useSoundEffects } from '../hooks/useSoundEffects'
-import { useSpeech } from '../hooks/useSpeech'
 
 type Cell = 'X' | 'O' | null
 type Board = Cell[]
@@ -94,7 +93,7 @@ export function TicTacToeScreen({ onBack }: Props) {
   const [winLine, setWinLine] = useState<number[] | null>(null)
   const [thinking, setThinking] = useState(false)
 
-  const speak = useSpeech()
+
   const { playCorrect, playWrong, playComplete } = useSoundEffects()
 
   const handleResult = useCallback(
@@ -105,23 +104,20 @@ export function TicTacToeScreen({ onBack }: Props) {
         if (win.winner === 'X') {
           setResult('win')
           playComplete()
-          speak('You win! Amazing!')
         } else {
           setResult('lose')
           playWrong()
-          speak('The computer wins. Try again!')
         }
         return true
       }
       if (isDraw(board)) {
         setResult('draw')
         playCorrect()
-        speak("It's a draw!")
         return true
       }
       return false
     },
-    [playComplete, playWrong, playCorrect, speak],
+    [playComplete, playWrong, playCorrect],
   )
 
   const handleClick = useCallback(
@@ -161,9 +157,6 @@ export function TicTacToeScreen({ onBack }: Props) {
     setThinking(false)
   }, [])
 
-  useEffect(() => {
-    speak('Tic Tac Toe! You are X. Click to go first!')
-  }, [speak])
 
   const status =
     result === 'win'  ? '🎉 You Win!' :
