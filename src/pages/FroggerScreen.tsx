@@ -25,14 +25,14 @@ const START: Pos = { row: ROWS - 1, col: Math.floor(COLS / 2) } // col 4 of 9
 
 // Hardcoded for ~360px wide arena — will wrap naturally once RAF starts
 const INITIAL_CARS: Car[] = [
-  { row: 1, x: 10,  speed: 0.9,  width: 66, emoji: '🚗' },
-  { row: 1, x: 210, speed: 0.9,  width: 66, emoji: '🚗' },
-  { row: 2, x: 280, speed: -1.1, width: 66, emoji: '🚕' },
-  { row: 2, x: 80,  speed: -1.1, width: 66, emoji: '🚕' },
-  { row: 3, x: 50,  speed: 1.3,  width: 70, emoji: '🚙' },
-  { row: 3, x: 250, speed: 1.3,  width: 70, emoji: '🚙' },
-  { row: 4, x: 30,  speed: -0.7, width: 98, emoji: '🚛' },
-  { row: 4, x: 230, speed: -0.7, width: 98, emoji: '🚛' },
+  { row: 1, x: 10,  speed: 0.6,  width: 66, emoji: '🚗' },
+  { row: 1, x: 210, speed: 0.6,  width: 66, emoji: '🚗' },
+  { row: 2, x: 280, speed: -0.7, width: 66, emoji: '🚕' },
+  { row: 2, x: 80,  speed: -0.7, width: 66, emoji: '🚕' },
+  { row: 3, x: 50,  speed: 0.85, width: 70, emoji: '🚙' },
+  { row: 3, x: 250, speed: 0.85, width: 70, emoji: '🚙' },
+  { row: 4, x: 30,  speed: -0.5, width: 98, emoji: '🚛' },
+  { row: 4, x: 230, speed: -0.5, width: 98, emoji: '🚛' },
 ]
 
 interface Props { onBack: () => void }
