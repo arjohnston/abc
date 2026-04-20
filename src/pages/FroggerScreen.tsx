@@ -8,7 +8,7 @@ import { GameTopbar } from '../components/ui/GameTopbar'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 
 const ROWS = 6       // 0 = goal, 1-4 = road, 5 = start
-const COLS = 5
+const COLS = 7
 const CELL_H = 96    // px per row
 const GOAL_SCORE = 5
 
@@ -21,18 +21,18 @@ interface Car {
 }
 
 interface Pos { row: number; col: number }
-const START: Pos = { row: ROWS - 1, col: Math.floor(COLS / 2) }
+const START: Pos = { row: ROWS - 1, col: Math.floor(COLS / 2) } // col 4 of 9
 
 // Hardcoded for ~360px wide arena — will wrap naturally once RAF starts
 const INITIAL_CARS: Car[] = [
-  { row: 1, x: 10,  speed: 1.1,  width: 66, emoji: '🚗' },
-  { row: 1, x: 210, speed: 1.1,  width: 66, emoji: '🚗' },
-  { row: 2, x: 280, speed: -1.4, width: 66, emoji: '🚕' },
-  { row: 2, x: 80,  speed: -1.4, width: 66, emoji: '🚕' },
-  { row: 3, x: 50,  speed: 1.7,  width: 70, emoji: '🚙' },
-  { row: 3, x: 250, speed: 1.7,  width: 70, emoji: '🚙' },
-  { row: 4, x: 30,  speed: -0.9, width: 98, emoji: '🚛' },
-  { row: 4, x: 230, speed: -0.9, width: 98, emoji: '🚛' },
+  { row: 1, x: 10,  speed: 0.9,  width: 66, emoji: '🚗' },
+  { row: 1, x: 210, speed: 0.9,  width: 66, emoji: '🚗' },
+  { row: 2, x: 280, speed: -1.1, width: 66, emoji: '🚕' },
+  { row: 2, x: 80,  speed: -1.1, width: 66, emoji: '🚕' },
+  { row: 3, x: 50,  speed: 1.3,  width: 70, emoji: '🚙' },
+  { row: 3, x: 250, speed: 1.3,  width: 70, emoji: '🚙' },
+  { row: 4, x: 30,  speed: -0.7, width: 98, emoji: '🚛' },
+  { row: 4, x: 230, speed: -0.7, width: 98, emoji: '🚛' },
 ]
 
 interface Props { onBack: () => void }
@@ -109,7 +109,6 @@ export function FroggerScreen({ onBack }: Props) {
       if (!arena) { rafRef.current = requestAnimationFrame(loop); return }
 
       const arenaW = arena.offsetWidth
-      const cellW  = arenaW / COLS
       const cars   = carsRef.current
 
       // Move cars + update DOM directly
@@ -122,14 +121,18 @@ export function FroggerScreen({ onBack }: Props) {
         if (div) div.style.left = `${car.x}px`
       }
 
-      // Collision check (road rows only)
+      // Collision check — fixed pixel radius so it doesn't depend on COLS
       if (!hitRef.current) {
         const frog = frogRef.current
         if (frog.row >= 1 && frog.row <= ROWS - 2) {
-          const frogL = frog.col * cellW + cellW * 0.15
-          const frogR = (frog.col + 1) * cellW - cellW * 0.15
+          const frogCx = (frog.col + 0.5) / COLS * arenaW
+          const FROG_R = 18 // px, fixed regardless of column count
+          const frogL = frogCx - FROG_R
+          const frogR = frogCx + FROG_R
           for (const car of cars) {
-            if (car.row === frog.row && frogL < car.x + car.width * 0.85 && frogR > car.x + car.width * 0.15) {
+            const carL = car.x + car.width * 0.2
+            const carR = car.x + car.width * 0.8
+            if (car.row === frog.row && frogL < carR && frogR > carL) {
               hitRef.current = true
               sfxRef.current.playWrong()
               setHit(true)
