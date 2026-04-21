@@ -81,10 +81,6 @@
   margin: 0 0 14px;
 }
 
-.gpm-stars {
-  display: flex;
-  gap: 4px;
-}
 
 .gpm-star {
   font-size: 26px;
@@ -98,8 +94,6 @@
 
 /* ── Actions ── */
 .gpm-actions {
-  display: flex;
-  gap: 10px;
   padding: 12px 24px 24px;
 }
 
