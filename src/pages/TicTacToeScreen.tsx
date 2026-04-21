@@ -2,6 +2,7 @@ import './TicTacToeScreen.css'
 
 import { useCallback, useState } from 'react'
 
+import { CoreScreen } from '@core'
 import { Confetti } from '../components/Confetti'
 import { Button } from '../components/ui/Button'
 import { GameTopbar } from '../components/ui/GameTopbar'
@@ -167,7 +168,7 @@ export function TicTacToeScreen({ onBack }: Props) {
                         ''
 
   return (
-    <div className="ttt">
+    <CoreScreen center paddingBottom={24} className="ttt">
       {result === 'win' && <Confetti />}
 
       <GameTopbar onBack={onBack} percent={0} score={0} />
@@ -198,6 +199,6 @@ export function TicTacToeScreen({ onBack }: Props) {
       )}
 
       <p className="ttt-legend">You = <strong>X</strong> &nbsp; Computer = <strong>O</strong></p>
-    </div>
+    </CoreScreen>
   )
 }

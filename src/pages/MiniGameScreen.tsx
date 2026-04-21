@@ -2,6 +2,7 @@ import './MiniGameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { CoreScreen } from '@core'
 import { Confetti } from '../components/Confetti'
 import { Button } from '../components/ui/Button'
 import { GameTopbar } from '../components/ui/GameTopbar'
@@ -220,7 +221,7 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
     return (
       <>
         <Confetti />
-        <div className="mini-game">
+        <CoreScreen className="mini-game">
           <GameTopbar onBack={onBack} percent={100} score={WIN_SCORE} />
           <div className="mini-game-complete">
             <div className="mini-complete-emoji">🐛</div>
@@ -235,13 +236,13 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
               </Button>
             </div>
           </div>
-        </div>
+        </CoreScreen>
       </>
     )
   }
 
   return (
-    <div className="mini-game">
+    <CoreScreen className="mini-game">
       <GameTopbar onBack={onBack} percent={(score / WIN_SCORE) * 100} score={score} />
 
       <div className="mini-game-area">
@@ -294,6 +295,6 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
 
         <p className="mini-game-hint">Use arrow keys ← → ↑ ↓</p>
       </div>
-    </div>
+    </CoreScreen>
   )
 }

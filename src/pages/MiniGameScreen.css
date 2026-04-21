@@ -1,9 +1,3 @@
-.mini-game {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-}
 
 .mini-game-area {
   flex: 1;

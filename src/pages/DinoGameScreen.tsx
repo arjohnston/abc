@@ -2,6 +2,7 @@ import './DinoGameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { CoreScreen } from '@core'
 import { BackButton } from '../components/ui/BackButton'
 import { Button } from '../components/ui/Button'
 import { useSoundEffects } from '../hooks/useSoundEffects'
@@ -318,7 +319,7 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
   )
 
   return (
-    <div className="dino-game">
+    <CoreScreen center padding={16} gap={16} className="dino-game">
       <div className="dino-topbar">
         <BackButton onClick={onBack} />
         <span className="dino-title">🦕 Dino Run</span>
@@ -348,6 +349,6 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
 
         <p className="dino-hint">Tap screen or press Space to jump!</p>
       </div>
-    </div>
+    </CoreScreen>
   )
 }
