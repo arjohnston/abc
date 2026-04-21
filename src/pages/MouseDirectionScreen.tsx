@@ -2,10 +2,9 @@ import './MouseDirectionScreen.css'
 
 import { useEffect } from 'react'
 
-import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
 import { GameInstruction } from '../components/GameInstruction'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { GameShell } from '../components/GameShell'
 import { useRound } from '../hooks/useRound'
 import { useSpeech } from '../hooks/useSpeech'
 import type { CustomGameScreenProps } from '../types/game'
@@ -53,8 +52,7 @@ export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenPro
   }
 
   return (
-    <CoreScreen className="mds">
-      <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
+    <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} className="mds">
 
       <GameInstruction>
         Move your mouse to the <strong>{LABELS[currentDir]}</strong> box!
@@ -73,6 +71,6 @@ export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenPro
         ))}
         <div className="mds-center">🖱️</div>
       </div>
-    </CoreScreen>
+    </GameShell>
   )
 }

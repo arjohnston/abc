@@ -1,11 +1,7 @@
 .spmath {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100dvh;
-  background: var(--bg);
   --game-color: var(--purple);
   --game-color-dark: var(--purple-dark);
+  height: 100dvh;
   overflow: hidden;
   user-select: none;
 }

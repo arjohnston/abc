@@ -3,7 +3,7 @@ import './SpaceMathScreen.css'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Confetti } from '../components/Confetti'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { GameShell } from '../components/GameShell'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 
 /* ── Constants ──────────────────────────────────────── */
@@ -275,10 +275,8 @@ export function SpaceMathScreen({ onBack }: Props) {
   const initialX = (arenaW - gridW) / 2
 
   return (
-    <div className="spmath">
+    <GameShell onBack={onBack} percent={(score / WIN_SCORE) * 100} score={score} className="spmath">
       {phase === 'win' && <Confetti />}
-
-      <GameTopbar onBack={onBack} percent={(score / WIN_SCORE) * 100} score={score} />
 
       {/* Lives */}
       <div className="spmath-lives">
@@ -369,6 +367,6 @@ export function SpaceMathScreen({ onBack }: Props) {
           >▶</button>
         </div>
       )}
-    </div>
+    </GameShell>
   )
 }

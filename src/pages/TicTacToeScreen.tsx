@@ -2,10 +2,9 @@ import './TicTacToeScreen.css'
 
 import { useCallback, useState } from 'react'
 
-import { CoreScreen } from '@core'
 import { Confetti } from '../components/Confetti'
+import { GameShell } from '../components/GameShell'
 import { Button } from '../components/ui/Button'
-import { GameTopbar } from '../components/ui/GameTopbar'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 
 type Cell = 'X' | 'O' | null
@@ -168,10 +167,8 @@ export function TicTacToeScreen({ onBack }: Props) {
                         ''
 
   return (
-    <CoreScreen center paddingBottom={24} className="ttt">
+    <GameShell onBack={onBack} percent={0} score={0} center paddingBottom={24} className="ttt">
       {result === 'win' && <Confetti />}
-
-      <GameTopbar onBack={onBack} percent={0} score={0} />
 
       <p className="ttt-status">{status}</p>
 
@@ -199,6 +196,6 @@ export function TicTacToeScreen({ onBack }: Props) {
       )}
 
       <p className="ttt-legend">You = <strong>X</strong> &nbsp; Computer = <strong>O</strong></p>
-    </CoreScreen>
+    </GameShell>
   )
 }

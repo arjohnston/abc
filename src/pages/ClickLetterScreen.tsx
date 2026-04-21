@@ -2,9 +2,8 @@ import './ClickLetterScreen.css'
 
 import { useCallback, useEffect, useState } from 'react'
 
-import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { GameShell } from '../components/GameShell'
 import { useRound } from '../hooks/useRound'
 import { useSpeech } from '../hooks/useSpeech'
 import type { ClickLetterGameConfig, CustomGameScreenProps } from '../types/game'
@@ -64,8 +63,7 @@ export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreen
   }
 
   return (
-    <CoreScreen className="cls">
-      <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
+    <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} className="cls">
 
       <div className="cls-prompt">
         Click: <span className="cls-target">{target}</span>
@@ -83,6 +81,6 @@ export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreen
           </button>
         ))}
       </div>
-    </CoreScreen>
+    </GameShell>
   )
 }

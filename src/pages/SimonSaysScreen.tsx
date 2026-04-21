@@ -2,10 +2,9 @@ import './SimonSaysScreen.css'
 
 import { useEffect, useRef, useState } from 'react'
 
-import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
 import { GameInstruction } from '../components/GameInstruction'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { GameShell } from '../components/GameShell'
 import { useKeyInput } from '../hooks/useKeyInput'
 import { useRound } from '../hooks/useRound'
 import { useSpeech } from '../hooks/useSpeech'
@@ -86,8 +85,7 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
   }
 
   return (
-    <CoreScreen center className="ss">
-      <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
+    <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} center className="ss">
 
       <div className="ss-content">
         <div className={`ss-banner ${isDo ? 'ss-banner--do' : 'ss-banner--dont'}`}>
@@ -108,6 +106,6 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
           </div>
         )}
       </div>
-    </CoreScreen>
+    </GameShell>
   )
 }

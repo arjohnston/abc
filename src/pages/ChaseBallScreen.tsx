@@ -2,9 +2,8 @@ import './ChaseBallScreen.css'
 
 import { useCallback, useRef } from 'react'
 
-import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { GameShell } from '../components/GameShell'
 import { usePhysicsObject } from '../hooks/usePhysicsObject'
 import { useRound } from '../hooks/useRound'
 import { useSpeech } from '../hooks/useSpeech'
@@ -57,8 +56,7 @@ export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
   }
 
   return (
-    <CoreScreen className="cbs">
-      <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
+    <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} className="cbs">
       <div className="cbs-arena" ref={arenaRef} onMouseMove={handleMouseMove}>
         <div
           ref={ballRef}
@@ -68,6 +66,6 @@ export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
           🎾
         </div>
       </div>
-    </CoreScreen>
+    </GameShell>
   )
 }

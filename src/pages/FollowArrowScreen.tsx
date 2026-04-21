@@ -2,10 +2,9 @@ import './FollowArrowScreen.css'
 
 import { useEffect, useRef } from 'react'
 
-import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
 import { GameInstruction } from '../components/GameInstruction'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { GameShell } from '../components/GameShell'
 import { useKeyInput } from '../hooks/useKeyInput'
 import { useRound } from '../hooks/useRound'
 import { useSpeech } from '../hooks/useSpeech'
@@ -60,8 +59,7 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
   }
 
   return (
-    <CoreScreen className="fa">
-      <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
+    <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} className="fa">
 
       <div className="fa-arena">
         <div
@@ -87,6 +85,6 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
           ))}
         </div>
       </div>
-    </CoreScreen>
+    </GameShell>
   )
 }
