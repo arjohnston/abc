@@ -19,6 +19,7 @@ export interface SharedLayoutProps {
   flex?: number
   borderRadius?: number
   background?: string
+  style?: React.CSSProperties
   className?: string
   children?: React.ReactNode
 }
@@ -43,5 +44,5 @@ export function buildSpacingStyle(props: SharedLayoutProps): React.CSSProperties
   if (props.flex !== undefined) s.flex = props.flex
   if (props.borderRadius !== undefined) s.borderRadius = props.borderRadius
   if (props.background !== undefined) s.background = props.background
-  return s
+  return { ...s, ...props.style }
 }
