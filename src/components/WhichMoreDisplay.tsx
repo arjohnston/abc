@@ -1,5 +1,6 @@
 import './WhichMoreDisplay.css'
 
+import { CoreRow } from './core'
 import type { FeedbackState, WhichMoreItem } from '../types/game'
 
 function CountBox({
@@ -43,10 +44,10 @@ export function WhichMoreDisplay({ item, feedback, pressedKey, animKey }: WhichM
   }
 
   return (
-    <div key={animKey} className="which-more">
+    <CoreRow key={animKey} align="flex-start" gap={16} className="which-more">
       <CountBox count={parseInt(item.left)} emoji={item.emoji} feedbackClass={getClass(item.left)} />
       <div className="which-more__vs">or</div>
       <CountBox count={parseInt(item.right)} emoji={item.emoji} feedbackClass={getClass(item.right)} />
-    </div>
+    </CoreRow>
   )
 }

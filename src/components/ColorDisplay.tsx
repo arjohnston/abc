@@ -1,5 +1,6 @@
 import './ColorDisplay.css'
 
+import { CoreCol } from './core'
 import type { ColorItem, FeedbackState } from '../types/game'
 
 interface ColorDisplayProps {
@@ -13,12 +14,12 @@ export function ColorDisplay({ item, feedback, animKey }: ColorDisplayProps) {
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
-    <div className="color-display">
+    <CoreCol align="center" gap={16} className="color-display">
       <div
         key={animKey}
         className={`color-display__circle ${feedbackClass}`}
         style={{ background: item.color }}
       />
-    </div>
+    </CoreCol>
   )
 }

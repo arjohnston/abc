@@ -1,9 +1,3 @@
-.color-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
 
 .color-display__circle {
   width: clamp(140px, 38vw, 220px);
