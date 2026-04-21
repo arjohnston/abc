@@ -1,0 +1,9 @@
+.core-scroll-view {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.core-scroll-view--horizontal {
+  overflow-x: auto;
+  overflow-y: hidden;
+}

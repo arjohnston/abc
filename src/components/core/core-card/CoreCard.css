@@ -1,0 +1,5 @@
+.core-card {
+  background: var(--bg-card);
+  border: 3px solid var(--bg-light);
+  border-radius: 20px;
+}

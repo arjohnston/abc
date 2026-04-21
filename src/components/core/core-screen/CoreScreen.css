@@ -1,0 +1,11 @@
+.core-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.core-screen--center {
+  align-items: center;
+}
