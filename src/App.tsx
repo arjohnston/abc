@@ -9,6 +9,7 @@ import { ClickLetterScreen } from './pages/ClickLetterScreen'
 import { DinoGameScreen } from './pages/DinoGameScreen'
 import { FollowArrowScreen } from './pages/FollowArrowScreen'
 import { FroggerScreen } from './pages/FroggerScreen'
+import { SpaceMathScreen } from './pages/SpaceMathScreen'
 import { GameScreen } from './pages/GameScreen'
 import { HomeScreen } from './pages/HomeScreen'
 import { MiniGameScreen } from './pages/MiniGameScreen'
@@ -44,6 +45,7 @@ const MINI_GAME_SCREENS: Partial<Record<string, React.ComponentType<{ onBack: ()
   clickCircle:   ClickCircleScreen,
   ticTacToe:     TicTacToeScreen,
   frogger:       FroggerScreen,
+  spaceMath:     SpaceMathScreen,
 }
 
 function App() {

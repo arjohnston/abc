@@ -17,7 +17,8 @@ export const MINI_GAMES: MiniGameEntry[] = [
   { id: 'dinoRun',       afterSectionIndex: 1, emoji: '🦕', title: 'Dino Run',          description: 'Jump over the cacti!',       color: 'var(--orange)', colorDark: 'var(--orange-dark)' },
   { id: 'simonSays',     afterSectionIndex: 2, emoji: '🤖', title: 'Simon Says',        description: 'Only press when Simon says!', color: 'var(--yellow)', colorDark: 'var(--yellow-dark)' },
   { id: 'clickCircle',   afterSectionIndex: 3, emoji: '🎯', title: 'Click the Circle',  description: 'Click the moving circle!',   color: 'var(--blue)',   colorDark: 'var(--blue-dark)' },
-  { id: 'playGames',     afterSectionIndex: 4, emoji: '🎮', title: 'Play Games',        description: 'All your bonus games!',      color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
+  { id: 'spaceMath',     afterSectionIndex: 4, emoji: '👾', title: 'Space Math',        description: 'Shoot the right answer!',    color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
+  { id: 'playGames',     afterSectionIndex: 5, emoji: '🎮', title: 'Play Games',        description: 'All your bonus games!',      color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
 ]
 /** All individual bonus games shown in the Play Games hub. */
 export interface BonusGameEntry {
@@ -36,6 +37,7 @@ export const BONUS_GAMES: BonusGameEntry[] = [
   { id: 'clickCircle',   emoji: '🎯', title: 'Click the Circle', description: 'Click the moving circle!',    color: 'var(--blue)',   colorDark: 'var(--blue-dark)' },
   { id: 'ticTacToe',     emoji: '🎮', title: 'Tic Tac Toe',      description: 'Beat the computer!',          color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
   { id: 'frogger',       emoji: '🐸', title: 'Frogger',          description: 'Cross the road safely!',      color: 'var(--green)',  colorDark: 'var(--green-dark)' },
+  { id: 'spaceMath',     emoji: '👾', title: 'Space Math',       description: 'Shoot the right answer!',     color: 'var(--purple)', colorDark: 'var(--purple-dark)' },
 ]
 
 import { ANIMAL_ITEMS } from './animalSounds'
@@ -44,6 +46,9 @@ import { generateBuildWordItems } from './buildWord'
 import { generateClockItems } from './clock'
 import { COLOR_ITEMS } from './colorMatch'
 import { generateCountingItems } from './counting'
+import { generateAdditionItems } from './mathAdd'
+import { generateMathMostItems } from './mathMost'
+import { generateSubtractionItems } from './mathSub'
 import { generateWhatNextItems } from './whatNext'
 import { generateWhichMoreItems } from './whichMore'
 
@@ -52,6 +57,7 @@ export const SECTIONS: Section[] = [
   { id: 'growing',      title: 'Growing',      emoji: '🌿', starsToUnlock: 5 },
   { id: 'next-steps',   title: 'Next Steps',   emoji: '🚀', starsToUnlock: 5 },
   { id: 'mouse-skills', title: 'Mouse Skills', emoji: '🖱️',  starsToUnlock: 7 },
+  { id: 'math',         title: 'Math',         emoji: '➕',  starsToUnlock: 5 },
   { id: 'challenge',    title: 'Challenge',    emoji: '🏆', starsToUnlock: 5 },
 ]
 
@@ -203,6 +209,41 @@ export const GAMES: GameConfig[] = [
     colorDark: 'var(--purple-dark)',
     type: 'clickLetter',
     items: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.split(''),
+  },
+
+  // --- Math ---
+  {
+    id: 'addition',
+    sectionId: 'math',
+    title: 'Addition',
+    emoji: '➕',
+    description: 'Add the two groups!',
+    color: 'var(--green)',
+    colorDark: 'var(--green-dark)',
+    type: 'mathAdd',
+    generateItems: generateAdditionItems,
+  },
+  {
+    id: 'subtraction',
+    sectionId: 'math',
+    title: 'Subtraction',
+    emoji: '➖',
+    description: 'Take some away!',
+    color: 'var(--red)',
+    colorDark: 'var(--red-dark)',
+    type: 'mathSub',
+    generateItems: generateSubtractionItems,
+  },
+  {
+    id: 'which-most',
+    sectionId: 'math',
+    title: 'Which is Most?',
+    emoji: '📊',
+    description: 'Press the biggest group!',
+    color: 'var(--purple)',
+    colorDark: 'var(--purple-dark)',
+    type: 'mathMost',
+    generateItems: generateMathMostItems,
   },
 
   // --- Challenge ---

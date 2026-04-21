@@ -82,10 +82,20 @@ export function HomeScreen({
   const [previewGame, setPreviewGame] = useState<GameConfig | null>(null)
 
   useEffect(() => {
-    const el = scrollRef.current?.querySelector('.section--active')
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
+    // Start at the very top, then animate down to the first incomplete node
+    // in the active section so the mini-game node below remains reachable.
+    window.scrollTo({ top: 0, behavior: 'instant' })
+
+    const timer = setTimeout(() => {
+      // Prefer the first incomplete path node inside the active section;
+      // fall back to the section banner itself.
+      const target =
+        scrollRef.current?.querySelector<HTMLElement>('.section--active .path__node-abs') ??
+        scrollRef.current?.querySelector<HTMLElement>('.section--active')
+      target?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 350)
+
+    return () => clearTimeout(timer)
   }, [])
 
   const totalStars = getTotalStars()

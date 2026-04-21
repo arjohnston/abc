@@ -65,9 +65,24 @@ export interface ClockItem {
   hourDigitCount: number  // 1 for hours 1-9, 2 for 10-12
 }
 
+export interface MathItem {
+  leftCount: number
+  rightCount: number
+  operator: '+' | '-'
+  answer: string   // single digit char
+  emoji: string
+}
+
+export interface MathMostItem {
+  counts: [number, number, number]
+  answer: string   // digit char of the largest count
+  emoji: string
+}
+
 export type GameItem =
   | string
   | CountingItem
+  | MathMostItem
   | NumberWordItem
   | AnimalItem
   | BuildNumberItem
@@ -76,6 +91,7 @@ export type GameItem =
   | BuildWordItem
   | ColorItem
   | ClockItem
+  | MathItem
 
 // --- Game Configs ---
 
@@ -175,6 +191,21 @@ export interface ClickLetterGameConfig extends BaseGameConfig {
   items: string[]
 }
 
+export interface AdditionGameConfig extends BaseGameConfig {
+  type: 'mathAdd'
+  generateItems: (isRandom: boolean) => MathItem[]
+}
+
+export interface SubtractionGameConfig extends BaseGameConfig {
+  type: 'mathSub'
+  generateItems: (isRandom: boolean) => MathItem[]
+}
+
+export interface MathMostGameConfig extends BaseGameConfig {
+  type: 'mathMost'
+  generateItems: (isRandom: boolean) => MathMostItem[]
+}
+
 export type GameConfig =
   | ArrowGameConfig
   | SimonSaysGameConfig
@@ -193,6 +224,9 @@ export type GameConfig =
   | MouseDirectionGameConfig
   | ChaseBallGameConfig
   | ClickLetterGameConfig
+  | AdditionGameConfig
+  | SubtractionGameConfig
+  | MathMostGameConfig
 
 export type FeedbackState = 'correct' | 'wrong' | null
 

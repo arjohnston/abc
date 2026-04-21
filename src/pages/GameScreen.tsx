@@ -14,6 +14,8 @@ import { TimerBar } from '../components/TimerBar'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { StreakBadge } from '../components/ui/StreakBadge'
 import { VirtualKeyboard } from '../components/VirtualKeyboard'
+import { MathDisplay } from '../components/MathDisplay'
+import { MathMostDisplay } from '../components/MathMostDisplay'
 import { WhatNextDisplay } from '../components/WhatNextDisplay'
 import { WhichMoreDisplay } from '../components/WhichMoreDisplay'
 import { WordDisplay } from '../components/WordDisplay'
@@ -29,6 +31,8 @@ import type {
   FeedbackState,
   GameConfig,
   GameItem,
+  MathItem,
+  MathMostItem,
   NumberWordItem,
   TimedGameConfig,
   WhatNextItem,
@@ -57,6 +61,9 @@ function buildSequence(game: GameConfig, isRandom: boolean): GameItem[] {
   if (game.type === 'numberWords') return game.generateItems(isRandom)
   if (game.type === 'buildNumber') return game.generateItems(isRandom)
   if (game.type === 'whichMore') return game.generateItems(isRandom)
+  if (game.type === 'mathAdd') return game.generateItems(isRandom)
+  if (game.type === 'mathSub') return game.generateItems(isRandom)
+  if (game.type === 'mathMost') return game.generateItems(isRandom)
   if (game.type === 'whatNext') return game.generateItems(isRandom)
   if (game.type === 'whatBefore') return game.generateItems(isRandom)
   if (game.type === 'animalSounds') return isRandom ? shuffle(game.items) : [...game.items]
@@ -74,6 +81,8 @@ function getExpectedKey(item: GameItem, gameType: string | undefined): string {
   if (gameType === 'numberWords') return (item as NumberWordItem).answer
   if (gameType === 'animalSounds') return (item as AnimalItem).key
   if (gameType === 'whichMore') return (item as WhichMoreItem).answer
+  if (gameType === 'mathAdd' || gameType === 'mathSub') return (item as MathItem).answer
+  if (gameType === 'mathMost') return (item as MathMostItem).answer
   if (gameType === 'whatNext' || gameType === 'whatBefore') return (item as WhatNextItem).answer.toUpperCase()
   if (gameType === 'colorMatch') return (item as ColorItem).key
   return (item as string).toUpperCase()
@@ -93,6 +102,18 @@ function getHintSpeech(
   if (gameType === 'whichMore') {
     const wm = item as WhichMoreItem
     return NUMBER_WORDS[wm.answer] ?? wm.answer
+  }
+  if (gameType === 'mathAdd') {
+    const m = item as MathItem
+    return `${NUMBER_WORDS[String(m.leftCount)] ?? m.leftCount} plus ${NUMBER_WORDS[String(m.rightCount)] ?? m.rightCount} equals?`
+  }
+  if (gameType === 'mathSub') {
+    const m = item as MathItem
+    return `${NUMBER_WORDS[String(m.leftCount)] ?? m.leftCount} minus ${NUMBER_WORDS[String(m.rightCount)] ?? m.rightCount} equals?`
+  }
+  if (gameType === 'mathMost') {
+    const mm = item as MathMostItem
+    return `Which group has the most? ${mm.counts.map(c => NUMBER_WORDS[String(c)] ?? c).join(', ')}`
   }
   if (gameType === 'whatNext') {
     const wn = item as WhatNextItem
@@ -158,6 +179,8 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   const isClock = gameType === 'clock'
   const isAnimalSounds = gameType === 'animalSounds'
   const isWhichMore = gameType === 'whichMore'
+  const isMath = gameType === 'mathAdd' || gameType === 'mathSub'
+  const isMathMost = gameType === 'mathMost'
   const isWhatNext = gameType === 'whatNext'
   const isWhatBefore = gameType === 'whatBefore'
   const isColorMatch = gameType === 'colorMatch'
@@ -167,7 +190,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const isMultiDigit = isCounting && currentItem && (currentItem as CountingItem).answer.length > 1
 
-  const alwaysSpeak = isAnimalSounds || isBuildNumber || isBuildWord || isWhatNext || isWhatBefore || audioOnly || isColorMatch || isClock
+  const alwaysSpeak = isAnimalSounds || isBuildNumber || isBuildWord || isWhatNext || isWhatBefore || audioOnly || isColorMatch || isClock || isMath || isMathMost
 
   const handleHint = useCallback(() => {
     if (!currentItem || isComplete || feedback) return
@@ -355,7 +378,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
 
   const getProgressText = () => {
     if (isCounting) return `Round ${currentIndex + 1} of ${sequence.length}`
-    if (isNumberWords || isWhichMore) return `${currentIndex + 1} of ${sequence.length}`
+    if (isNumberWords || isWhichMore || isMath || isMathMost) return `${currentIndex + 1} of ${sequence.length}`
     if (isBuildNumber) return `Number ${currentIndex + 1} of ${sequence.length}`
     if (isBuildWord) return `Word ${currentIndex + 1} of ${sequence.length}`
     if (isClock) return `Clock ${currentIndex + 1} of ${sequence.length}`
@@ -375,6 +398,8 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     if (isAnimalSounds) return 'Press the first letter!'
     if (isColorMatch) return 'Press the first letter!'
     if (isWhichMore) return 'Press the bigger number!'
+    if (isMath) return 'Type the answer!'
+    if (isMathMost) return 'Press the biggest group!'
     if (isWhatNext) return 'What comes next?'
     if (isWhatBefore) return 'What comes before?'
     if (audioOnly) return 'Press what you hear!'
@@ -405,6 +430,8 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
     if (isColorMatch) return <ColorDisplay item={currentItem as ColorItem} feedback={feedback} animKey={animKey} />
     if (isClock) return <ClockBlanksDisplay item={currentItem as ClockItem} filled={buildBuffer} feedback={feedback} shakeKey={shakeKey} />
     if (isWhichMore) return <WhichMoreDisplay item={currentItem as WhichMoreItem} feedback={feedback} pressedKey={lastPressed} animKey={animKey} />
+    if (isMath) return <MathDisplay item={currentItem as MathItem} feedback={feedback} animKey={animKey} />
+    if (isMathMost) return <MathMostDisplay item={currentItem as MathMostItem} feedback={feedback} pressedKey={lastPressed} animKey={animKey} />
     if (isWhatNext) return <WhatNextDisplay item={currentItem as WhatNextItem} feedback={feedback} animKey={animKey} />
     if (isWhatBefore) return <WhatNextDisplay item={currentItem as WhatNextItem} feedback={feedback} animKey={animKey} reversed />
     if (audioOnly) return <HearPressDisplay feedback={feedback} animKey={animKey} />
