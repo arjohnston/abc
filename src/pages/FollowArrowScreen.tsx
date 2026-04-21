@@ -2,8 +2,9 @@ import './FollowArrowScreen.css'
 
 import { useEffect, useRef } from 'react'
 
-import { CoreScreen, CoreText } from '@core'
+import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
+import { GameInstruction } from '../components/GameInstruction'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { useKeyInput } from '../hooks/useKeyInput'
 import { useRound } from '../hooks/useRound'
@@ -70,9 +71,9 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
           <span className="fa-arrow">{ARROW[currentDir]}</span>
         </div>
 
-        <CoreText size="p" className="game-instruction">
+        <GameInstruction>
           Press the <strong>{currentDir}</strong> arrow key
-        </CoreText>
+        </GameInstruction>
 
         <div className="fa-key-hints">
           {DIRECTIONS.map((d) => (

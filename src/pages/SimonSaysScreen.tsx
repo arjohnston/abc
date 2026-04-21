@@ -2,8 +2,9 @@ import './SimonSaysScreen.css'
 
 import { useEffect, useRef, useState } from 'react'
 
-import { CoreScreen, CoreText } from '@core'
+import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
+import { GameInstruction } from '../components/GameInstruction'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { useKeyInput } from '../hooks/useKeyInput'
 import { useRound } from '../hooks/useRound'
@@ -97,9 +98,9 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
           <span className="ss-char">{currentRound.char}</span>
         </div>
 
-        <CoreText size="p" className="game-instruction">
+        <GameInstruction>
           {isDo ? `Press  ${currentRound.char}` : "Don't press anything!"}
-        </CoreText>
+        </GameInstruction>
 
         {!isDo && (
           <div className="ss-hold-bar-wrap">
