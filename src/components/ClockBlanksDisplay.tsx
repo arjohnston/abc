@@ -1,10 +1,11 @@
 import './ClockBlanksDisplay.css'
 
+import { CoreCol } from './core'
 import type { ClockItem, FeedbackState } from '../types/game'
 
 interface ClockBlanksDisplayProps {
   item: ClockItem
-  filled: string       // digits typed so far
+  filled: string
   feedback: FeedbackState
   shakeKey: number
 }
@@ -39,7 +40,7 @@ export function ClockBlanksDisplay({ item, filled, feedback, shakeKey }: ClockBl
   const minuteSlots = Array.from({ length: 2 }, (_, i) => renderSlot(item.hourDigitCount + i))
 
   return (
-    <div className="clock-blanks">
+    <CoreCol align="center" gap={20} className="clock-blanks">
       <div className="clock-blanks__emoji">{item.emoji}</div>
       <div className="clock-blanks__digital">{item.display}</div>
       <div className="clock-blanks__slots">
@@ -47,6 +48,6 @@ export function ClockBlanksDisplay({ item, filled, feedback, shakeKey }: ClockBl
         <span className="clock-blanks__colon">:</span>
         {minuteSlots}
       </div>
-    </div>
+    </CoreCol>
   )
 }

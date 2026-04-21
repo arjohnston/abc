@@ -1,9 +1,3 @@
-.number-blanks {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-}
 
 .number-blanks__display {
   font-size: clamp(100px, 26vw, 180px);
