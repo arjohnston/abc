@@ -2,10 +2,9 @@ import './ClickCircleScreen.css'
 
 import { useCallback, useRef, useState } from 'react'
 
-import { CoreScreen, CoreText } from '@core'
-import { Confetti } from '../components/Confetti'
-import { Button } from '../components/ui/Button'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { ArcadeComplete } from '../components/ArcadeComplete'
+import { GameInstruction } from '../components/GameInstruction'
+import { GameShell } from '../components/GameShell'
 import { usePhysicsObject } from '../hooks/usePhysicsObject'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
@@ -69,27 +68,19 @@ export function ClickCircleScreen({ onBack }: Props) {
 
   if (done) {
     return (
-      <CoreScreen center className="cc">
-        <Confetti />
-        <GameTopbar onBack={onBack} percent={100} score={TOTAL} />
-        <div className="cc-complete">
-          <div className="cc-complete-emoji">🎉</div>
-          <h2 className="cc-complete-title">You got them all!</h2>
-          <p className="cc-complete-score">Clicked {TOTAL} circles!</p>
-          <div className="cc-complete-actions">
-            <Button variant="primary" onClick={handleRestart}>Play Again</Button>
-            <Button variant="secondary" onClick={onBack}>Home</Button>
-          </div>
-        </div>
-      </CoreScreen>
+      <ArcadeComplete
+        emoji="🎉"
+        title="You got them all!"
+        subtitle={`Clicked ${TOTAL} circles!`}
+        onRestart={handleRestart}
+        onHome={onBack}
+      />
     )
   }
 
   return (
-    <CoreScreen className="cc">
-      <GameTopbar onBack={onBack} percent={(score / TOTAL) * 100} score={score} />
-
-      <CoreText size="p" className="game-instruction">Click the moving circle!</CoreText>
+    <GameShell onBack={onBack} percent={(score / TOTAL) * 100} score={score} className="cc">
+      <GameInstruction>Click the moving circle!</GameInstruction>
 
       <div className="cc-arena" ref={arenaRef}>
         <div
@@ -99,6 +90,6 @@ export function ClickCircleScreen({ onBack }: Props) {
           style={{ width: CIRCLE_R * 2, height: CIRCLE_R * 2 }}
         />
       </div>
-    </CoreScreen>
+    </GameShell>
   )
 }

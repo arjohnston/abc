@@ -2,10 +2,8 @@ import './MiniGameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { CoreScreen } from '@core'
-import { Confetti } from '../components/Confetti'
-import { Button } from '../components/ui/Button'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { ArcadeComplete } from '../components/ArcadeComplete'
+import { GameShell } from '../components/GameShell'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 import { useSpeech } from '../hooks/useSpeech'
 
@@ -219,31 +217,19 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
 
   if (isComplete) {
     return (
-      <>
-        <Confetti />
-        <CoreScreen className="mini-game">
-          <GameTopbar onBack={onBack} percent={100} score={WIN_SCORE} />
-          <div className="mini-game-complete">
-            <div className="mini-complete-emoji">🐛</div>
-            <h2 className="mini-complete-title">Yummy!</h2>
-            <p className="mini-complete-subtitle">You ate {WIN_SCORE} letters!</p>
-            <div className="mini-complete-actions">
-              <Button variant="primary" onClick={restart}>
-                Play Again
-              </Button>
-              <Button variant="secondary" onClick={onBack}>
-                Home
-              </Button>
-            </div>
-          </div>
-        </CoreScreen>
-      </>
+      <ArcadeComplete
+        emoji="🐛"
+        title="Yummy!"
+        subtitle={`You ate ${WIN_SCORE} letters!`}
+        onRestart={restart}
+        onHome={onBack}
+        emojiClassName="worm-bounce"
+      />
     )
   }
 
   return (
-    <CoreScreen className="mini-game">
-      <GameTopbar onBack={onBack} percent={(score / WIN_SCORE) * 100} score={score} />
+    <GameShell onBack={onBack} percent={(score / WIN_SCORE) * 100} score={score} className="mini-game">
 
       <div className="mini-game-area">
         <div className="mini-game-target">
@@ -295,6 +281,6 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
 
         <p className="mini-game-hint">Use arrow keys ← → ↑ ↓</p>
       </div>
-    </CoreScreen>
+    </GameShell>
   )
 }

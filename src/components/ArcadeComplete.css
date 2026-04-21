@@ -1,0 +1,15 @@
+.arcade-complete__emoji {
+  font-size: 80px;
+  line-height: 1;
+}
+
+.arcade-complete__title {
+  color: var(--green);
+  margin: 0;
+}
+
+.arcade-complete__subtitle {
+  color: var(--text-muted);
+  font-weight: 600;
+  margin: 0;
+}

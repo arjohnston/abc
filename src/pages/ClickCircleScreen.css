@@ -22,17 +22,3 @@
 .cc-circle:hover { filter: brightness(1.15); }
 .cc-circle--hit  { animation: anim-pop 0.28s ease; background: var(--green); box-shadow: 0 0 0 6px var(--green-dark), 0 0 30px var(--green); }
 
-.cc-complete {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 20px;
-}
-
-.cc-complete-emoji { font-size: 72px; line-height: 1; }
-.cc-complete-title { font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 900; margin: 0; }
-.cc-complete-score { font-size: 1.2rem; color: var(--text-muted); font-weight: 600; margin: 0; }
-.cc-complete-actions { display: flex; gap: 12px; margin-top: 16px; }

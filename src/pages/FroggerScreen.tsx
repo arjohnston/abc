@@ -2,10 +2,8 @@ import './FroggerScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { CoreScreen } from '@core'
-import { Confetti } from '../components/Confetti'
-import { Button } from '../components/ui/Button'
-import { GameTopbar } from '../components/ui/GameTopbar'
+import { ArcadeComplete } from '../components/ArcadeComplete'
+import { GameShell } from '../components/GameShell'
 import { useSoundEffects } from '../hooks/useSoundEffects'
 
 const ROWS = 6       // 0 = goal, 1-4 = road, 5 = start
@@ -177,24 +175,22 @@ export function FroggerScreen({ onBack }: Props) {
     setFrogPos({ ...START })
   }, [])
 
+  if (done) {
+    return (
+      <ArcadeComplete
+        emoji="🐸"
+        title="You made it!"
+        subtitle={`Crossed ${GOAL_SCORE} times!`}
+        onRestart={restart}
+        onHome={onBack}
+        emojiClassName="fg-bounce"
+      />
+    )
+  }
+
   return (
-    <CoreScreen className="fg">
-      <GameTopbar onBack={onBack} percent={(score / GOAL_SCORE) * 100} score={score} />
-
-      {done && <Confetti />}
-
-      {done ? (
-        <div className="fg-complete">
-          <div className="fg-complete-emoji">🐸</div>
-          <h2 className="fg-complete-title">You made it!</h2>
-          <p className="fg-complete-sub">Crossed {GOAL_SCORE} times!</p>
-          <div className="fg-complete-actions">
-            <Button variant="primary" onClick={restart}>Play Again</Button>
-            <Button variant="secondary" onClick={onBack}>Home</Button>
-          </div>
-        </div>
-      ) : (
-        <div className="fg-content">
+    <GameShell onBack={onBack} percent={(score / GOAL_SCORE) * 100} score={score} className="fg">
+      <div className="fg-content">
           <div className="fg-arena" ref={arenaRef}>
             {/* Lane backgrounds */}
             {Array.from({ length: ROWS }, (_, i) => (
@@ -246,7 +242,6 @@ export function FroggerScreen({ onBack }: Props) {
             <button className="fg-dpad-btn fg-dpad-down"  onClick={() => move( 1,  0)}>↓</button>
           </div>
         </div>
-      )}
-    </CoreScreen>
+    </GameShell>
   )
 }
