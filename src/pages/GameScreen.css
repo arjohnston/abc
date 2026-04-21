@@ -1,37 +1,7 @@
-.game {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-height: 100dvh;
-}
-
-.game-timer {
-  padding: 0 20px 8px;
-  display: flex;
-  justify-content: center;
-}
-
-.game-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 20px;
-}
-
 .game-prompt {
   font-size: 24px;
   font-weight: 700;
   color: var(--text-muted);
-}
-
-.game-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
 }
 
 .hint-btn {

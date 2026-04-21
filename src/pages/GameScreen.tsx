@@ -2,6 +2,7 @@ import './GameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { CoreCol, CoreRow, CoreScreen, CoreText } from '@core'
 import { AnimalDisplay } from '../components/AnimalDisplay'
 import { ClockBlanksDisplay } from '../components/ClockBlanksDisplay'
 import { ColorDisplay } from '../components/ColorDisplay'
@@ -439,16 +440,16 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
   }
 
   return (
-    <div
+    <CoreScreen
       className="game"
       style={{ '--game-color': game.color, '--game-color-dark': game.colorDark } as React.CSSProperties}
     >
       <GameTopbar onBack={onBack} percent={progress} score={score} />
 
       {isTimed && !isComplete && (
-        <div className="game-timer">
+        <CoreRow justify="center" paddingBottom={8} paddingHorizontal={20} className="game-timer">
           <TimerBar duration={(game as TimedGameConfig).timeLimit} running={!isComplete} onTimeUp={handleTimeUp} />
-        </div>
+        </CoreRow>
       )}
 
       {!isComplete && <StreakBadge streak={streak} />}
@@ -463,11 +464,11 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
           onHome={onBack}
         />
       ) : currentItem ? (
-        <div className="game-area">
-          <p className="game-prompt">{getPromptText()}</p>
+        <CoreCol flex={1} align="center" justify="center" gap={24} padding={20} className="game-area">
+          <CoreText size="p" className="game-prompt">{getPromptText()}</CoreText>
           {renderDisplay()}
           {isMultiDigit && digitBuffer && <div className="digit-preview">{digitBuffer}</div>}
-          <div className="game-bottom">
+          <CoreCol align="center" gap={12} className="game-bottom">
             <button
               className="hint-btn"
               onPointerDown={(e) => { e.preventDefault(); handleHint() }}
@@ -475,11 +476,11 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
             >
               💡 Hint{hintUsed ? ' (max ★★)' : ''}
             </button>
-            <p className="game-progress">{getProgressText()}</p>
-          </div>
+            <CoreText size="p" className="game-progress">{getProgressText()}</CoreText>
+          </CoreCol>
           <VirtualKeyboard layout={kbLayout} onKeyPress={handleInput} disabled={!!feedback || isComplete} />
-        </div>
+        </CoreCol>
       ) : null}
-    </div>
+    </CoreScreen>
   )
 }
