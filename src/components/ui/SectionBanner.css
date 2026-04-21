@@ -1,8 +1,4 @@
 .section-banner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
   gap: 8px 12px;
   background: var(--bg-card);
   border: 2px solid var(--bg-light);
@@ -26,7 +22,6 @@
   font-size: 22px;
   font-weight: 900;
   color: var(--text);
-  margin: 0;
 }
 
 .section-banner__stars {

@@ -1,5 +1,7 @@
 import './SectionBanner.css'
 
+import { CoreRow, CoreText } from '@core'
+
 import type { Section } from '../../types/game'
 
 interface SectionBannerProps {
@@ -16,9 +18,14 @@ export function SectionBanner({
   locked,
 }: SectionBannerProps) {
   return (
-    <div className={`section-banner ${locked ? 'section-banner--locked' : ''}`}>
+    <CoreRow
+      wrap
+      align="center"
+      justify="center"
+      className={`section-banner ${locked ? 'section-banner--locked' : ''}`}
+    >
       <span className="section-banner__emoji">{section.emoji}</span>
-      <h2 className="section-banner__title">{section.title}</h2>
+      <CoreText as="h2" className="section-banner__title">{section.title}</CoreText>
       <span className="section-banner__stars">
         ⭐ {earnedStars}/{totalPossibleStars}
       </span>
@@ -27,6 +34,6 @@ export function SectionBanner({
           🔒 Need {section.starsToUnlock - earnedStars} more ⭐
         </span>
       )}
-    </div>
+    </CoreRow>
   )
 }
