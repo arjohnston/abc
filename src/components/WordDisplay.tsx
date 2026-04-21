@@ -1,6 +1,7 @@
 import './WordDisplay.css'
 
 import type { FeedbackState } from '../types/game'
+import { GameBox } from './GameBox'
 
 interface WordDisplayProps {
   word: string
@@ -13,8 +14,8 @@ export function WordDisplay({ word, feedback, animKey }: WordDisplayProps) {
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
-    <div key={animKey} className={`word-display ${feedbackClass}`}>
+    <GameBox key={animKey} className={`word-display ${feedbackClass}`}>
       {word}
-    </div>
+    </GameBox>
   )
 }

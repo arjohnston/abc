@@ -1,6 +1,7 @@
 import './AnimalDisplay.css'
 
 import type { AnimalItem, FeedbackState } from '../types/game'
+import { GameBox } from './GameBox'
 
 interface AnimalDisplayProps {
   item: AnimalItem
@@ -13,8 +14,8 @@ export function AnimalDisplay({ item, feedback, animKey }: AnimalDisplayProps) {
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
-    <div key={animKey} className={`animal-display ${feedbackClass}`}>
+    <GameBox key={animKey} className={`animal-display ${feedbackClass}`}>
       <div className="animal-display__emoji">{item.emoji}</div>
-    </div>
+    </GameBox>
   )
 }

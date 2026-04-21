@@ -1,6 +1,7 @@
 import './HearPressDisplay.css'
 
 import type { FeedbackState } from '../types/game'
+import { GameBox } from './GameBox'
 
 interface HearPressDisplayProps {
   feedback: FeedbackState
@@ -12,8 +13,8 @@ export function HearPressDisplay({ feedback, animKey }: HearPressDisplayProps) {
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
-    <div key={animKey} className={`hear-press-display ${feedbackClass}`}>
+    <GameBox key={animKey} className={`hear-press-display ${feedbackClass}`}>
       <span className="hear-press-display__icon">👂</span>
-    </div>
+    </GameBox>
   )
 }

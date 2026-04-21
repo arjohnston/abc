@@ -1,6 +1,7 @@
 import './LetterDisplay.css'
 
 import type { FeedbackState } from '../types/game'
+import { GameBox } from './GameBox'
 
 interface LetterDisplayProps {
   character: string
@@ -13,8 +14,8 @@ export function LetterDisplay({ character, feedback, animKey }: LetterDisplayPro
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
-    <div key={animKey} className={`letter-display ${feedbackClass}`}>
+    <GameBox key={animKey} className={`letter-display ${feedbackClass}`}>
       {character}
-    </div>
+    </GameBox>
   )
 }

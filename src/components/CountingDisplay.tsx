@@ -1,6 +1,7 @@
 import './CountingDisplay.css'
 
 import type { CountingItem, FeedbackState } from '../types/game'
+import { GameBox } from './GameBox'
 
 interface CountingDisplayProps {
   item: CountingItem
@@ -13,7 +14,7 @@ export function CountingDisplay({ item, feedback, animKey }: CountingDisplayProp
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
-    <div key={animKey} className={`counting-display ${feedbackClass}`}>
+    <GameBox key={animKey} className={`counting-display ${feedbackClass}`}>
       <div className="counting-objects">
         {Array.from({ length: item.count }, (_, i) => (
           <span key={i} className="counting-object" style={{ animationDelay: `${i * 0.05}s` }}>
@@ -21,6 +22,6 @@ export function CountingDisplay({ item, feedback, animKey }: CountingDisplayProp
           </span>
         ))}
       </div>
-    </div>
+    </GameBox>
   )
 }
