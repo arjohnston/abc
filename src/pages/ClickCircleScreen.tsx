@@ -91,7 +91,7 @@ export function ClickCircleScreen({ onBack }: Props) {
 
       <CoreText size="p" className="game-instruction">Click the moving circle!</CoreText>
 
-      <div className="game-arena cc-arena" ref={arenaRef}>
+      <div className="cc-arena" ref={arenaRef}>
         <div
           ref={circleRef}
           className={`cc-circle ${flash ? 'cc-circle--hit' : ''}`}

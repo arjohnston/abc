@@ -59,7 +59,7 @@ export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
   return (
     <CoreScreen className="cbs">
       <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
-      <div className="game-arena cbs-arena" ref={arenaRef} onMouseMove={handleMouseMove}>
+      <div className="cbs-arena" ref={arenaRef} onMouseMove={handleMouseMove}>
         <div
           ref={ballRef}
           className={`cbs-ball ${lockedRef.current ? 'cbs-ball--caught' : ''}`}
