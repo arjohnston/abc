@@ -129,6 +129,18 @@ Two localStorage keys:
 5. **Types live in `src/types/`.** Shared interfaces and types go here.
 6. **Game config lives in `src/games/`.** The registries and per-game logic go here.
 
+## Core Component Library
+
+All layout, text, and containers route through `src/components/core/`. See `AGENTS.md` for the full API reference and rules.
+
+Import from the barrel:
+
+```ts
+import { CoreRow, CoreCol, CoreText, CoreScreen } from '../components/core'
+```
+
+Never use raw `div`/`span`/`p` for layout or text — use the core primitives. Game-specific components keep their own CSS for visual identity; core primitives own structure and spacing.
+
 ## Type System
 
 All types defined in `src/types/game.ts`:
