@@ -49,9 +49,9 @@ children?: React.ReactNode
 ### CoreText Props
 
 ```ts
-as?: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'label'
+size?: 'h1' | 'h2' | 'h3' | 'p' | 'span' | 'label' | number  // semantic tag + font size, or raw px
 variant?: 'heading' | 'subheading' | 'body' | 'muted' | 'label'
-size?: number      weight?: number      color?: string      align?: 'left' | 'center' | 'right'
+weight?: number      color?: string      align?: 'left' | 'center' | 'right'
 ```
 
 ### CoreRow / CoreCol Props

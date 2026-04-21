@@ -32,3 +32,8 @@
   font-weight: 600;
   color: var(--text-muted);
 }
+
+/* Semantic size classes */
+.core-text--h1 { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 900; }
+.core-text--h2 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; }
+.core-text--h3 { font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 700; }

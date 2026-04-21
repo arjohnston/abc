@@ -25,7 +25,7 @@ export function SectionBanner({
       className={`section-banner ${locked ? 'section-banner--locked' : ''}`}
     >
       <span className="section-banner__emoji">{section.emoji}</span>
-      <CoreText as="h2" className="section-banner__title">{section.title}</CoreText>
+      <CoreText size="h2" className="section-banner__title">{section.title}</CoreText>
       <span className="section-banner__stars">
         ⭐ {earnedStars}/{totalPossibleStars}
       </span>
