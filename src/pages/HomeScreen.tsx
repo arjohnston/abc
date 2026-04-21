@@ -2,6 +2,7 @@ import './HomeScreen.css'
 
 import { Fragment, useEffect, useRef, useState } from 'react'
 
+import { CoreRow } from '@core'
 import { GamePreviewModal } from '../components/GamePreviewModal'
 import { SettingsModal } from '../components/SettingsModal'
 import { MiniGameNode } from '../components/ui/MiniGameNode'
@@ -155,10 +156,10 @@ export function HomeScreen({
       </header>
 
       {(stats.totalPlays > 0 || totalStars > 0) && (
-        <div className="stats-bar">
+        <CoreRow justify="center" gap={24} className="stats-bar">
           <span className="stat">🎮 {stats.totalPlays} played</span>
           <span className="stat">⭐ {totalStars} stars</span>
-        </div>
+        </CoreRow>
       )}
 
       <div className="path">

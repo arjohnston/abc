@@ -1,7 +1,9 @@
 import './BonusScreen.css'
 
-import { BONUS_GAMES } from '../games/config'
+import { CoreRow, CoreScreen, CoreText } from '@core'
+
 import { BackButton } from '../components/ui/BackButton'
+import { BONUS_GAMES } from '../games/config'
 
 interface PlayGamesScreenProps {
   onBack: () => void
@@ -10,11 +12,11 @@ interface PlayGamesScreenProps {
 
 export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
   return (
-    <div className="pg">
-      <div className="pg-header">
+    <CoreScreen className="pg">
+      <CoreRow align="center" gap={12} padding={12} paddingHorizontal={16} className="pg-header">
         <BackButton onClick={onBack} />
-        <h2 className="pg-title">🎮 Play Games</h2>
-      </div>
+        <CoreText size="h2" className="pg-title">🎮 Play Games</CoreText>
+      </CoreRow>
 
       <div className="pg-grid">
         {BONUS_GAMES.map(game => (
@@ -34,6 +36,6 @@ export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
           </button>
         ))}
       </div>
-    </div>
+    </CoreScreen>
   )
 }

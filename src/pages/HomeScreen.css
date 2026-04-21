@@ -101,11 +101,6 @@
   font-weight: 700;
 }
 
-.stats-bar {
-  display: flex;
-  gap: 24px;
-  justify-content: center;
-}
 
 .stat {
   font-size: 16px;
