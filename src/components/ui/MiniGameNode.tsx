@@ -13,7 +13,7 @@ export function MiniGameNode({ emoji, title, onClick, locked = false, lockHint }
     <button
       className={`mini-game-node ${locked ? 'mini-game-node--locked' : ''}`}
       onClick={locked ? undefined : onClick}
-      title={locked && lockHint ? lockHint : undefined}
+      data-tooltip={locked && lockHint ? lockHint : undefined}
     >
       <div className="mini-game-node__circle">
         <span className="mini-game-node__emoji">{locked ? '🔒' : emoji}</span>

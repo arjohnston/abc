@@ -2,6 +2,7 @@ import './HomeScreen.css'
 
 import { Fragment, useEffect, useRef, useState } from 'react'
 
+import { GamePreviewModal } from '../components/GamePreviewModal'
 import { SettingsModal } from '../components/SettingsModal'
 import { MiniGameNode } from '../components/ui/MiniGameNode'
 import { PathNode } from '../components/ui/PathNode'
@@ -78,6 +79,7 @@ export function HomeScreen({
 }: HomeScreenProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [showSettings, setShowSettings] = useState(false)
+  const [previewGame, setPreviewGame] = useState<GameConfig | null>(null)
 
   useEffect(() => {
     const el = scrollRef.current?.querySelector('.section--active')
@@ -90,6 +92,15 @@ export function HomeScreen({
 
   return (
     <div className="home" ref={scrollRef}>
+      {previewGame && (
+        <GamePreviewModal
+          game={previewGame}
+          stars={getStars(previewGame.id)}
+          onPlay={() => { onSelectGame(previewGame); setPreviewGame(null) }}
+          onClose={() => setPreviewGame(null)}
+        />
+      )}
+
       {showSettings && (
         <SettingsModal
           isRandom={isRandom}
@@ -126,11 +137,11 @@ export function HomeScreen({
           <button
             className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}
             onClick={bonusUnlocked ? onShowBonus : undefined}
-            title={bonusUnlocked ? 'Play Games' : 'Complete Challenge to unlock!'}
+            data-tooltip={bonusUnlocked ? 'Play Games' : 'Complete Challenge to unlock!'}
           >
             {bonusUnlocked ? '🎮' : '🔒'}
           </button>
-          <button className="home-icon-btn" onClick={() => setShowSettings(true)} title="Settings">⚙️</button>
+          <button className="home-icon-btn" onClick={() => setShowSettings(true)} data-tooltip="Settings">⚙️</button>
         </div>
       </header>
 
@@ -211,7 +222,7 @@ export function HomeScreen({
                       game={game}
                       stars={getStars(game.id)}
                       locked={locked}
-                      onClick={() => onSelectGame(game)}
+                      onClick={() => setPreviewGame(game)}
                     />
                   </div>
                 ))}

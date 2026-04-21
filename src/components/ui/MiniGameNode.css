@@ -9,6 +9,36 @@
   font-family: var(--font);
   padding: 4px;
   transition: transform 0.15s;
+  position: relative;
+  z-index: 2;
+}
+
+/* Custom tooltip */
+.mini-game-node[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.85);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: var(--font);
+  white-space: nowrap;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 3px solid var(--bg-light);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 50;
+}
+
+.mini-game-node[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
 }
 
 .mini-game-node:not(.mini-game-node--locked):hover  { transform: scale(1.08); }
