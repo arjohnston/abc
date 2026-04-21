@@ -1,14 +1,16 @@
 import './ScoreBadge.css'
 
+import { CoreRow } from '../core'
+
 interface ScoreBadgeProps {
   score: number
 }
 
 export function ScoreBadge({ score }: ScoreBadgeProps) {
   return (
-    <div className="score-badge">
+    <CoreRow align="center" gap={6} className="score-badge">
       <span className="score-star">⭐</span>
       <span className="score-num">{score}</span>
-    </div>
+    </CoreRow>
   )
 }
