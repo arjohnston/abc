@@ -1,6 +1,6 @@
 import './WhatNextDisplay.css'
 
-import { CoreRow } from './core'
+import { CoreRow } from '@core'
 import type { FeedbackState, WhatNextItem } from '../types/game'
 
 interface WhatNextDisplayProps {

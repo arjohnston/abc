@@ -49,6 +49,12 @@ export default defineConfig([
       'no-eval': 'error',
       'no-implied-eval': 'error',
       eqeqeq: ['error', 'always'],
+      'no-restricted-imports': ['error', {
+        patterns: [{
+          group: ['**/components/core', '**/components/core/**'],
+          message: "Import from '@core' instead of relative paths.",
+        }],
+      }],
     },
   },
 ])

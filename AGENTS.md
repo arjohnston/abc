@@ -4,10 +4,10 @@ This file instructs AI agents working in this codebase. Read it fully before mak
 
 ## Core Component Library
 
-All layout, text, and container primitives live in `src/components/core/`. Always import from the barrel:
+All layout, text, and container primitives live in `src/components/core/`. Always import from the `@core` alias:
 
 ```ts
-import { CoreRow, CoreCol, CoreText, CoreScreen } from '../components/core'
+import { CoreRow, CoreCol, CoreText, CoreScreen } from '@core'
 ```
 
 ### Rules

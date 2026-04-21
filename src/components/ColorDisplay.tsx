@@ -1,6 +1,6 @@
 import './ColorDisplay.css'
 
-import { CoreCol } from './core'
+import { CoreCol } from '@core'
 import type { ColorItem, FeedbackState } from '../types/game'
 
 interface ColorDisplayProps {

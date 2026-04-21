@@ -1,6 +1,6 @@
 import './GameComplete.css'
 
-import { CoreCol, CoreRow, CoreText } from './core'
+import { CoreCol, CoreRow, CoreText } from '@core'
 import { Confetti } from './Confetti'
 import { Button } from './ui/Button'
 

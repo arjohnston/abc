@@ -133,10 +133,10 @@ Two localStorage keys:
 
 All layout, text, and containers route through `src/components/core/`. See `AGENTS.md` for the full API reference and rules.
 
-Import from the barrel:
+Import from the `@core` alias:
 
 ```ts
-import { CoreRow, CoreCol, CoreText, CoreScreen } from '../components/core'
+import { CoreRow, CoreCol, CoreText, CoreScreen } from '@core'
 ```
 
 Never use raw `div`/`span`/`p` for layout or text — use the core primitives. Game-specific components keep their own CSS for visual identity; core primitives own structure and spacing.

@@ -1,6 +1,6 @@
 import './ScoreBadge.css'
 
-import { CoreRow } from '../core'
+import { CoreRow } from '@core'
 
 interface ScoreBadgeProps {
   score: number

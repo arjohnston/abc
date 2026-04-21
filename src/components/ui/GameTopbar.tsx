@@ -1,6 +1,6 @@
 import './GameTopbar.css'
 
-import { CoreRow } from '../core'
+import { CoreRow } from '@core'
 import { BackButton } from './BackButton'
 import { ProgressBar } from './ProgressBar'
 import { ScoreBadge } from './ScoreBadge'

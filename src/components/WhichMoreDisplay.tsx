@@ -1,6 +1,6 @@
 import './WhichMoreDisplay.css'
 
-import { CoreRow } from './core'
+import { CoreRow } from '@core'
 import type { FeedbackState, WhichMoreItem } from '../types/game'
 
 function CountBox({

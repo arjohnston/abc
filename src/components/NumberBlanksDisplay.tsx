@@ -1,6 +1,6 @@
 import './NumberBlanksDisplay.css'
 
-import { CoreCol } from './core'
+import { CoreCol } from '@core'
 import type { FeedbackState } from '../types/game'
 
 interface NumberBlanksDisplayProps {
