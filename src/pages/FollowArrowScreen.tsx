@@ -2,6 +2,7 @@ import './FollowArrowScreen.css'
 
 import { useEffect, useRef } from 'react'
 
+import { CoreScreen, CoreText } from '@core'
 import { GameComplete } from '../components/GameComplete'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { useKeyInput } from '../hooks/useKeyInput'
@@ -58,7 +59,7 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
   }
 
   return (
-    <div className="game-shell fa">
+    <CoreScreen className="fa">
       <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
 
       <div className="fa-arena">
@@ -69,9 +70,9 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
           <span className="fa-arrow">{ARROW[currentDir]}</span>
         </div>
 
-        <p className="game-instruction">
+        <CoreText size="p" className="game-instruction">
           Press the <strong>{currentDir}</strong> arrow key
-        </p>
+        </CoreText>
 
         <div className="fa-key-hints">
           {DIRECTIONS.map((d) => (
@@ -85,6 +86,6 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
           ))}
         </div>
       </div>
-    </div>
+    </CoreScreen>
   )
 }

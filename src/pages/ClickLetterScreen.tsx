@@ -2,6 +2,7 @@ import './ClickLetterScreen.css'
 
 import { useCallback, useEffect, useState } from 'react'
 
+import { CoreScreen } from '@core'
 import { GameComplete } from '../components/GameComplete'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { useRound } from '../hooks/useRound'
@@ -63,7 +64,7 @@ export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreen
   }
 
   return (
-    <div className="game-shell cls">
+    <CoreScreen className="cls">
       <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
 
       <div className="cls-prompt">
@@ -82,6 +83,6 @@ export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreen
           </button>
         ))}
       </div>
-    </div>
+    </CoreScreen>
   )
 }

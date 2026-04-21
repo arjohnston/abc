@@ -2,6 +2,7 @@ import './MouseDirectionScreen.css'
 
 import { useEffect } from 'react'
 
+import { CoreScreen, CoreText } from '@core'
 import { GameComplete } from '../components/GameComplete'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { useRound } from '../hooks/useRound'
@@ -51,12 +52,12 @@ export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenPro
   }
 
   return (
-    <div className="game-shell mds">
+    <CoreScreen className="mds">
       <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
 
-      <p className="game-instruction">
+      <CoreText size="p" className="game-instruction">
         Move your mouse to the <strong>{LABELS[currentDir]}</strong> box!
-      </p>
+      </CoreText>
 
       <div className="mds-arena">
         {DIRECTIONS.map((dir) => (
@@ -71,6 +72,6 @@ export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenPro
         ))}
         <div className="mds-center">🖱️</div>
       </div>
-    </div>
+    </CoreScreen>
   )
 }

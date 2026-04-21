@@ -2,6 +2,7 @@ import './SimonSaysScreen.css'
 
 import { useEffect, useRef, useState } from 'react'
 
+import { CoreScreen, CoreText } from '@core'
 import { GameComplete } from '../components/GameComplete'
 import { GameTopbar } from '../components/ui/GameTopbar'
 import { useKeyInput } from '../hooks/useKeyInput'
@@ -84,7 +85,7 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
   }
 
   return (
-    <div className="game-shell game-shell--center ss">
+    <CoreScreen center className="ss">
       <GameTopbar onBack={onBack} percent={(round / TOTAL) * 100} score={score} />
 
       <div className="ss-content">
@@ -96,9 +97,9 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
           <span className="ss-char">{currentRound.char}</span>
         </div>
 
-        <p className="game-instruction">
+        <CoreText size="p" className="game-instruction">
           {isDo ? `Press  ${currentRound.char}` : "Don't press anything!"}
-        </p>
+        </CoreText>
 
         {!isDo && (
           <div className="ss-hold-bar-wrap">
@@ -106,6 +107,6 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
           </div>
         )}
       </div>
-    </div>
+    </CoreScreen>
   )
 }

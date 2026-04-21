@@ -2,6 +2,7 @@ import './FroggerScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { CoreScreen } from '@core'
 import { Confetti } from '../components/Confetti'
 import { Button } from '../components/ui/Button'
 import { GameTopbar } from '../components/ui/GameTopbar'
@@ -177,7 +178,7 @@ export function FroggerScreen({ onBack }: Props) {
   }, [])
 
   return (
-    <div className="game-shell fg">
+    <CoreScreen className="fg">
       <GameTopbar onBack={onBack} percent={(score / GOAL_SCORE) * 100} score={score} />
 
       {done && <Confetti />}
@@ -246,6 +247,6 @@ export function FroggerScreen({ onBack }: Props) {
           </div>
         </div>
       )}
-    </div>
+    </CoreScreen>
   )
 }

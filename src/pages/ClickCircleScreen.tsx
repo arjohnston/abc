@@ -2,6 +2,7 @@ import './ClickCircleScreen.css'
 
 import { useCallback, useRef, useState } from 'react'
 
+import { CoreScreen, CoreText } from '@core'
 import { Confetti } from '../components/Confetti'
 import { Button } from '../components/ui/Button'
 import { GameTopbar } from '../components/ui/GameTopbar'
@@ -68,7 +69,7 @@ export function ClickCircleScreen({ onBack }: Props) {
 
   if (done) {
     return (
-      <div className="game-shell game-shell--center cc">
+      <CoreScreen center className="cc">
         <Confetti />
         <GameTopbar onBack={onBack} percent={100} score={TOTAL} />
         <div className="cc-complete">
@@ -80,15 +81,15 @@ export function ClickCircleScreen({ onBack }: Props) {
             <Button variant="secondary" onClick={onBack}>Home</Button>
           </div>
         </div>
-      </div>
+      </CoreScreen>
     )
   }
 
   return (
-    <div className="game-shell cc">
+    <CoreScreen className="cc">
       <GameTopbar onBack={onBack} percent={(score / TOTAL) * 100} score={score} />
 
-      <p className="game-instruction">Click the moving circle!</p>
+      <CoreText size="p" className="game-instruction">Click the moving circle!</CoreText>
 
       <div className="game-arena cc-arena" ref={arenaRef}>
         <div
@@ -98,6 +99,6 @@ export function ClickCircleScreen({ onBack }: Props) {
           style={{ width: CIRCLE_R * 2, height: CIRCLE_R * 2 }}
         />
       </div>
-    </div>
+    </CoreScreen>
   )
 }
