@@ -1,6 +1,7 @@
 import './MathMostDisplay.css'
 
 import type { FeedbackState, MathMostItem } from '../types/game'
+import { GameBox } from './GameBox'
 
 function CountBox({
   count,
@@ -13,13 +14,13 @@ function CountBox({
 }) {
   return (
     <div className="mmx-wrap">
-      <div className={`mmx-box ${feedbackClass}`}>
+      <GameBox className={`mmx-box ${feedbackClass}`}>
         <div className="mmx-objects">
           {Array.from({ length: count }, (_, i) => (
             <span key={i} className="mmx-object">{emoji}</span>
           ))}
         </div>
-      </div>
+      </GameBox>
       <div className="mmx-key">{count}</div>
     </div>
   )

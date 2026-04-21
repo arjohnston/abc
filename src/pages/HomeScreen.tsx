@@ -2,7 +2,7 @@ import './HomeScreen.css'
 
 import { Fragment, useEffect, useRef, useState } from 'react'
 
-import { CoreRow } from '@core'
+import { CoreRow, CoreText } from '@core'
 import { GamePreviewModal } from '../components/GamePreviewModal'
 import { SettingsModal } from '../components/SettingsModal'
 import { MiniGameNode } from '../components/ui/MiniGameNode'
@@ -121,7 +121,7 @@ export function HomeScreen({
       )}
 
       <header className="home-header">
-        <h1 className="home-title">
+        <CoreText size="h1" className="home-title">
           <span className="title-letter" style={{ color: 'var(--green)' }}>
             A
           </span>
@@ -141,8 +141,8 @@ export function HomeScreen({
           <span className="title-letter" style={{ color: 'var(--yellow)' }}>
             3
           </span>
-        </h1>
-        <p className="home-subtitle">Pick a game and start learning!</p>
+        </CoreText>
+        <CoreText size="p" className="home-subtitle">Pick a game and start learning!</CoreText>
         <div className="home-icon-btns">
           <button
             className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}

@@ -2,6 +2,7 @@ import './WhichMoreDisplay.css'
 
 import { CoreRow } from '@core'
 import type { FeedbackState, WhichMoreItem } from '../types/game'
+import { GameBox } from './GameBox'
 
 function CountBox({
   count,
@@ -14,7 +15,7 @@ function CountBox({
 }) {
   return (
     <div className="wm-box-wrap">
-      <div className={`wm-box ${feedbackClass}`}>
+      <GameBox className={`wm-box ${feedbackClass}`}>
         <div className="wm-objects">
           {Array.from({ length: count }, (_, i) => (
             <span key={i} className="wm-object">
@@ -22,7 +23,7 @@ function CountBox({
             </span>
           ))}
         </div>
-      </div>
+      </GameBox>
       <div className="wm-number">{count}</div>
     </div>
   )

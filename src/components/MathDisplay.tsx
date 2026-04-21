@@ -1,16 +1,17 @@
 import './MathDisplay.css'
 
 import type { FeedbackState, MathItem } from '../types/game'
+import { GameBox } from './GameBox'
 
 function CountBox({ count, emoji, dim }: { count: number; emoji: string; dim?: boolean }) {
   return (
-    <div className={`math-box ${dim ? 'math-box--dim' : ''}`}>
+    <GameBox className={`math-box ${dim ? 'math-box--dim' : ''}`}>
       <div className="math-objects">
         {Array.from({ length: count }, (_, i) => (
           <span key={i} className="math-object">{emoji}</span>
         ))}
       </div>
-    </div>
+    </GameBox>
   )
 }
 
