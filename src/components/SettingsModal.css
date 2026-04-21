@@ -21,11 +21,6 @@
   gap: 24px;
 }
 
-.settings-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
 .settings-title {
   font-size: 24px;
@@ -60,12 +55,6 @@
   margin: 0;
 }
 
-.settings-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
 
 .settings-row-label {
   font-size: 18px;
@@ -91,11 +80,6 @@
   background: rgba(255, 75, 75, 0.22);
 }
 
-.settings-confirm {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
 
 .settings-confirm-text {
   font-size: 15px;
@@ -104,10 +88,6 @@
   text-align: center;
 }
 
-.settings-confirm-btns {
-  display: flex;
-  gap: 10px;
-}
 
 .settings-confirm-btns button {
   flex: 1;
