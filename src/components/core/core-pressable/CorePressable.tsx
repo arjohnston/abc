@@ -1,7 +1,7 @@
 import './CorePressable.css'
 
-import { forwardRef } from 'react'
 import type React from 'react'
+import { forwardRef } from 'react'
 
 import { buildSpacingStyle, type SharedLayoutProps } from '../shared/spacing'
 

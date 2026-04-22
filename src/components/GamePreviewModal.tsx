@@ -1,8 +1,7 @@
 import './GamePreviewModal.css'
 
-import { useEffect, useRef } from 'react'
-
 import { CoreRow, CoreText, Spacing } from '@core'
+import { useEffect, useRef } from 'react'
 
 import type { GameConfig } from '../types/game'
 
@@ -18,12 +17,21 @@ export function GamePreviewModal({ game, stars, onPlay, onClose }: GamePreviewMo
   // from immediately closing it on touch devices.
   const readyRef = useRef(false)
   useEffect(() => {
-    const t = setTimeout(() => { readyRef.current = true }, 80)
+    const t = setTimeout(() => {
+      readyRef.current = true
+    }, 80)
     return () => clearTimeout(t)
   }, [])
 
   return (
-    <div className="gpm-backdrop" onClick={() => { if (readyRef.current) { onClose() } }}>
+    <div
+      className="gpm-backdrop"
+      onClick={() => {
+        if (readyRef.current) {
+          onClose()
+        }
+      }}
+    >
       <div
         className="gpm-card"
         style={{ '--gpm-color': game.color, '--gpm-dark': game.colorDark } as React.CSSProperties}
@@ -36,19 +44,29 @@ export function GamePreviewModal({ game, stars, onPlay, onClose }: GamePreviewMo
 
         {/* Info */}
         <div className="gpm-body">
-          <CoreText size="h2" style={{ marginBottom: '6px' }}>{game.title}</CoreText>
-          <CoreText size="sm" color="muted" style={{ marginBottom: '14px' }}>{game.description}</CoreText>
+          <CoreText size="h2" style={{ marginBottom: '6px' }}>
+            {game.title}
+          </CoreText>
+          <CoreText size="sm" color="muted" style={{ marginBottom: '14px' }}>
+            {game.description}
+          </CoreText>
           <CoreRow gap={Spacing.xxs} className="gpm-stars">
             {[1, 2, 3].map((i) => (
-              <span key={i} className={`gpm-star ${i <= stars ? 'gpm-star--earned' : ''}`}>★</span>
+              <span key={i} className={`gpm-star ${i <= stars ? 'gpm-star--earned' : ''}`}>
+                ★
+              </span>
             ))}
           </CoreRow>
         </div>
 
         {/* Actions */}
         <CoreRow gap={10} className="gpm-actions">
-          <button className="gpm-btn gpm-btn--cancel" onClick={onClose}>Cancel</button>
-          <button className="gpm-btn gpm-btn--play" onClick={onPlay}>Play! →</button>
+          <button className="gpm-btn gpm-btn--cancel" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="gpm-btn gpm-btn--play" onClick={onPlay}>
+            Play! →
+          </button>
         </CoreRow>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import './GameComplete.css'
 
 import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
+
 import { Confetti } from './Confetti'
 import { Button } from './ui/Button'
 
@@ -13,11 +14,25 @@ interface GameCompleteProps {
   onHome: () => void
 }
 
-export function GameComplete({ score, total, stars, isNewBest, onRestart, onHome }: GameCompleteProps) {
+export function GameComplete({
+  score,
+  total,
+  stars,
+  isNewBest,
+  onRestart,
+  onHome,
+}: GameCompleteProps) {
   return (
     <>
       <Confetti />
-      <CoreCol flex={1} align="center" justify="center" gap={Spacing.sm} padding={20} className="game-complete">
+      <CoreCol
+        flex={1}
+        align="center"
+        justify="center"
+        gap={Spacing.sm}
+        padding={20}
+        className="game-complete"
+      >
         <CoreRow gap={Spacing.xs} marginBottom={Spacing.xs}>
           {[1, 2, 3].map((i) => (
             <span
@@ -30,13 +45,20 @@ export function GameComplete({ score, total, stars, isNewBest, onRestart, onHome
           ))}
         </CoreRow>
         {isNewBest && <div className="complete-new-best">New Best!</div>}
-        <CoreText size="h1" color="game">Amazing!</CoreText>
+        <CoreText size="h1" color="game">
+          Amazing!
+        </CoreText>
         <CoreText size="h3" color="muted">
-          You got <strong style={{ color: 'var(--text)' }}>{score}</strong> out of <strong style={{ color: 'var(--text)' }}>{total}</strong>!
+          You got <strong style={{ color: 'var(--text)' }}>{score}</strong> out of{' '}
+          <strong style={{ color: 'var(--text)' }}>{total}</strong>!
         </CoreText>
         <CoreRow gap={Spacing.md} marginTop={Spacing.md}>
-          <Button variant="primary" onClick={onRestart}>Play Again</Button>
-          <Button variant="secondary" onClick={onHome}>Home</Button>
+          <Button variant="primary" onClick={onRestart}>
+            Play Again
+          </Button>
+          <Button variant="secondary" onClick={onHome}>
+            Home
+          </Button>
         </CoreRow>
       </CoreCol>
     </>

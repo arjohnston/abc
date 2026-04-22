@@ -1,8 +1,8 @@
 import './HomeScreen.css'
 
+import { CoreRow, CoreText, Spacing } from '@core'
 import { Fragment, useEffect, useRef, useState } from 'react'
 
-import { CoreRow, CoreText, Spacing } from '@core'
 import { GamePreviewModal } from '../components/GamePreviewModal'
 import { SettingsModal } from '../components/SettingsModal'
 import { MiniGameNode } from '../components/ui/MiniGameNode'
@@ -89,7 +89,9 @@ export function HomeScreen({
     const timer = setTimeout(() => {
       const all = scrollRef.current?.querySelectorAll<HTMLElement>('.section--active')
       const section = all && all.length > 0 ? all[all.length - 1] : null
-      if (!section) return
+      if (!section) {
+        return
+      }
       // scrollY is 0 at this point, so getBoundingClientRect().top === page offset
       const top = section.getBoundingClientRect().top - 80
       window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
@@ -106,7 +108,10 @@ export function HomeScreen({
         <GamePreviewModal
           game={previewGame}
           stars={getStars(previewGame.id)}
-          onPlay={() => { onSelectGame(previewGame); setPreviewGame(null) }}
+          onPlay={() => {
+            onSelectGame(previewGame)
+            setPreviewGame(null)
+          }}
           onClose={() => setPreviewGame(null)}
         />
       )}
@@ -142,7 +147,9 @@ export function HomeScreen({
             3
           </span>
         </CoreText>
-        <CoreText size="h3" color="muted">Pick a game and start learning!</CoreText>
+        <CoreText size="h3" color="muted">
+          Pick a game and start learning!
+        </CoreText>
         <div className="home-icon-btns">
           <button
             className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}
@@ -151,7 +158,13 @@ export function HomeScreen({
           >
             {bonusUnlocked ? '🎮' : '🔒'}
           </button>
-          <button className="home-icon-btn" onClick={() => setShowSettings(true)} data-tooltip="Settings">⚙️</button>
+          <button
+            className="home-icon-btn"
+            onClick={() => setShowSettings(true)}
+            data-tooltip="Settings"
+          >
+            ⚙️
+          </button>
         </div>
       </header>
 
@@ -178,76 +191,76 @@ export function HomeScreen({
 
           return (
             <Fragment key={section.id}>
-            <div className={`section ${isActive ? 'section--active' : ''}`}>
-              <SectionBanner
-                section={section}
-                earnedStars={sectionStars}
-                totalPossibleStars={totalPossible}
-                locked={locked}
-              />
-              <div
-                className={`path__track ${locked ? 'path__track--locked' : ''}`}
-                style={{ height: `${totalHeight + 140}px` }}
-              >
-                <svg
-                  className="path__svg"
-                  viewBox={`0 0 100 ${totalHeight + 140}`}
-                  preserveAspectRatio="none"
+              <div className={`section ${isActive ? 'section--active' : ''}`}>
+                <SectionBanner
+                  section={section}
+                  earnedStars={sectionStars}
+                  totalPossibleStars={totalPossible}
+                  locked={locked}
+                />
+                <div
+                  className={`path__track ${locked ? 'path__track--locked' : ''}`}
+                  style={{ height: `${totalHeight + 140}px` }}
                 >
-                  {/* Outer thick trail */}
-                  <path
-                    d={buildSmoothPath(games.length, NODE_SPACING)}
-                    fill="none"
-                    stroke="var(--bg-light)"
-                    strokeWidth="12"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    vectorEffect="non-scaling-stroke"
-                    transform="translate(0, 70)"
-                  />
-                  {/* Inner lighter trail on top */}
-                  <path
-                    d={buildSmoothPath(games.length, NODE_SPACING)}
-                    fill="none"
-                    stroke="var(--bg-card)"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    vectorEffect="non-scaling-stroke"
-                    transform="translate(0, 70)"
-                  />
-                </svg>
-
-                {/* Nodes positioned absolutely */}
-                {games.map((game, i) => (
-                  <div
-                    key={game.id}
-                    className="path__node-abs"
-                    style={{
-                      top: `${i * NODE_SPACING + 70}px`,
-                      left: `${getNodeX(i)}%`,
-                    }}
+                  <svg
+                    className="path__svg"
+                    viewBox={`0 0 100 ${totalHeight + 140}`}
+                    preserveAspectRatio="none"
                   >
-                    <PathNode
-                      game={game}
-                      stars={getStars(game.id)}
-                      locked={locked}
-                      onClick={() => setPreviewGame(game)}
+                    {/* Outer thick trail */}
+                    <path
+                      d={buildSmoothPath(games.length, NODE_SPACING)}
+                      fill="none"
+                      stroke="var(--bg-light)"
+                      strokeWidth="12"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      vectorEffect="non-scaling-stroke"
+                      transform="translate(0, 70)"
                     />
-                  </div>
-                ))}
+                    {/* Inner lighter trail on top */}
+                    <path
+                      d={buildSmoothPath(games.length, NODE_SPACING)}
+                      fill="none"
+                      stroke="var(--bg-card)"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      vectorEffect="non-scaling-stroke"
+                      transform="translate(0, 70)"
+                    />
+                  </svg>
+
+                  {/* Nodes positioned absolutely */}
+                  {games.map((game, i) => (
+                    <div
+                      key={game.id}
+                      className="path__node-abs"
+                      style={{
+                        top: `${i * NODE_SPACING + 70}px`,
+                        left: `${getNodeX(i)}%`,
+                      }}
+                    >
+                      <PathNode
+                        game={game}
+                        stars={getStars(game.id)}
+                        locked={locked}
+                        onClick={() => setPreviewGame(game)}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-            {miniGamesHere.map(mg => (
-              <MiniGameNode
-                key={mg.id}
-                emoji={mg.emoji}
-                title={mg.title}
-                locked={!bonusUnlocked}
-                lockHint={lockHint}
-                onClick={() => onPlayMiniGame(mg.id)}
-              />
-            ))}
+              {miniGamesHere.map((mg) => (
+                <MiniGameNode
+                  key={mg.id}
+                  emoji={mg.emoji}
+                  title={mg.title}
+                  locked={!bonusUnlocked}
+                  lockHint={lockHint}
+                  onClick={() => onPlayMiniGame(mg.id)}
+                />
+              ))}
             </Fragment>
           )
         })}

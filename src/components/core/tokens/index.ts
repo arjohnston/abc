@@ -1,5 +1,5 @@
-export { Spacing } from './spacing'
-export type { SpacingValue } from './spacing'
-export { Colors } from './colors'
 export type { ColorToken } from './colors'
+export { Colors } from './colors'
+export type { SpacingValue } from './spacing'
+export { Spacing } from './spacing'
 export { FontSize, FontWeight } from './typography'

@@ -1,6 +1,7 @@
 import './WhatNextDisplay.css'
 
 import { CoreRow, Spacing } from '@core'
+
 import type { FeedbackState, WhatNextItem } from '../types/game'
 
 interface WhatNextDisplayProps {
@@ -15,10 +16,7 @@ export function WhatNextDisplay({ item, feedback, animKey, reversed }: WhatNextD
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   const blank = (
-    <div
-      key={animKey}
-      className={`what-next__tile what-next__tile--blank ${feedbackClass}`}
-    >
+    <div key={animKey} className={`what-next__tile what-next__tile--blank ${feedbackClass}`}>
       ?
     </div>
   )

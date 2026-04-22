@@ -40,13 +40,13 @@ Exported from `@core`. Use in both JSX props and JavaScript logic.
 ```ts
 import { Spacing } from '@core'
 
-Spacing.xxs  // 4
-Spacing.xs   // 8
-Spacing.sm   // 12
-Spacing.md   // 16
-Spacing.lg   // 24
-Spacing.xl   // 32
-Spacing.xxl  // 48
+Spacing.xxs // 4
+Spacing.xs // 8
+Spacing.sm // 12
+Spacing.md // 16
+Spacing.lg // 24
+Spacing.xl // 32
+Spacing.xxl // 48
 ```
 
 **When to use tokens:** When the value is on the scale (4, 8, 12, 16, 24, 32, 48). Leave values like 10 or 20 as raw numbers — don't round to the nearest token.
@@ -69,18 +69,18 @@ Raw hex values mirroring every CSS variable. Use in JS-side logic (canvas, dynam
 ```ts
 import { Colors } from '@core'
 
-Colors.green      // '#58cc02'
-Colors.greenDark  // '#46a302'
-Colors.blue       // '#1cb0f6'
-Colors.purple     // '#ce82ff'
-Colors.orange     // '#ff9600'
-Colors.red        // '#ff4b4b'
-Colors.yellow     // '#ffc800'
-Colors.bg         // '#131f24'
-Colors.bgCard     // '#1a2c33'
-Colors.bgLight    // '#235264'
-Colors.text       // '#ffffff'
-Colors.textMuted  // '#96b0bc'
+Colors.green // '#58cc02'
+Colors.greenDark // '#46a302'
+Colors.blue // '#1cb0f6'
+Colors.purple // '#ce82ff'
+Colors.orange // '#ff9600'
+Colors.red // '#ff4b4b'
+Colors.yellow // '#ffc800'
+Colors.bg // '#131f24'
+Colors.bgCard // '#1a2c33'
+Colors.bgLight // '#235264'
+Colors.text // '#ffffff'
+Colors.textMuted // '#96b0bc'
 ```
 
 ```tsx
@@ -99,13 +99,13 @@ Match the values used in CoreText CSS. Use when you need to replicate typography
 ```ts
 import { FontSize, FontWeight } from '@core'
 
-FontSize.h1    // 'clamp(2.5rem, 7vw, 4.5rem)'
-FontSize.body  // '1rem'
+FontSize.h1 // 'clamp(2.5rem, 7vw, 4.5rem)'
+FontSize.body // '1rem'
 
-FontWeight.regular   // 400
-FontWeight.semibold  // 600
-FontWeight.bold      // 700
-FontWeight.black     // 900
+FontWeight.regular // 400
+FontWeight.semibold // 600
+FontWeight.bold // 700
+FontWeight.black // 900
 ```
 
 ---
@@ -168,6 +168,7 @@ const ref = useRef<HTMLElement>(null)
 ```
 
 Props:
+
 ```ts
 as?: React.ElementType  // default: 'div'
 // + SharedLayoutProps
@@ -195,6 +196,7 @@ as?: React.ElementType  // default: 'div'
 ```
 
 Props:
+
 ```ts
 align?:   'flex-start' | 'center' | 'flex-end' | 'stretch'
 justify?: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around'
@@ -212,13 +214,16 @@ wrap?:    boolean
 
 ```tsx
 <CoreCol flex={1} align="center" justify="center" gap={Spacing.lg} padding={20}>
-  <CoreText size="h3" color="muted">Press this key!</CoreText>
+  <CoreText size="h3" color="muted">
+    Press this key!
+  </CoreText>
   <LetterDisplay />
   <VirtualKeyboard />
 </CoreCol>
 ```
 
 Props:
+
 ```ts
 align?:   'flex-start' | 'center' | 'flex-end' | 'stretch'
 justify?: 'flex-start' | 'center' | 'flex-end' | 'space-between'
@@ -246,6 +251,7 @@ justify?: 'flex-start' | 'center' | 'flex-end' | 'space-between'
 ```
 
 Props:
+
 ```ts
 center?: boolean  // adds align-items: center
 // + SharedLayoutProps
@@ -261,13 +267,13 @@ center?: boolean  // adds align-items: center
 
 The `size` prop controls both the **rendered HTML tag** and the **font size**:
 
-| size    | Tag    | Font size                    | Weight |
-|---------|--------|------------------------------|--------|
-| `'h1'`  | `<h1>` | clamp(2.5rem, 7vw, 4.5rem)   | 900    |
-| `'h2'`  | `<h2>` | clamp(1.4rem, 4vw, 2rem)     | 900    |
-| `'h3'`  | `<h3>` | clamp(1rem, 3vw, 1.5rem)     | 700    |
-| `'body'`| `<p>`  | 1rem                         | 400    |
-| `'sm'`  | `<span>`| 0.9rem                      | 600    |
+| size     | Tag      | Font size                  | Weight |
+| -------- | -------- | -------------------------- | ------ |
+| `'h1'`   | `<h1>`   | clamp(2.5rem, 7vw, 4.5rem) | 900    |
+| `'h2'`   | `<h2>`   | clamp(1.4rem, 4vw, 2rem)   | 900    |
+| `'h3'`   | `<h3>`   | clamp(1rem, 3vw, 1.5rem)   | 700    |
+| `'body'` | `<p>`    | 1rem                       | 400    |
+| `'sm'`   | `<span>` | 0.9rem                     | 600    |
 
 ```tsx
 <CoreText size="h1" color="game">Amazing!</CoreText>
@@ -283,6 +289,7 @@ const ref = useRef<HTMLElement>(null)
 ```
 
 Props:
+
 ```ts
 size?:      'h1' | 'h2' | 'h3' | 'body' | 'sm'  // default: 'body'
 color?:     'default' | 'muted' | 'green' | 'blue' | 'purple' | 'orange' | 'red' | 'yellow' | 'game'
@@ -333,17 +340,20 @@ import { CoreCard } from '@core'
 ```
 
 Props:
+
 ```ts
 as?: React.ElementType  // default: 'div'
 // + SharedLayoutProps (all three sub-parts also accept SharedLayoutProps)
 ```
 
 Sub-parts default padding:
+
 - `CoreCard.Header` — `padding: 16px`, `border-bottom`
 - `CoreCard.Body` — `padding: 24px`, `flex: 1`
 - `CoreCard.Footer` — `padding: 16px`, `border-top`
 
 Override sub-part padding by passing the prop directly:
+
 ```tsx
 <CoreCard.Body padding={Spacing.xl}>...</CoreCard.Body>
 ```
@@ -383,6 +393,7 @@ const ref = useRef<HTMLButtonElement>(null)
 ```
 
 Props:
+
 ```ts
 onClick?:         React.MouseEventHandler<HTMLButtonElement>
 onPointerDown?:   React.PointerEventHandler<HTMLButtonElement>
@@ -422,6 +433,7 @@ import { CoreGameArena } from '@core'
 ```
 
 Props:
+
 ```ts
 // SharedLayoutProps only — visual identity comes from CSS, not props
 ```
@@ -453,6 +465,7 @@ const ref = useRef<HTMLDivElement>(null)
 ```
 
 Props:
+
 ```ts
 horizontal?: boolean  // enables overflow-x: auto, disables overflow-y
 // + SharedLayoutProps
@@ -484,10 +497,7 @@ import { warnMutuallyExclusive } from '@core'
 warnMutuallyExclusive('MyComponent', props, ['value', 'defaultValue'])
 
 // Warn on multiple groups
-warnMutuallyExclusive('MyComponent', props,
-  ['horizontal', 'vertical'],
-  ['size', 'flex'],
-)
+warnMutuallyExclusive('MyComponent', props, ['horizontal', 'vertical'], ['size', 'flex'])
 ```
 
 ---
@@ -496,20 +506,20 @@ warnMutuallyExclusive('MyComponent', props,
 
 All core components forward their ref to the root DOM element:
 
-| Component        | Ref type              |
-|------------------|-----------------------|
-| `CoreBox`        | `HTMLElement`         |
-| `CoreCard`       | `HTMLElement`         |
-| `CoreCard.Header`| `HTMLDivElement`      |
-| `CoreCard.Body`  | `HTMLDivElement`      |
-| `CoreCard.Footer`| `HTMLDivElement`      |
-| `CoreCol`        | `HTMLDivElement`      |
-| `CoreGameArena`  | `HTMLDivElement`      |
-| `CorePressable`  | `HTMLButtonElement`   |
-| `CoreRow`        | `HTMLDivElement`      |
-| `CoreScreen`     | `HTMLDivElement`      |
-| `CoreScrollView` | `HTMLDivElement`      |
-| `CoreText`       | `HTMLElement`         |
+| Component         | Ref type            |
+| ----------------- | ------------------- |
+| `CoreBox`         | `HTMLElement`       |
+| `CoreCard`        | `HTMLElement`       |
+| `CoreCard.Header` | `HTMLDivElement`    |
+| `CoreCard.Body`   | `HTMLDivElement`    |
+| `CoreCard.Footer` | `HTMLDivElement`    |
+| `CoreCol`         | `HTMLDivElement`    |
+| `CoreGameArena`   | `HTMLDivElement`    |
+| `CorePressable`   | `HTMLButtonElement` |
+| `CoreRow`         | `HTMLDivElement`    |
+| `CoreScreen`      | `HTMLDivElement`    |
+| `CoreScrollView`  | `HTMLDivElement`    |
+| `CoreText`        | `HTMLElement`       |
 
 ```tsx
 const rowRef = useRef<HTMLDivElement>(null)
@@ -521,6 +531,7 @@ const rowRef = useRef<HTMLDivElement>(null)
 ## BEM Convention
 
 All CSS in this project uses BEM:
+
 - **Block:** `section-banner`, `path-node`, `game-complete`
 - **Element:** `section-banner__title`, `path-node__stars`
 - **Modifier:** `path-node--locked`, `core-row--wrap`
@@ -528,6 +539,7 @@ All CSS in this project uses BEM:
 Never use descendant selectors (`.parent .child`) when a BEM element (`parent__child`) can express the relationship.
 
 Core component class names follow the same convention:
+
 - `.core-row`, `.core-row--wrap`
 - `.core-card`, `.core-card__header`, `.core-card__body`, `.core-card__footer`
 - `.core-text`, `.core-text--h1`, `.core-text--body`

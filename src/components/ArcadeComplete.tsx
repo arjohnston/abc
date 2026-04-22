@@ -1,8 +1,9 @@
 import './ArcadeComplete.css'
 
-import { Button } from './ui/Button'
-import { Confetti } from './Confetti'
 import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
+
+import { Confetti } from './Confetti'
+import { Button } from './ui/Button'
 
 interface ArcadeCompleteProps {
   emoji: string
@@ -13,7 +14,14 @@ interface ArcadeCompleteProps {
   emojiClassName?: string
 }
 
-export function ArcadeComplete({ emoji, title, subtitle, onRestart, onHome, emojiClassName }: ArcadeCompleteProps) {
+export function ArcadeComplete({
+  emoji,
+  title,
+  subtitle,
+  onRestart,
+  onHome,
+  emojiClassName,
+}: ArcadeCompleteProps) {
   return (
     <>
       <Confetti />
@@ -21,11 +29,19 @@ export function ArcadeComplete({ emoji, title, subtitle, onRestart, onHome, emoj
         <span className={['arcade-complete__emoji', emojiClassName].filter(Boolean).join(' ')}>
           {emoji}
         </span>
-        <CoreText size="h2" color="green">{title}</CoreText>
-        <CoreText size="sm" color="muted">{subtitle}</CoreText>
+        <CoreText size="h2" color="green">
+          {title}
+        </CoreText>
+        <CoreText size="sm" color="muted">
+          {subtitle}
+        </CoreText>
         <CoreRow gap={Spacing.md} marginTop={Spacing.md}>
-          <Button variant="primary" onClick={onRestart}>Play Again</Button>
-          <Button variant="secondary" onClick={onHome}>Home</Button>
+          <Button variant="primary" onClick={onRestart}>
+            Play Again
+          </Button>
+          <Button variant="secondary" onClick={onHome}>
+            Home
+          </Button>
         </CoreRow>
       </CoreCol>
     </>

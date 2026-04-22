@@ -16,14 +16,25 @@ const DIRECTIONS = ['left', 'right', 'up', 'down'] as const
 type Dir = (typeof DIRECTIONS)[number]
 
 const ARROW: Record<Dir, string> = { left: '←', right: '→', up: '↑', down: '↓' }
-const KEY:   Record<Dir, string> = { left: 'ArrowLeft', right: 'ArrowRight', up: 'ArrowUp', down: 'ArrowDown' }
-const COLOR: Record<Dir, string> = { left: 'var(--blue)', right: 'var(--green)', up: 'var(--orange)', down: 'var(--purple)' }
+const KEY: Record<Dir, string> = {
+  left: 'ArrowLeft',
+  right: 'ArrowRight',
+  up: 'ArrowUp',
+  down: 'ArrowDown',
+}
+const COLOR: Record<Dir, string> = {
+  left: 'var(--blue)',
+  right: 'var(--green)',
+  up: 'var(--orange)',
+  down: 'var(--purple)',
+}
 function buildSequence(): Dir[] {
   const seq: Dir[] = []
   for (let i = 0; i < TOTAL; i++) {
     let dir: Dir
-    do { dir = DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)]! }
-    while (seq.length > 0 && seq[seq.length - 1] === dir)
+    do {
+      dir = DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)] ?? 'left'
+    } while (seq.length > 0 && seq[seq.length - 1] === dir)
     seq.push(dir)
   }
   return seq
@@ -34,33 +45,52 @@ import { useState } from 'react'
 
 export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps) {
   const [sequence] = useState(buildSequence)
-  const { score, round, feedback, lockedRef, completionResult, advance, flashWrong, restart } = useRound(TOTAL, onComplete)
+  const { score, round, feedback, lockedRef, completionResult, advance, flashWrong, restart } =
+    useRound(TOTAL, onComplete)
   const speak = useSpeech()
 
-  const currentDir = sequence[round] ?? sequence[TOTAL - 1]!
+  const currentDir = sequence[round] ?? sequence[TOTAL - 1] ?? 'left'
 
   // Speak once on mount only
   const spokenRef = useRef(false)
   useEffect(() => {
-    if (!spokenRef.current) { spokenRef.current = true; speak('Press the matching arrow key!') }
+    if (!spokenRef.current) {
+      spokenRef.current = true
+      speak('Press the matching arrow key!')
+    }
   }, [speak])
 
   useKeyInput((key) => {
     const arrowKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
-    if (!arrowKeys.includes(key)) return
-    if (lockedRef.current) return
+    if (!arrowKeys.includes(key)) {
+      return
+    }
+    if (lockedRef.current) {
+      return
+    }
     lockedRef.current = true
-    if (key === KEY[currentDir]) advance(true)
-    else flashWrong()
+    if (key === KEY[currentDir]) {
+      advance(true)
+    } else {
+      flashWrong()
+    }
   })
 
   if (completionResult) {
-    return <GameComplete score={score} total={TOTAL} stars={completionResult.stars} isNewBest={completionResult.isNewBest} onRestart={restart} onHome={onBack} />
+    return (
+      <GameComplete
+        score={score}
+        total={TOTAL}
+        stars={completionResult.stars}
+        isNewBest={completionResult.isNewBest}
+        onRestart={restart}
+        onHome={onBack}
+      />
+    )
   }
 
   return (
     <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} className="fa">
-
       <div className="fa-arena">
         <div
           className={`fa-arrow-wrap fa-arrow-wrap--${feedback ?? 'idle'}`}

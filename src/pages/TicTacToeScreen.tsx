@@ -1,8 +1,8 @@
 import './TicTacToeScreen.css'
 
+import { CoreText } from '@core'
 import { useCallback, useState } from 'react'
 
-import { CoreText } from '@core'
 import { Confetti } from '../components/Confetti'
 import { GameShell } from '../components/GameShell'
 import { Button } from '../components/ui/Button'
@@ -12,16 +12,22 @@ type Cell = 'X' | 'O' | null
 type Board = Cell[]
 
 const WIN_LINES = [
-  [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
-  [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
-  [0, 4, 8], [2, 4, 6],             // diagonals
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8], // rows
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8], // cols
+  [0, 4, 8],
+  [2, 4, 6], // diagonals
 ]
 
 function checkWinner(board: Board): { winner: 'X' | 'O'; line: number[] } | null {
   for (const line of WIN_LINES) {
     const [a, b, c] = line as [number, number, number]
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return { winner: board[a]!, line }
+    const cell = board[a]
+    if (cell && cell === board[b] && cell === board[c]) {
+      return { winner: cell, line }
     }
   }
   return null
@@ -34,8 +40,12 @@ function isDraw(board: Board): boolean {
 // Minimax — returns best score for 'O'
 function minimax(board: Board, isMaximizing: boolean, depth: number): number {
   const win = checkWinner(board)
-  if (win) return win.winner === 'O' ? 10 - depth : depth - 10
-  if (isDraw(board)) return 0
+  if (win) {
+    return win.winner === 'O' ? 10 - depth : depth - 10
+  }
+  if (isDraw(board)) {
+    return 0
+  }
 
   if (isMaximizing) {
     let best = -Infinity
@@ -63,14 +73,16 @@ function minimax(board: Board, isMaximizing: boolean, depth: number): number {
 // Medium: 75% of the time play optimal, 25% random
 function computerMove(board: Board): number {
   const empty = board.map((c, i) => (c === null ? i : -1)).filter((i) => i !== -1)
-  if (empty.length === 0) return -1
+  if (empty.length === 0) {
+    return -1
+  }
 
   if (Math.random() < 0.25) {
-    return empty[Math.floor(Math.random() * empty.length)]!
+    return empty[Math.floor(Math.random() * empty.length)] ?? empty[0] ?? -1
   }
 
   let bestScore = -Infinity
-  let bestMove = empty[0]!
+  let bestMove = empty[0] ?? -1
   for (const i of empty) {
     const next = [...board] as Board
     next[i] = 'O'
@@ -93,7 +105,6 @@ export function TicTacToeScreen({ onBack }: Props) {
   const [result, setResult] = useState<'win' | 'lose' | 'draw' | null>(null)
   const [winLine, setWinLine] = useState<number[] | null>(null)
   const [thinking, setThinking] = useState(false)
-
 
   const { playCorrect, playWrong, playComplete } = useSoundEffects()
 
@@ -123,21 +134,27 @@ export function TicTacToeScreen({ onBack }: Props) {
 
   const handleClick = useCallback(
     (i: number) => {
-      if (!playerTurn || board[i] || result || thinking) return
+      if (!playerTurn || board[i] || result || thinking) {
+        return
+      }
 
       const next = [...board] as Board
       next[i] = 'X'
       setBoard(next)
       playCorrect()
 
-      if (handleResult(next)) return
+      if (handleResult(next)) {
+        return
+      }
 
       setPlayerTurn(false)
       setThinking(true)
 
       setTimeout(() => {
         const move = computerMove(next)
-        if (move === -1) return
+        if (move === -1) {
+          return
+        }
         const next2 = [...next] as Board
         next2[move] = 'O'
         setBoard(next2)
@@ -158,20 +175,26 @@ export function TicTacToeScreen({ onBack }: Props) {
     setThinking(false)
   }, [])
 
-
   const status =
-    result === 'win'  ? '🎉 You Win!' :
-    result === 'lose' ? '😮 Computer Wins' :
-    result === 'draw' ? "🤝 It's a Draw!" :
-    thinking          ? '🤔 Thinking...' :
-    playerTurn        ? 'Your turn! (X)' :
-                        ''
+    result === 'win'
+      ? '🎉 You Win!'
+      : result === 'lose'
+        ? '😮 Computer Wins'
+        : result === 'draw'
+          ? "🤝 It's a Draw!"
+          : thinking
+            ? '🤔 Thinking...'
+            : playerTurn
+              ? 'Your turn! (X)'
+              : ''
 
   return (
     <GameShell onBack={onBack} percent={0} score={0} center paddingBottom={24} className="ttt">
       {result === 'win' && <Confetti />}
 
-      <CoreText size="h3" color="muted" align="center" className="ttt-status">{status}</CoreText>
+      <CoreText size="h3" color="muted" align="center" className="ttt-status">
+        {status}
+      </CoreText>
 
       <div className="ttt-board">
         {board.map((cell, i) => {
@@ -191,12 +214,18 @@ export function TicTacToeScreen({ onBack }: Props) {
 
       {result && (
         <div className="ttt-actions">
-          <Button variant="primary" onClick={handleRestart}>Play Again</Button>
-          <Button variant="secondary" onClick={onBack}>Home</Button>
+          <Button variant="primary" onClick={handleRestart}>
+            Play Again
+          </Button>
+          <Button variant="secondary" onClick={onBack}>
+            Home
+          </Button>
         </div>
       )}
 
-      <CoreText size="sm" color="muted" style={{ marginTop: '20px' }}>You = <strong>X</strong> &nbsp; Computer = <strong>O</strong></CoreText>
+      <CoreText size="sm" color="muted" style={{ marginTop: '20px' }}>
+        You = <strong>X</strong> &nbsp; Computer = <strong>O</strong>
+      </CoreText>
     </GameShell>
   )
 }

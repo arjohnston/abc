@@ -1,6 +1,7 @@
 import './NumberBlanksDisplay.css'
 
 import { CoreCol, Spacing } from '@core'
+
 import type { FeedbackState } from '../types/game'
 
 interface NumberBlanksDisplayProps {
@@ -12,7 +13,14 @@ interface NumberBlanksDisplayProps {
   shakeKey: number
 }
 
-export function NumberBlanksDisplay({ display, label, slots, filled, feedback, shakeKey }: NumberBlanksDisplayProps) {
+export function NumberBlanksDisplay({
+  display,
+  label,
+  slots,
+  filled,
+  feedback,
+  shakeKey,
+}: NumberBlanksDisplayProps) {
   const activeSlot = filled.length
 
   return (

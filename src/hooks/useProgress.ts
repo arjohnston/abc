@@ -56,10 +56,17 @@ export function useProgress() {
 
   const isSectionUnlocked = useCallback(
     (section: Section): boolean => {
-      if (section.starsToUnlock === 0) return true
+      if (section.starsToUnlock === 0) {
+        return true
+      }
       const sectionIndex = SECTIONS.findIndex((s) => s.id === section.id)
-      if (sectionIndex <= 0) return true
-      const prevSection = SECTIONS[sectionIndex - 1]!
+      if (sectionIndex <= 0) {
+        return true
+      }
+      const prevSection = SECTIONS[sectionIndex - 1]
+      if (!prevSection) {
+        return true
+      }
       return getStarsForSection(prevSection.id) >= section.starsToUnlock
     },
     [getStarsForSection],

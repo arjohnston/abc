@@ -1,6 +1,7 @@
 import './ColorDisplay.css'
 
 import { CoreCol, Spacing } from '@core'
+
 import type { ColorItem, FeedbackState } from '../types/game'
 
 interface ColorDisplayProps {

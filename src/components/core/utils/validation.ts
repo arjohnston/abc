@@ -9,7 +9,9 @@ export function warnMutuallyExclusive(
   props: Record<string, unknown>,
   ...groups: string[][]
 ): void {
-  if (!import.meta.env.DEV) return
+  if (!import.meta.env.DEV) {
+    return
+  }
   for (const group of groups) {
     const defined = group.filter((k) => props[k] !== undefined)
     if (defined.length > 1) {

@@ -16,12 +16,15 @@ const FAKE_RATIO = 0.3
 
 type RoundType = 'do' | 'dont'
 
-interface Round { char: string; type: RoundType }
+interface Round {
+  char: string
+  type: RoundType
+}
 
 function buildRounds(items: string[]): Round[] {
   const pool = [...items].sort(() => Math.random() - 0.5)
   return Array.from({ length: TOTAL }, (_, i) => ({
-    char: pool[i % pool.length]!,
+    char: pool[i % pool.length] ?? '',
     type: Math.random() < FAKE_RATIO ? 'dont' : 'do',
   }))
 }
@@ -31,13 +34,16 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
   const [rounds] = useState(() => buildRounds(items))
   const [holdProgress, setHoldProgress] = useState(0)
 
-  const { score, round, feedback, lockedRef, completionResult, advance, restart } = useRound(TOTAL, onComplete)
+  const { score, round, feedback, lockedRef, completionResult, advance, restart } = useRound(
+    TOTAL,
+    onComplete,
+  )
   const speak = useSpeech()
 
   const rafRef = useRef<number>(0)
   const startTimeRef = useRef(0)
 
-  const currentRound = rounds[round]!
+  const currentRound = rounds[round] ?? rounds[TOTAL - 1] ?? { char: '', type: 'do' as RoundType }
   const isDo = currentRound.type === 'do'
 
   // Announce + start hold timer on each new round
@@ -71,28 +77,45 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
 
   useKeyInput((key) => {
     const k = key.toUpperCase()
-    if (!/^[A-Z0-9]$/.test(k)) return
-    if (lockedRef.current) return
+    if (!/^[A-Z0-9]$/.test(k)) {
+      return
+    }
+    if (lockedRef.current) {
+      return
+    }
     lockedRef.current = true
     cancelAnimationFrame(rafRef.current)
 
-    if (isDo) advance(k === currentRound.char)
-    else      advance(false) // any key on a fake-out = wrong
+    if (isDo) {
+      advance(k === currentRound.char)
+    } else {
+      advance(false)
+    } // any key on a fake-out = wrong
   })
 
   if (completionResult) {
-    return <GameComplete score={score} total={TOTAL} stars={completionResult.stars} isNewBest={completionResult.isNewBest} onRestart={restart} onHome={onBack} />
+    return (
+      <GameComplete
+        score={score}
+        total={TOTAL}
+        stars={completionResult.stars}
+        isNewBest={completionResult.isNewBest}
+        onRestart={restart}
+        onHome={onBack}
+      />
+    )
   }
 
   return (
     <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} center className="ss">
-
       <div className="ss-content">
         <div className={`ss-banner ${isDo ? 'ss-banner--do' : 'ss-banner--dont'}`}>
           {isDo ? '🤖 Simon Says!' : '🚫 Freeze!'}
         </div>
 
-        <div className={`ss-char-wrap ${feedback === 'correct' ? 'ss-char--correct' : feedback === 'wrong' ? 'ss-char--wrong' : ''}`}>
+        <div
+          className={`ss-char-wrap ${feedback === 'correct' ? 'ss-char--correct' : feedback === 'wrong' ? 'ss-char--wrong' : ''}`}
+        >
           <span className="ss-char">{currentRound.char}</span>
         </div>
 

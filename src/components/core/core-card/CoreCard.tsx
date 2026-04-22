@@ -1,7 +1,9 @@
+// Compound component pattern — intentionally exports multiple named forwardRef components
+/* eslint-disable react-refresh/only-export-components */
 import './CoreCard.css'
 
-import { forwardRef } from 'react'
 import type React from 'react'
+import { forwardRef } from 'react'
 
 import { buildSpacingStyle, type SharedLayoutProps } from '../shared/spacing'
 

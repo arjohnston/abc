@@ -1,8 +1,7 @@
 import './SettingsModal.css'
 
-import { useState } from 'react'
-
 import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
+import { useState } from 'react'
 
 import { Toggle } from './ui/Toggle'
 
@@ -27,7 +26,9 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
       <div className="settings-modal" onPointerDown={(e) => e.stopPropagation()}>
         <CoreRow align="center" justify="space-between">
           <CoreText size="h2">Settings</CoreText>
-          <button className="settings-close" onClick={onClose}>✕</button>
+          <button className="settings-close" onClick={onClose}>
+            ✕
+          </button>
         </CoreRow>
 
         <hr className="settings-divider" />
@@ -41,10 +42,16 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
 
         {confirming ? (
           <CoreCol gap={10}>
-            <CoreText size="sm" color="muted" align="center">This will erase all stars and progress. Are you sure?</CoreText>
+            <CoreText size="sm" color="muted" align="center">
+              This will erase all stars and progress. Are you sure?
+            </CoreText>
             <CoreRow gap={10} className="settings-confirm-btns">
-              <button className="settings-confirm-yes" onClick={handleReset}>Yes, reset</button>
-              <button className="settings-confirm-no" onClick={() => setConfirming(false)}>Cancel</button>
+              <button className="settings-confirm-yes" onClick={handleReset}>
+                Yes, reset
+              </button>
+              <button className="settings-confirm-no" onClick={() => setConfirming(false)}>
+                Cancel
+              </button>
             </CoreRow>
           </CoreCol>
         ) : (

@@ -1,7 +1,7 @@
 import './CoreText.css'
 
-import { createElement, forwardRef } from 'react'
 import type React from 'react'
+import { createElement, forwardRef } from 'react'
 
 type TextSize = 'h1' | 'h2' | 'h3' | 'body' | 'sm'
 
@@ -18,18 +18,22 @@ export type TextColor =
 
 const COLOR_MAP: Record<TextColor, string> = {
   default: 'var(--text)',
-  muted:   'var(--text-muted)',
-  green:   'var(--green)',
-  blue:    'var(--blue)',
-  purple:  'var(--purple)',
-  orange:  'var(--orange)',
-  red:     'var(--red)',
-  yellow:  'var(--yellow)',
-  game:    'var(--game-color)',
+  muted: 'var(--text-muted)',
+  green: 'var(--green)',
+  blue: 'var(--blue)',
+  purple: 'var(--purple)',
+  orange: 'var(--orange)',
+  red: 'var(--red)',
+  yellow: 'var(--yellow)',
+  game: 'var(--game-color)',
 }
 
 const TAG_MAP: Record<TextSize, string> = {
-  h1: 'h1', h2: 'h2', h3: 'h3', body: 'p', sm: 'span',
+  h1: 'h1',
+  h2: 'h2',
+  h3: 'h3',
+  body: 'p',
+  sm: 'span',
 }
 
 export interface CoreTextProps extends React.HTMLAttributes<HTMLElement> {
