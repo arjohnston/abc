@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import { z } from 'zod'
 
 const STORAGE_KEY = 'abc123-stats'
 
@@ -7,14 +8,18 @@ export interface Stats {
   totalCompletions: number
 }
 
+const StatsSchema = z.object({
+  totalPlays: z.number().int().min(0).default(0),
+  totalCompletions: z.number().int().min(0).default(0),
+})
+
 function loadStats(): Stats {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) {
-      const parsed = JSON.parse(raw) as Stats
-      return {
-        totalPlays: parsed.totalPlays ?? 0,
-        totalCompletions: parsed.totalCompletions ?? 0,
+      const result = StatsSchema.safeParse(JSON.parse(raw))
+      if (result.success) {
+        return result.data
       }
     }
   } catch {

@@ -6,11 +6,15 @@ import { useEffect, useRef } from 'react'
  */
 export function useKeyInput(handler: (key: string) => void) {
   const handlerRef = useRef(handler)
-  handlerRef.current = handler
+  useEffect(() => {
+    handlerRef.current = handler
+  })
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.repeat) return
+      if (e.repeat) {
+        return
+      }
       handlerRef.current(e.key)
     }
     window.addEventListener('keydown', onKey)

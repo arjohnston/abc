@@ -1,15 +1,7 @@
 import type { WhichMoreItem } from '../types/game'
+import { shuffle } from './utils'
 
 const EMOJIS = ['🍎', '⭐', '🌸', '🐠', '🍪', '🎈', '🦋', '🍓', '🐣', '🐥']
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr]
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[a[i], a[j]] = [a[j]!, a[i]!]
-  }
-  return a
-}
 
 // All pairs of digits 1–6 where they differ by at least 1
 const BASE_PAIRS: Array<[number, number]> = []
@@ -27,6 +19,6 @@ export function generateWhichMoreItems(isRandom: boolean): WhichMoreItem[] {
     left: String(left),
     right: String(right),
     answer: String(Math.max(left, right)),
-    emoji: EMOJIS[i % EMOJIS.length]!,
+    emoji: EMOJIS[i % EMOJIS.length] ?? '🍎',
   }))
 }

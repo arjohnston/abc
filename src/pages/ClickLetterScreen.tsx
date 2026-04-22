@@ -13,13 +13,22 @@ const GRID_COUNT = 16
 const COLORS = ['green', 'blue', 'purple', 'orange', 'red', 'yellow'] as const
 type TileColor = (typeof COLORS)[number]
 
-interface Tile { char: string; color: TileColor }
+interface Tile {
+  char: string
+  color: TileColor
+}
 
 function buildGrid(items: string[]): { tiles: Tile[]; target: string } {
   const pool = [...items].sort(() => Math.random() - 0.5).slice(0, GRID_COUNT)
-  while (pool.length < GRID_COUNT) pool.push(items[Math.floor(Math.random() * items.length)]!)
-  const tiles = pool.map((char) => ({ char, color: COLORS[Math.floor(Math.random() * COLORS.length)]! }))
-  return { tiles, target: tiles[Math.floor(Math.random() * tiles.length)]!.char }
+  while (pool.length < GRID_COUNT) {
+    pool.push(items[Math.floor(Math.random() * items.length)] ?? items[0] ?? '')
+  }
+  const tiles = pool.map((char) => ({
+    char,
+    color: COLORS[Math.floor(Math.random() * COLORS.length)] ?? ('green' as TileColor),
+  }))
+  const pick = tiles[Math.floor(Math.random() * tiles.length)]
+  return { tiles, target: pick?.char ?? tiles[0]?.char ?? '' }
 }
 
 export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreenProps) {
@@ -28,24 +37,36 @@ export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreen
   const [wrongIndex, setWrongIndex] = useState<number | null>(null)
   const [correctIndex, setCorrectIndex] = useState<number | null>(null)
 
-  const { score, round, lockedRef, completionResult, advance, restart } = useRound(TOTAL, onComplete)
+  const { score, round, lockedRef, completionResult, advance, restart } = useRound(
+    TOTAL,
+    onComplete,
+  )
   const speak = useSpeech()
 
-  useEffect(() => { speak(target) }, [target, speak])
+  useEffect(() => {
+    speak(target)
+  }, [target, speak])
 
   const handleClick = useCallback(
     (tile: Tile, index: number) => {
-      if (lockedRef.current) return
+      if (lockedRef.current) {
+        return
+      }
       lockedRef.current = true
 
       if (tile.char === target) {
         setCorrectIndex(index)
         advance(true)
-        setTimeout(() => { setCorrectIndex(null); setGrid(buildGrid(items)) }, 520)
+        setTimeout(() => {
+          setCorrectIndex(null)
+          setGrid(buildGrid(items))
+        }, 520)
       } else {
         setWrongIndex(index)
         advance(false)
-        setTimeout(() => { setWrongIndex(null) }, 420)
+        setTimeout(() => {
+          setWrongIndex(null)
+        }, 420)
       }
     },
     [target, items, lockedRef, advance],
@@ -59,15 +80,25 @@ export function ClickLetterScreen({ game, onBack, onComplete }: CustomGameScreen
   }, [restart, items])
 
   if (completionResult) {
-    return <GameComplete score={score} total={TOTAL} stars={completionResult.stars} isNewBest={completionResult.isNewBest} onRestart={handleRestart} onHome={onBack} />
+    return (
+      <GameComplete
+        score={score}
+        total={TOTAL}
+        stars={completionResult.stars}
+        isNewBest={completionResult.isNewBest}
+        onRestart={handleRestart}
+        onHome={onBack}
+      />
+    )
   }
 
   return (
     <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} className="cls">
-
       <div className="cls-prompt">
         Click: <span className="cls-target">{target}</span>
-        <button className="cls-replay" onClick={() => speak(target)} title="Hear again">🔊</button>
+        <button className="cls-replay" onClick={() => speak(target)} title="Hear again">
+          🔊
+        </button>
       </div>
 
       <div className="cls-grid">

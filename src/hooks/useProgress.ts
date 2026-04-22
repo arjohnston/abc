@@ -1,16 +1,23 @@
 import { useCallback, useState } from 'react'
+import { z } from 'zod'
 
 import { GAMES, SECTIONS } from '../games/config'
 import type { ProgressData, Section } from '../types/game'
 
 const STORAGE_KEY = 'abc123-progress'
 
+const ProgressSchema = z.object({
+  games: z.record(z.string(), z.object({ bestStars: z.number().int().min(0).max(3) })),
+})
+
 function loadProgress(): ProgressData {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
     if (raw) {
-      const parsed = JSON.parse(raw) as ProgressData
-      return { games: parsed.games ?? {} }
+      const result = ProgressSchema.safeParse(JSON.parse(raw))
+      if (result.success) {
+        return result.data
+      }
     }
   } catch {
     // Corrupted data — start fresh
@@ -56,10 +63,17 @@ export function useProgress() {
 
   const isSectionUnlocked = useCallback(
     (section: Section): boolean => {
-      if (section.starsToUnlock === 0) return true
+      if (section.starsToUnlock === 0) {
+        return true
+      }
       const sectionIndex = SECTIONS.findIndex((s) => s.id === section.id)
-      if (sectionIndex <= 0) return true
-      const prevSection = SECTIONS[sectionIndex - 1]!
+      if (sectionIndex <= 0) {
+        return true
+      }
+      const prevSection = SECTIONS[sectionIndex - 1]
+      if (!prevSection) {
+        return true
+      }
       return getStarsForSection(prevSection.id) >= section.starsToUnlock
     },
     [getStarsForSection],

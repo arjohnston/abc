@@ -15,28 +15,43 @@ const DIRECTIONS = ['left', 'right', 'up', 'down'] as const
 type Dir = (typeof DIRECTIONS)[number]
 
 const LABELS: Record<Dir, string> = { left: '← Left', right: 'Right →', up: '↑ Up', down: '↓ Down' }
-const COLOR:  Record<Dir, string> = { left: 'var(--blue)', right: 'var(--green)', up: 'var(--orange)', down: 'var(--purple)' }
+const COLOR: Record<Dir, string> = {
+  left: 'var(--blue)',
+  right: 'var(--green)',
+  up: 'var(--orange)',
+  down: 'var(--purple)',
+}
 
 function pickNext(prev: Dir): Dir {
   const choices = DIRECTIONS.filter((d) => d !== prev)
-  return choices[Math.floor(Math.random() * choices.length)]!
+  return choices[Math.floor(Math.random() * choices.length)] ?? 'left'
 }
 
 import { useRef, useState } from 'react'
 
 export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenProps) {
-  const [currentDir, setCurrentDir] = useState<Dir>(() => DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)]!)
-  const { score, round, feedback, lockedRef, completionResult, advance, restart } = useRound(TOTAL, onComplete)
+  const [currentDir, setCurrentDir] = useState<Dir>(
+    () => DIRECTIONS[Math.floor(Math.random() * DIRECTIONS.length)] ?? 'left',
+  )
+  const { score, round, feedback, lockedRef, completionResult, advance, restart } = useRound(
+    TOTAL,
+    onComplete,
+  )
   const speak = useSpeech()
   const prevDirRef = useRef(currentDir)
 
   const spokenRef = useRef(false)
   useEffect(() => {
-    if (!spokenRef.current) { spokenRef.current = true; speak('Move your mouse to the highlighted box!') }
+    if (!spokenRef.current) {
+      spokenRef.current = true
+      speak('Move your mouse to the highlighted box!')
+    }
   }, [speak])
 
   const handleHit = (dir: Dir) => {
-    if (lockedRef.current || dir !== currentDir) return
+    if (lockedRef.current || dir !== currentDir) {
+      return
+    }
     lockedRef.current = true
     advance(true)
     // Pick next direction after feedback clears (advance unlocks after 500ms)
@@ -48,12 +63,20 @@ export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenPro
   }
 
   if (completionResult) {
-    return <GameComplete score={score} total={TOTAL} stars={completionResult.stars} isNewBest={completionResult.isNewBest} onRestart={restart} onHome={onBack} />
+    return (
+      <GameComplete
+        score={score}
+        total={TOTAL}
+        stars={completionResult.stars}
+        isNewBest={completionResult.isNewBest}
+        onRestart={restart}
+        onHome={onBack}
+      />
+    )
   }
 
   return (
     <GameShell onBack={onBack} percent={(round / TOTAL) * 100} score={score} className="mds">
-
       <GameInstruction>
         Move your mouse to the <strong>{LABELS[currentDir]}</strong> box!
       </GameInstruction>

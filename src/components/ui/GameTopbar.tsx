@@ -1,6 +1,7 @@
 import './GameTopbar.css'
 
-import { CoreRow } from '@core'
+import { CoreRow, Spacing } from '@core'
+
 import { BackButton } from './BackButton'
 import { ProgressBar } from './ProgressBar'
 import { ScoreBadge } from './ScoreBadge'
@@ -13,7 +14,13 @@ interface GameTopbarProps {
 
 export function GameTopbar({ onBack, percent, score }: GameTopbarProps) {
   return (
-    <CoreRow align="center" gap={12} padding={12} paddingHorizontal={16} className="game-topbar">
+    <CoreRow
+      align="center"
+      gap={Spacing.sm}
+      padding={Spacing.sm}
+      paddingHorizontal={Spacing.md}
+      className="game-topbar"
+    >
       <BackButton onClick={onBack} />
       <ProgressBar percent={percent} />
       <ScoreBadge score={score} />

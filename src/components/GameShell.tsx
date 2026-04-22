@@ -1,4 +1,5 @@
 import { CoreScreen, type SharedLayoutProps } from '@core'
+
 import { GameTopbar } from './ui/GameTopbar'
 
 interface GameShellProps extends SharedLayoutProps {

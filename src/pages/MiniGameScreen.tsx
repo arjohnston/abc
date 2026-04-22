@@ -1,8 +1,8 @@
 import './MiniGameScreen.css'
 
+import { CoreText } from '@core'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { CoreText } from '@core'
 import { ArcadeComplete } from '../components/ArcadeComplete'
 import { GameShell } from '../components/GameShell'
 import { useSoundEffects } from '../hooks/useSoundEffects'
@@ -28,11 +28,11 @@ interface Pos {
 }
 
 function randomChar(): string {
-  return CHARS[Math.floor(Math.random() * CHARS.length)]!
+  return CHARS[Math.floor(Math.random() * CHARS.length)] ?? 'A'
 }
 
 function randomColor(): TileColor {
-  return COLORS[Math.floor(Math.random() * COLORS.length)]!
+  return COLORS[Math.floor(Math.random() * COLORS.length)] ?? 'green'
 }
 
 function randomTile(): Tile {
@@ -44,7 +44,7 @@ function emptyCells(grid: Grid, exclude: Pos): Pos[] {
   const cells: Pos[] = []
   for (let r = 0; r < GRID_SIZE; r++) {
     for (let c = 0; c < GRID_SIZE; c++) {
-      if (!grid[r]![c] && !(r === exclude.row && c === exclude.col)) {
+      if (!grid[r]?.[c] && !(r === exclude.row && c === exclude.col)) {
         cells.push({ row: r, col: c })
       }
     }
@@ -57,7 +57,7 @@ function tileCells(grid: Grid, exclude: Pos): Pos[] {
   const cells: Pos[] = []
   for (let r = 0; r < GRID_SIZE; r++) {
     for (let c = 0; c < GRID_SIZE; c++) {
-      if (grid[r]![c] && !(r === exclude.row && c === exclude.col)) {
+      if (grid[r]?.[c] && !(r === exclude.row && c === exclude.col)) {
         cells.push({ row: r, col: c })
       }
     }
@@ -73,17 +73,27 @@ function makeGrid(playerPos: Pos): Grid {
   const all: Pos[] = []
   for (let r = 0; r < GRID_SIZE; r++) {
     for (let c = 0; c < GRID_SIZE; c++) {
-      if (r !== playerPos.row || c !== playerPos.col) all.push({ row: r, col: c })
+      if (r !== playerPos.row || c !== playerPos.col) {
+        all.push({ row: r, col: c })
+      }
     }
   }
   // Shuffle and take first TILE_COUNT
   for (let i = all.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[all[i], all[j]] = [all[j]!, all[i]!]
+    const tmp = all[i] as Pos
+    all[i] = all[j] as Pos
+    all[j] = tmp
   }
   for (let i = 0; i < TILE_COUNT; i++) {
-    const pos = all[i]!
-    grid[pos.row]![pos.col] = randomTile()
+    const pos = all[i]
+    if (!pos) {
+      continue
+    }
+    const row = grid[pos.row]
+    if (row) {
+      row[pos.col] = randomTile()
+    }
   }
   return grid
 }
@@ -91,8 +101,11 @@ function makeGrid(playerPos: Pos): Grid {
 /** Pick the char of a random visible tile (not at player pos) */
 function pickTarget(grid: Grid, playerPos: Pos): string {
   const candidates = tileCells(grid, playerPos)
-  const pick = candidates[Math.floor(Math.random() * candidates.length)]!
-  return grid[pick.row]![pick.col]!.char
+  const pick = candidates[Math.floor(Math.random() * candidates.length)]
+  if (!pick) {
+    return ''
+  }
+  return grid[pick.row]?.[pick.col]?.char ?? ''
 }
 
 interface MiniGameScreenProps {
@@ -114,29 +127,39 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
   const speak = useSpeech()
   const { playChomp, playOops, playComplete } = useSoundEffects()
 
-  // Set initial target after grid is stable
+  // Set initial target once on mount — grid is the initial value from useState
   useEffect(() => {
-    setGrid((g) => {
-      const t = pickTarget(g, START_POS)
-      setTarget(t)
-      speak(t)
-      return g
-    })
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    const t = pickTarget(grid, START_POS)
+    setTarget(t)
+    speak(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleMove = useCallback(
     (dir: 'up' | 'down' | 'left' | 'right') => {
-      if (isComplete) return
+      if (isComplete) {
+        return
+      }
       setPlayer((prev) => {
         const next = { ...prev }
-        if (dir === 'up') next.row = Math.max(0, prev.row - 1)
-        if (dir === 'down') next.row = Math.min(GRID_SIZE - 1, prev.row + 1)
-        if (dir === 'left') next.col = Math.max(0, prev.col - 1)
-        if (dir === 'right') next.col = Math.min(GRID_SIZE - 1, prev.col + 1)
+        if (dir === 'up') {
+          next.row = Math.max(0, prev.row - 1)
+        }
+        if (dir === 'down') {
+          next.row = Math.min(GRID_SIZE - 1, prev.row + 1)
+        }
+        if (dir === 'left') {
+          next.col = Math.max(0, prev.col - 1)
+        }
+        if (dir === 'right') {
+          next.col = Math.min(GRID_SIZE - 1, prev.col + 1)
+        }
 
-        if (next.row === prev.row && next.col === prev.col) return prev
+        if (next.row === prev.row && next.col === prev.col) {
+          return prev
+        }
 
-        const tile = grid[next.row]![next.col]
+        const tile = grid[next.row]?.[next.col]
 
         if (!tile) {
           // Empty cell — just move, no reaction
@@ -148,7 +171,10 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
           playChomp()
           setGrid((g) => {
             const fresh = g.map((row) => [...row]) as Grid
-            fresh[next.row]![next.col] = null // eat the tile
+            const freshRow = fresh[next.row]
+            if (freshRow) {
+              freshRow[next.col] = null
+            } // eat the tile
 
             const newScore = score + 1
             setScore(newScore)
@@ -162,8 +188,13 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
             // Spawn a new tile on a random empty cell
             const empties = emptyCells(fresh, next)
             if (empties.length > 0) {
-              const spawn = empties[Math.floor(Math.random() * empties.length)]!
-              fresh[spawn.row]![spawn.col] = randomTile()
+              const spawn = empties[Math.floor(Math.random() * empties.length)]
+              if (spawn) {
+                const spawnRow = fresh[spawn.row]
+                if (spawnRow) {
+                  spawnRow[spawn.col] = randomTile()
+                }
+              }
             }
 
             const newTarget = pickTarget(fresh, next)
@@ -176,7 +207,9 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
           playOops()
           setWrongCell(next)
           setShakeKey((k) => k + 1)
-          if (wrongTimeout.current) clearTimeout(wrongTimeout.current)
+          if (wrongTimeout.current) {
+            clearTimeout(wrongTimeout.current)
+          }
           wrongTimeout.current = setTimeout(() => setWrongCell(null), 500)
         }
 
@@ -188,11 +221,25 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.repeat) return
-      if (e.key === 'ArrowUp') { e.preventDefault(); handleMove('up') }
-      if (e.key === 'ArrowDown') { e.preventDefault(); handleMove('down') }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); handleMove('left') }
-      if (e.key === 'ArrowRight') { e.preventDefault(); handleMove('right') }
+      if (e.repeat) {
+        return
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        handleMove('up')
+      }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        handleMove('down')
+      }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        handleMove('left')
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        handleMove('right')
+      }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -200,7 +247,9 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
 
   useEffect(() => {
     return () => {
-      if (wrongTimeout.current) clearTimeout(wrongTimeout.current)
+      if (wrongTimeout.current) {
+        clearTimeout(wrongTimeout.current)
+      }
     }
   }, [])
 
@@ -230,11 +279,17 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
   }
 
   return (
-    <GameShell onBack={onBack} percent={(score / WIN_SCORE) * 100} score={score} className="mini-game">
-
+    <GameShell
+      onBack={onBack}
+      percent={(score / WIN_SCORE) * 100}
+      score={score}
+      className="mini-game"
+    >
       <div className="mini-game-area">
         <div className="mini-game-target">
-          <CoreText size="h3" color="muted">Find the</CoreText>
+          <CoreText size="h3" color="muted">
+            Find the
+          </CoreText>
           <span className="mini-game-target-char">{target}</span>
         </div>
 
@@ -280,7 +335,9 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
           )}
         </div>
 
-        <CoreText size="sm" color="muted" align="center">Use arrow keys ← → ↑ ↓</CoreText>
+        <CoreText size="sm" color="muted" align="center">
+          Use arrow keys ← → ↑ ↓
+        </CoreText>
       </div>
     </GameShell>
   )

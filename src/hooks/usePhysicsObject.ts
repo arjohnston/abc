@@ -26,7 +26,9 @@ export function usePhysicsObject(
 
   const randomize = useCallback(() => {
     const el = containerRef.current
-    if (!el) return
+    if (!el) {
+      return
+    }
     const { width, height } = el.getBoundingClientRect()
     const angle = Math.random() * Math.PI * 2
     posRef.current = {
@@ -65,16 +67,28 @@ export function usePhysicsObject(
         x += vx
         y += vy
 
-        if (x - radius < 0)  { x = radius;     vx = Math.abs(vx) }
-        if (x + radius > w)  { x = w - radius; vx = -Math.abs(vx) }
-        if (y - radius < 0)  { y = radius;     vy = Math.abs(vy) }
-        if (y + radius > h)  { y = h - radius; vy = -Math.abs(vy) }
+        if (x - radius < 0) {
+          x = radius
+          vx = Math.abs(vx)
+        }
+        if (x + radius > w) {
+          x = w - radius
+          vx = -Math.abs(vx)
+        }
+        if (y - radius < 0) {
+          y = radius
+          vy = Math.abs(vy)
+        }
+        if (y + radius > h) {
+          y = h - radius
+          vy = -Math.abs(vy)
+        }
 
         posRef.current = { x, y }
         velRef.current = { vx, vy }
 
         object.style.left = `${x - radius}px`
-        object.style.top  = `${y - radius}px`
+        object.style.top = `${y - radius}px`
 
         onFrame?.(x, y)
       }

@@ -17,7 +17,9 @@ function CountBox({
       <GameBox className={`mmx-box ${feedbackClass}`}>
         <div className="mmx-objects">
           {Array.from({ length: count }, (_, i) => (
-            <span key={i} className="mmx-object">{emoji}</span>
+            <span key={i} className="mmx-object">
+              {emoji}
+            </span>
           ))}
         </div>
       </GameBox>
@@ -36,21 +38,22 @@ interface MathMostDisplayProps {
 export function MathMostDisplay({ item, feedback, pressedKey, animKey }: MathMostDisplayProps) {
   const getClass = (count: number) => {
     const key = String(count)
-    if (!feedback) return ''
-    if (key === item.answer) return feedback === 'correct' ? 'mmx-box--correct' : ''
-    if (key === pressedKey && feedback === 'wrong') return 'mmx-box--wrong'
+    if (!feedback) {
+      return ''
+    }
+    if (key === item.answer) {
+      return feedback === 'correct' ? 'mmx-box--correct' : ''
+    }
+    if (key === pressedKey && feedback === 'wrong') {
+      return 'mmx-box--wrong'
+    }
     return ''
   }
 
   return (
     <div key={animKey} className="math-most">
       {item.counts.map((count, i) => (
-        <CountBox
-          key={i}
-          count={count}
-          emoji={item.emoji}
-          feedbackClass={getClass(count)}
-        />
+        <CountBox key={i} count={count} emoji={item.emoji} feedbackClass={getClass(count)} />
       ))}
     </div>
   )
