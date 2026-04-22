@@ -1,6 +1,6 @@
 import './WhatNextDisplay.css'
 
-import { CoreRow } from '@core'
+import { CoreRow, Spacing } from '@core'
 import type { FeedbackState, WhatNextItem } from '../types/game'
 
 interface WhatNextDisplayProps {
@@ -30,7 +30,7 @@ export function WhatNextDisplay({ item, feedback, animKey, reversed }: WhatNextD
   ))
 
   return (
-    <CoreRow align="center" gap={12} wrap justify="center">
+    <CoreRow align="center" gap={Spacing.sm} wrap justify="center">
       {reversed ? (
         <>
           {blank}

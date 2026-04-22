@@ -2,7 +2,7 @@ import './SettingsModal.css'
 
 import { useState } from 'react'
 
-import { CoreCol, CoreRow, CoreText } from '@core'
+import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
 
 import { Toggle } from './ui/Toggle'
 
@@ -32,7 +32,7 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
 
         <hr className="settings-divider" />
 
-        <CoreRow align="center" justify="space-between" gap={16}>
+        <CoreRow align="center" justify="space-between" gap={Spacing.md}>
           <CoreText size="h3">🎲 Random Order</CoreText>
           <Toggle active={isRandom} label="" onToggle={onToggleRandom} />
         </CoreRow>

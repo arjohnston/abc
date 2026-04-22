@@ -1,6 +1,6 @@
 import './GameComplete.css'
 
-import { CoreCol, CoreRow, CoreText } from '@core'
+import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
 import { Confetti } from './Confetti'
 import { Button } from './ui/Button'
 
@@ -17,8 +17,8 @@ export function GameComplete({ score, total, stars, isNewBest, onRestart, onHome
   return (
     <>
       <Confetti />
-      <CoreCol flex={1} align="center" justify="center" gap={12} padding={20} className="game-complete">
-        <CoreRow gap={8} marginBottom={8}>
+      <CoreCol flex={1} align="center" justify="center" gap={Spacing.sm} padding={20} className="game-complete">
+        <CoreRow gap={Spacing.xs} marginBottom={Spacing.xs}>
           {[1, 2, 3].map((i) => (
             <span
               key={i}
@@ -34,7 +34,7 @@ export function GameComplete({ score, total, stars, isNewBest, onRestart, onHome
         <CoreText size="h3" color="muted">
           You got <strong style={{ color: 'var(--text)' }}>{score}</strong> out of <strong style={{ color: 'var(--text)' }}>{total}</strong>!
         </CoreText>
-        <CoreRow gap={16} marginTop={16}>
+        <CoreRow gap={Spacing.md} marginTop={Spacing.md}>
           <Button variant="primary" onClick={onRestart}>Play Again</Button>
           <Button variant="secondary" onClick={onHome}>Home</Button>
         </CoreRow>

@@ -2,7 +2,7 @@ import './HomeScreen.css'
 
 import { Fragment, useEffect, useRef, useState } from 'react'
 
-import { CoreRow, CoreText } from '@core'
+import { CoreRow, CoreText, Spacing } from '@core'
 import { GamePreviewModal } from '../components/GamePreviewModal'
 import { SettingsModal } from '../components/SettingsModal'
 import { MiniGameNode } from '../components/ui/MiniGameNode'
@@ -156,7 +156,7 @@ export function HomeScreen({
       </header>
 
       {(stats.totalPlays > 0 || totalStars > 0) && (
-        <CoreRow justify="center" gap={24}>
+        <CoreRow justify="center" gap={Spacing.lg}>
           <span className="stat">🎮 {stats.totalPlays} played</span>
           <span className="stat">⭐ {totalStars} stars</span>
         </CoreRow>

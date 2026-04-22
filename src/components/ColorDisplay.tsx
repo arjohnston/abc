@@ -1,6 +1,6 @@
 import './ColorDisplay.css'
 
-import { CoreCol } from '@core'
+import { CoreCol, Spacing } from '@core'
 import type { ColorItem, FeedbackState } from '../types/game'
 
 interface ColorDisplayProps {
@@ -14,7 +14,7 @@ export function ColorDisplay({ item, feedback, animKey }: ColorDisplayProps) {
     feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
 
   return (
-    <CoreCol align="center" gap={16}>
+    <CoreCol align="center" gap={Spacing.md}>
       <div
         key={animKey}
         className={`color-display__circle ${feedbackClass}`}

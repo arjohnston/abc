@@ -2,7 +2,7 @@ import './ArcadeComplete.css'
 
 import { Button } from './ui/Button'
 import { Confetti } from './Confetti'
-import { CoreCol, CoreRow, CoreText } from '@core'
+import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
 
 interface ArcadeCompleteProps {
   emoji: string
@@ -17,13 +17,13 @@ export function ArcadeComplete({ emoji, title, subtitle, onRestart, onHome, emoj
   return (
     <>
       <Confetti />
-      <CoreCol flex={1} align="center" justify="center" gap={12} padding={20}>
+      <CoreCol flex={1} align="center" justify="center" gap={Spacing.sm} padding={20}>
         <span className={['arcade-complete__emoji', emojiClassName].filter(Boolean).join(' ')}>
           {emoji}
         </span>
         <CoreText size="h2" color="green">{title}</CoreText>
         <CoreText size="sm" color="muted">{subtitle}</CoreText>
-        <CoreRow gap={16} marginTop={16}>
+        <CoreRow gap={Spacing.md} marginTop={Spacing.md}>
           <Button variant="primary" onClick={onRestart}>Play Again</Button>
           <Button variant="secondary" onClick={onHome}>Home</Button>
         </CoreRow>

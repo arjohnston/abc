@@ -1,6 +1,6 @@
 import './NumberBlanksDisplay.css'
 
-import { CoreCol } from '@core'
+import { CoreCol, Spacing } from '@core'
 import type { FeedbackState } from '../types/game'
 
 interface NumberBlanksDisplayProps {
@@ -16,7 +16,7 @@ export function NumberBlanksDisplay({ display, label, slots, filled, feedback, s
   const activeSlot = filled.length
 
   return (
-    <CoreCol align="center" gap={24}>
+    <CoreCol align="center" gap={Spacing.lg}>
       <div className="number-blanks__display">{display}</div>
       {label && <div className="number-blanks__label">{label}</div>}
       <div className="number-blanks__slots">

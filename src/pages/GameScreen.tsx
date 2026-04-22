@@ -2,7 +2,7 @@ import './GameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { CoreCol, CoreRow, CoreScreen, CoreText } from '@core'
+import { CoreCol, CoreRow, CoreScreen, CoreText, Spacing } from '@core'
 import { AnimalDisplay } from '../components/AnimalDisplay'
 import { ClockBlanksDisplay } from '../components/ClockBlanksDisplay'
 import { ColorDisplay } from '../components/ColorDisplay'
@@ -447,7 +447,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
       <GameTopbar onBack={onBack} percent={progress} score={score} />
 
       {isTimed && !isComplete && (
-        <CoreRow justify="center" paddingBottom={8} paddingHorizontal={20}>
+        <CoreRow justify="center" paddingBottom={Spacing.xs} paddingHorizontal={20}>
           <TimerBar duration={(game as TimedGameConfig).timeLimit} running={!isComplete} onTimeUp={handleTimeUp} />
         </CoreRow>
       )}
@@ -464,11 +464,11 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
           onHome={onBack}
         />
       ) : currentItem ? (
-        <CoreCol flex={1} align="center" justify="center" gap={24} padding={20}>
+        <CoreCol flex={1} align="center" justify="center" gap={Spacing.lg} padding={20}>
           <CoreText size="h3" color="muted">{getPromptText()}</CoreText>
           {renderDisplay()}
           {isMultiDigit && digitBuffer && <div className="digit-preview">{digitBuffer}</div>}
-          <CoreCol align="center" gap={12}>
+          <CoreCol align="center" gap={Spacing.sm}>
             <button
               className="hint-btn"
               onPointerDown={(e) => { e.preventDefault(); handleHint() }}

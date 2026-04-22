@@ -13,6 +13,8 @@ export interface SharedLayoutProps {
   marginVertical?: number
   marginTop?: number
   marginBottom?: number
+  marginLeft?: number
+  marginRight?: number
   gap?: number
   width?: number | string
   height?: number | string
@@ -38,6 +40,8 @@ export function buildSpacingStyle(props: SharedLayoutProps): React.CSSProperties
   if (props.marginVertical !== undefined) { s.marginTop = props.marginVertical; s.marginBottom = props.marginVertical }
   if (props.marginTop !== undefined) s.marginTop = props.marginTop
   if (props.marginBottom !== undefined) s.marginBottom = props.marginBottom
+  if (props.marginLeft !== undefined) s.marginLeft = props.marginLeft
+  if (props.marginRight !== undefined) s.marginRight = props.marginRight
   if (props.gap !== undefined) s.gap = props.gap
   if (props.width !== undefined) s.width = props.width
   if (props.height !== undefined) s.height = props.height

@@ -2,7 +2,7 @@ import './DinoGameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { CoreScreen, CoreText } from '@core'
+import { CoreScreen, CoreText, Spacing } from '@core'
 import { BackButton } from '../components/ui/BackButton'
 import { Button } from '../components/ui/Button'
 import { useSoundEffects } from '../hooks/useSoundEffects'
@@ -319,7 +319,7 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
   )
 
   return (
-    <CoreScreen center padding={16} gap={16} className="dino-game">
+    <CoreScreen center padding={Spacing.md} gap={Spacing.md} className="dino-game">
       <div className="dino-topbar">
         <BackButton onClick={onBack} />
         <CoreText size="h3" className="dino-title">🦕 Dino Run</CoreText>
