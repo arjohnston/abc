@@ -1,16 +1,16 @@
-import './CorePressable.css'
+import './CoreButton.css'
 
 import type React from 'react'
 import { forwardRef } from 'react'
 
 import { buildSpacingStyle, type SharedLayoutProps } from '../shared/spacing'
 
-// 'htmlType' is the remapped form of the native button 'type' attribute,
-// preventing accidental collision when spreading props onto a <button>.
-export interface CorePressableProps extends SharedLayoutProps {
+// 'htmlType' remaps the native button 'type' attribute to avoid prop-spread collisions.
+export interface CoreButtonProps extends SharedLayoutProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   onPointerDown?: React.PointerEventHandler<HTMLButtonElement>
   onPointerUp?: React.PointerEventHandler<HTMLButtonElement>
+  variant?: 'primary' | 'secondary' | 'ghost'
   disabled?: boolean
   htmlType?: 'button' | 'submit' | 'reset'
   'aria-label'?: string
@@ -20,10 +20,11 @@ export interface CorePressableProps extends SharedLayoutProps {
   tabIndex?: number
 }
 
-export const CorePressable = forwardRef<HTMLButtonElement, CorePressableProps>(
+export const CoreButton = forwardRef<HTMLButtonElement, CoreButtonProps>(
   (
     {
       htmlType = 'button',
+      variant,
       className,
       children,
       onClick,
@@ -36,9 +37,7 @@ export const CorePressable = forwardRef<HTMLButtonElement, CorePressableProps>(
     ref,
   ) => {
     if (import.meta.env.DEV && disabled && !onClick && !onPointerDown) {
-      console.warn(
-        '[CorePressable] `disabled` is set but no click handler is provided. The button will be disabled but has no action.',
-      )
+      console.warn('[CoreButton] `disabled` is set but no click handler is provided.')
     }
 
     const {
@@ -49,11 +48,13 @@ export const CorePressable = forwardRef<HTMLButtonElement, CorePressableProps>(
       ...spacingProps
     } = rest
 
+    const cls = ['core-btn', variant && `core-btn--${variant}`, className].filter(Boolean).join(' ')
+
     return (
       <button
         ref={ref}
         type={htmlType}
-        className={['core-pressable', className].filter(Boolean).join(' ')}
+        className={cls}
         style={buildSpacingStyle(spacingProps)}
         onClick={onClick}
         onPointerDown={onPointerDown}
@@ -71,4 +72,4 @@ export const CorePressable = forwardRef<HTMLButtonElement, CorePressableProps>(
   },
 )
 
-CorePressable.displayName = 'CorePressable'
+CoreButton.displayName = 'CoreButton'

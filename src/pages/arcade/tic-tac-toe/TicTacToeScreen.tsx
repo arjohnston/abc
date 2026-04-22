@@ -1,9 +1,8 @@
 import './TicTacToeScreen.css'
 
-import { Button } from '@common/components/Button/Button'
 import { Confetti } from '@common/components/Confetti/Confetti'
 import { GameShell } from '@common/components/GameShell/GameShell'
-import { CoreText } from '@core'
+import { CoreButton, CoreText } from '@core'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useCallback, useState } from 'react'
 
@@ -213,12 +212,12 @@ export function TicTacToeScreen({ onBack }: Props) {
 
       {result && (
         <div className="ttt-actions">
-          <Button variant="primary" onClick={handleRestart}>
+          <CoreButton variant="primary" onClick={handleRestart}>
             Play Again
-          </Button>
-          <Button variant="secondary" onClick={onBack}>
+          </CoreButton>
+          <CoreButton variant="secondary" onClick={onBack}>
             Home
-          </Button>
+          </CoreButton>
         </div>
       )}
 

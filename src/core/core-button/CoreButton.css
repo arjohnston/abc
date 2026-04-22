@@ -1,0 +1,85 @@
+/* Base — unstyled interactive button */
+.core-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  text-align: inherit;
+  color: inherit;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.core-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* primary — game-colored 3-D press effect */
+.core-btn--primary {
+  border-radius: 16px;
+  padding: 14px 32px;
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  background: var(--game-color, var(--green));
+  color: var(--bg);
+  border: none;
+  border-bottom: 4px solid var(--game-color-dark, var(--green-dark));
+  transition: all 0.1s;
+}
+
+.core-btn--primary:hover {
+  filter: brightness(1.1);
+}
+
+.core-btn--primary:active {
+  border-bottom-width: 2px;
+  transform: translateY(2px);
+}
+
+/* secondary — muted card-style */
+.core-btn--secondary {
+  border-radius: 16px;
+  padding: 14px 32px;
+  font-family: var(--font);
+  font-size: 18px;
+  font-weight: 800;
+  background: var(--bg-card);
+  color: var(--text-muted);
+  border: 2px solid var(--bg-light);
+  border-bottom: 4px solid var(--bg-light);
+  transition: all 0.1s;
+}
+
+.core-btn--secondary:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+.core-btn--secondary:active {
+  border-bottom-width: 2px;
+  transform: translateY(2px);
+}
+
+/* ghost — icon/nav button (e.g. back button) */
+.core-btn--ghost {
+  background: none;
+  border: 2px solid var(--bg-light);
+  border-radius: 12px;
+  color: var(--text-muted);
+  width: 44px;
+  height: 44px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.core-btn--ghost:hover {
+  border-color: var(--text-muted);
+  color: var(--text);
+}

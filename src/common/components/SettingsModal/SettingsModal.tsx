@@ -1,7 +1,6 @@
 import './SettingsModal.css'
 
-import { Toggle } from '@common/components/Toggle/Toggle'
-import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
+import { CoreButton, CoreCol, CoreRow, CoreText, CoreToggle, Spacing } from '@core'
 import { useState } from 'react'
 
 interface SettingsModalProps {
@@ -25,16 +24,16 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
       <div className="settings-modal" onPointerDown={(e) => e.stopPropagation()}>
         <CoreRow align="center" justify="space-between">
           <CoreText size="h2">Settings</CoreText>
-          <button className="settings-close" onClick={onClose}>
+          <CoreButton className="settings-close" onClick={onClose} aria-label="Close settings">
             ✕
-          </button>
+          </CoreButton>
         </CoreRow>
 
         <hr className="settings-divider" />
 
         <CoreRow align="center" justify="space-between" gap={Spacing.md}>
           <CoreText size="h3">🎲 Random Order</CoreText>
-          <Toggle active={isRandom} label="" onToggle={onToggleRandom} />
+          <CoreToggle active={isRandom} label="" onToggle={onToggleRandom} />
         </CoreRow>
 
         <hr className="settings-divider" />
@@ -45,18 +44,18 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
               This will erase all stars and progress. Are you sure?
             </CoreText>
             <CoreRow gap={10} className="settings-confirm-btns">
-              <button className="settings-confirm-yes" onClick={handleReset}>
+              <CoreButton className="settings-confirm-yes" onClick={handleReset}>
                 Yes, reset
-              </button>
-              <button className="settings-confirm-no" onClick={() => setConfirming(false)}>
+              </CoreButton>
+              <CoreButton className="settings-confirm-no" onClick={() => setConfirming(false)}>
                 Cancel
-              </button>
+              </CoreButton>
             </CoreRow>
           </CoreCol>
         ) : (
-          <button className="settings-reset-btn" onClick={() => setConfirming(true)}>
+          <CoreButton className="settings-reset-btn" onClick={() => setConfirming(true)}>
             🗑️ Reset Game
-          </button>
+          </CoreButton>
         )}
       </div>
     </div>
