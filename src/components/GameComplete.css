@@ -33,19 +33,3 @@
   border-radius: 8px;
   animation: fadeIn 0.5s ease 0.8s both;
 }
-
-.complete-title {
-  font-size: 48px;
-  font-weight: 900;
-  color: var(--game-color);
-}
-
-.complete-score {
-  font-size: 22px;
-  color: var(--text-muted);
-  font-weight: 700;
-}
-
-.complete-score strong {
-  color: var(--text);
-}

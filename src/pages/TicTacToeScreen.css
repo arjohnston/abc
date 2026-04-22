@@ -4,12 +4,8 @@
 }
 
 .ttt-status {
-  font-size: clamp(1.1rem, 4vw, 1.6rem);
-  font-weight: 700;
-  color: var(--text-muted);
   margin: 4px 0 20px;
   min-height: 2em;
-  text-align: center;
 }
 
 .ttt-board {
@@ -65,10 +61,4 @@
   display: flex;
   gap: 12px;
   margin-top: 28px;
-}
-
-.ttt-legend {
-  margin-top: 20px;
-  font-size: 1rem;
-  color: var(--text-muted);
 }

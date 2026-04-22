@@ -447,7 +447,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
       <GameTopbar onBack={onBack} percent={progress} score={score} />
 
       {isTimed && !isComplete && (
-        <CoreRow justify="center" paddingBottom={8} paddingHorizontal={20} className="game-timer">
+        <CoreRow justify="center" paddingBottom={8} paddingHorizontal={20}>
           <TimerBar duration={(game as TimedGameConfig).timeLimit} running={!isComplete} onTimeUp={handleTimeUp} />
         </CoreRow>
       )}
@@ -464,11 +464,11 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
           onHome={onBack}
         />
       ) : currentItem ? (
-        <CoreCol flex={1} align="center" justify="center" gap={24} padding={20} className="game-area">
-          <CoreText size="p" className="game-prompt">{getPromptText()}</CoreText>
+        <CoreCol flex={1} align="center" justify="center" gap={24} padding={20}>
+          <CoreText size="h3" color="muted">{getPromptText()}</CoreText>
           {renderDisplay()}
           {isMultiDigit && digitBuffer && <div className="digit-preview">{digitBuffer}</div>}
-          <CoreCol align="center" gap={12} className="game-bottom">
+          <CoreCol align="center" gap={12}>
             <button
               className="hint-btn"
               onPointerDown={(e) => { e.preventDefault(); handleHint() }}
@@ -476,7 +476,7 @@ export function GameScreen({ game, isRandom, onBack, onComplete }: GameScreenPro
             >
               💡 Hint{hintUsed ? ' (max ★★)' : ''}
             </button>
-            <CoreText size="p" className="game-progress">{getProgressText()}</CoreText>
+            <CoreText size="sm" color="muted">{getProgressText()}</CoreText>
           </CoreCol>
           <VirtualKeyboard layout={kbLayout} onKeyPress={handleInput} disabled={!!feedback || isComplete} />
         </CoreCol>

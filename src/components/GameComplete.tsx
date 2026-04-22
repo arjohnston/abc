@@ -30,9 +30,9 @@ export function GameComplete({ score, total, stars, isNewBest, onRestart, onHome
           ))}
         </CoreRow>
         {isNewBest && <div className="complete-new-best">New Best!</div>}
-        <CoreText size="h2" className="complete-title">Amazing!</CoreText>
-        <CoreText size="p" className="complete-score">
-          You got <strong>{score}</strong> out of <strong>{total}</strong>!
+        <CoreText size="h1" color="game">Amazing!</CoreText>
+        <CoreText size="h3" color="muted">
+          You got <strong style={{ color: 'var(--text)' }}>{score}</strong> out of <strong style={{ color: 'var(--text)' }}>{total}</strong>!
         </CoreText>
         <CoreRow gap={16} marginTop={16}>
           <Button variant="primary" onClick={onRestart}>Play Again</Button>

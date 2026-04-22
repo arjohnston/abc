@@ -17,12 +17,12 @@ export function ArcadeComplete({ emoji, title, subtitle, onRestart, onHome, emoj
   return (
     <>
       <Confetti />
-      <CoreCol flex={1} align="center" justify="center" gap={12} padding={20} className="arcade-complete">
+      <CoreCol flex={1} align="center" justify="center" gap={12} padding={20}>
         <span className={['arcade-complete__emoji', emojiClassName].filter(Boolean).join(' ')}>
           {emoji}
         </span>
-        <CoreText size="h2" className="arcade-complete__title">{title}</CoreText>
-        <CoreText size="p" className="arcade-complete__subtitle">{subtitle}</CoreText>
+        <CoreText size="h2" color="green">{title}</CoreText>
+        <CoreText size="sm" color="muted">{subtitle}</CoreText>
         <CoreRow gap={16} marginTop={16}>
           <Button variant="primary" onClick={onRestart}>Play Again</Button>
           <Button variant="secondary" onClick={onHome}>Home</Button>

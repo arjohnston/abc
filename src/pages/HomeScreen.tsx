@@ -142,7 +142,7 @@ export function HomeScreen({
             3
           </span>
         </CoreText>
-        <CoreText size="p" className="home-subtitle">Pick a game and start learning!</CoreText>
+        <CoreText size="h3" color="muted">Pick a game and start learning!</CoreText>
         <div className="home-icon-btns">
           <button
             className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}

@@ -22,9 +22,6 @@
 }
 
 .dino-title {
-  font-size: 22px;
-  font-weight: 800;
-  color: var(--text);
   flex: 1;
 }
 
@@ -103,8 +100,3 @@
   filter: grayscale(1);
 }
 
-.dino-hint {
-  font-size: 15px;
-  color: var(--text-muted);
-  font-weight: 600;
-}

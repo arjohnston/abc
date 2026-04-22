@@ -2,6 +2,7 @@ import './TicTacToeScreen.css'
 
 import { useCallback, useState } from 'react'
 
+import { CoreText } from '@core'
 import { Confetti } from '../components/Confetti'
 import { GameShell } from '../components/GameShell'
 import { Button } from '../components/ui/Button'
@@ -170,7 +171,7 @@ export function TicTacToeScreen({ onBack }: Props) {
     <GameShell onBack={onBack} percent={0} score={0} center paddingBottom={24} className="ttt">
       {result === 'win' && <Confetti />}
 
-      <p className="ttt-status">{status}</p>
+      <CoreText size="h3" color="muted" align="center" className="ttt-status">{status}</CoreText>
 
       <div className="ttt-board">
         {board.map((cell, i) => {
@@ -195,7 +196,7 @@ export function TicTacToeScreen({ onBack }: Props) {
         </div>
       )}
 
-      <p className="ttt-legend">You = <strong>X</strong> &nbsp; Computer = <strong>O</strong></p>
+      <CoreText size="sm" color="muted" style={{ marginTop: '20px' }}>You = <strong>X</strong> &nbsp; Computer = <strong>O</strong></CoreText>
     </GameShell>
   )
 }

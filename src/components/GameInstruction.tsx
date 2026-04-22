@@ -7,5 +7,5 @@ interface GameInstructionProps {
 }
 
 export function GameInstruction({ children }: GameInstructionProps) {
-  return <CoreText size="p" className="game-instruction">{children}</CoreText>
+  return <CoreText size="h3" color="muted" align="center" className="game-instruction">{children}</CoreText>
 }

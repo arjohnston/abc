@@ -1,39 +1,11 @@
 .core-text {
   font-family: var(--font);
   margin: 0;
-}
-
-.core-text--heading {
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
-  font-weight: 800;
   color: var(--text);
 }
 
-.core-text--subheading {
-  font-size: clamp(1.1rem, 3vw, 1.6rem);
-  font-weight: 700;
-  color: var(--text);
-}
-
-.core-text--body {
-  font-size: 1rem;
-  font-weight: 400;
-  color: var(--text);
-}
-
-.core-text--muted {
-  font-size: clamp(1rem, 3vw, 1.4rem);
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-.core-text--label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-muted);
-}
-
-/* Semantic size classes */
-.core-text--h1 { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 900; }
-.core-text--h2 { font-size: clamp(1.4rem, 4vw, 2rem); font-weight: 800; }
-.core-text--h3 { font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 700; }
+.core-text--h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); font-weight: 900; }
+.core-text--h2 { font-size: clamp(1.4rem, 4vw, 2rem);   font-weight: 900; }
+.core-text--h3 { font-size: clamp(1rem, 3vw, 1.5rem);   font-weight: 700; }
+.core-text--body { font-size: 1rem;    font-weight: 400; }
+.core-text--sm   { font-size: 0.9rem;  font-weight: 600; }

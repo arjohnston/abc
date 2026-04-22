@@ -25,23 +25,23 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
   return (
     <div className="settings-backdrop" onPointerDown={onClose}>
       <div className="settings-modal" onPointerDown={(e) => e.stopPropagation()}>
-        <CoreRow align="center" justify="space-between" className="settings-header">
-          <CoreText size="span" className="settings-title">Settings</CoreText>
+        <CoreRow align="center" justify="space-between">
+          <CoreText size="h2">Settings</CoreText>
           <button className="settings-close" onClick={onClose}>✕</button>
         </CoreRow>
 
         <hr className="settings-divider" />
 
-        <CoreRow align="center" justify="space-between" gap={16} className="settings-row">
-          <CoreText size="span" className="settings-row-label">🎲 Random Order</CoreText>
+        <CoreRow align="center" justify="space-between" gap={16}>
+          <CoreText size="h3">🎲 Random Order</CoreText>
           <Toggle active={isRandom} label="" onToggle={onToggleRandom} />
         </CoreRow>
 
         <hr className="settings-divider" />
 
         {confirming ? (
-          <CoreCol gap={10} className="settings-confirm">
-            <CoreText size="p" className="settings-confirm-text">This will erase all stars and progress. Are you sure?</CoreText>
+          <CoreCol gap={10}>
+            <CoreText size="sm" color="muted" align="center">This will erase all stars and progress. Are you sure?</CoreText>
             <CoreRow gap={10} className="settings-confirm-btns">
               <button className="settings-confirm-yes" onClick={handleReset}>Yes, reset</button>
               <button className="settings-confirm-no" onClick={() => setConfirming(false)}>Cancel</button>

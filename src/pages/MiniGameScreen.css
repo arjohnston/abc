@@ -17,12 +17,6 @@
   gap: 4px;
 }
 
-.mini-game-target-label {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
 .mini-game-target-char {
   font-size: 88px;
   font-weight: 900;
@@ -112,12 +106,6 @@
   45%       { transform: translateX(6px); }
   65%       { transform: translateX(-4px); }
   82%       { transform: translateX(4px); }
-}
-
-.mini-game-hint {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--text-muted);
 }
 
 /* Arcade complete emoji animation */

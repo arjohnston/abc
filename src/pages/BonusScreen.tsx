@@ -13,9 +13,9 @@ interface PlayGamesScreenProps {
 export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
   return (
     <CoreScreen className="pg">
-      <CoreRow align="center" gap={12} padding={12} paddingHorizontal={16} className="pg-header">
+      <CoreRow align="center" gap={12} padding={12} paddingHorizontal={16}>
         <BackButton onClick={onBack} />
-        <CoreText size="h2" className="pg-title">🎮 Play Games</CoreText>
+        <CoreText size="h2">🎮 Play Games</CoreText>
       </CoreRow>
 
       <div className="pg-grid">

@@ -68,16 +68,10 @@
 }
 
 .gpm-title {
-  font-size: 1.7rem;
-  font-weight: 900;
   margin: 0 0 6px;
-  color: var(--text);
 }
 
 .gpm-desc {
-  font-size: 1rem;
-  color: var(--text-muted);
-  font-weight: 600;
   margin: 0 0 14px;
 }
 

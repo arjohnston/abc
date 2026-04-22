@@ -2,6 +2,7 @@ import './MiniGameScreen.css'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { CoreText } from '@core'
 import { ArcadeComplete } from '../components/ArcadeComplete'
 import { GameShell } from '../components/GameShell'
 import { useSoundEffects } from '../hooks/useSoundEffects'
@@ -233,7 +234,7 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
 
       <div className="mini-game-area">
         <div className="mini-game-target">
-          <span className="mini-game-target-label">Find the</span>
+          <CoreText size="h3" color="muted">Find the</CoreText>
           <span className="mini-game-target-char">{target}</span>
         </div>
 
@@ -279,7 +280,7 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
           )}
         </div>
 
-        <p className="mini-game-hint">Use arrow keys ← → ↑ ↓</p>
+        <CoreText size="sm" color="muted" align="center">Use arrow keys ← → ↑ ↓</CoreText>
       </div>
     </GameShell>
   )

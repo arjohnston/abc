@@ -3,11 +3,6 @@
   color: var(--text);
 }
 
-.pg-title {
-  font-size: 1.4rem;
-  font-weight: 900;
-}
-
 /* ── Card grid ── */
 .pg-grid {
   display: grid;

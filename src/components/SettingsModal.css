@@ -21,13 +21,6 @@
   gap: 24px;
 }
 
-
-.settings-title {
-  font-size: 24px;
-  font-weight: 900;
-  color: var(--text);
-}
-
 .settings-close {
   background: var(--bg-light);
   border: none;
@@ -55,13 +48,6 @@
   margin: 0;
 }
 
-
-.settings-row-label {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text);
-}
-
 .settings-reset-btn {
   width: 100%;
   padding: 14px;
@@ -79,15 +65,6 @@
 .settings-reset-btn:hover {
   background: rgba(255, 75, 75, 0.22);
 }
-
-
-.settings-confirm-text {
-  font-size: 15px;
-  color: var(--text-muted);
-  font-weight: 600;
-  text-align: center;
-}
-
 
 .settings-confirm-btns button {
   flex: 1;

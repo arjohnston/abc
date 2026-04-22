@@ -2,7 +2,7 @@ import './GamePreviewModal.css'
 
 import { useEffect, useRef } from 'react'
 
-import { CoreRow } from '@core'
+import { CoreRow, CoreText } from '@core'
 
 import type { GameConfig } from '../types/game'
 
@@ -36,8 +36,8 @@ export function GamePreviewModal({ game, stars, onPlay, onClose }: GamePreviewMo
 
         {/* Info */}
         <div className="gpm-body">
-          <h2 className="gpm-title">{game.title}</h2>
-          <p className="gpm-desc">{game.description}</p>
+          <CoreText size="h2" className="gpm-title">{game.title}</CoreText>
+          <CoreText size="sm" color="muted" className="gpm-desc">{game.description}</CoreText>
           <CoreRow gap={4} className="gpm-stars">
             {[1, 2, 3].map((i) => (
               <span key={i} className={`gpm-star ${i <= stars ? 'gpm-star--earned' : ''}`}>★</span>
