@@ -49,7 +49,7 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
   // Announce + start hold timer on each new round
   useEffect(() => {
     lockedRef.current = false
-    setHoldProgress(0)
+    const id = setTimeout(() => setHoldProgress(0), 0)
     cancelAnimationFrame(rafRef.current)
 
     if (isDo) {
@@ -71,7 +71,10 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
       rafRef.current = requestAnimationFrame(tick)
     }
 
-    return () => cancelAnimationFrame(rafRef.current)
+    return () => {
+      clearTimeout(id)
+      cancelAnimationFrame(rafRef.current)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [round])
 
