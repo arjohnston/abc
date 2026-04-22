@@ -86,7 +86,6 @@
 
 .home-title {
   letter-spacing: 4px;
-  margin-bottom: 8px;
 }
 
 .title-letter {
@@ -125,9 +124,6 @@
 }
 
 .stat {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-muted);
   background: var(--bg-card);
   border: 2px solid var(--bg-light);
   border-radius: 12px;
@@ -180,10 +176,4 @@
   position: absolute;
   transform: translate(-50%, -50%);
   z-index: 1;
-}
-
-@media (max-width: 480px) {
-  .home-title {
-    font-size: 48px;
-  }
 }

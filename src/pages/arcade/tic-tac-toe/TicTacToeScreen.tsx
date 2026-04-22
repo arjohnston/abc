@@ -2,7 +2,7 @@ import './TicTacToeScreen.css'
 
 import { Confetti } from '@common/components/Confetti/Confetti'
 import { GameShell } from '@common/components/GameShell/GameShell'
-import { CoreButton, CoreText } from '@core'
+import { CoreBox, CoreButton, CoreText } from '@core'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useCallback, useState } from 'react'
 
@@ -190,9 +190,11 @@ export function TicTacToeScreen({ onBack }: Props) {
     <GameShell onBack={onBack} percent={0} score={0} center paddingBottom={24} className="ttt">
       {result === 'win' && <Confetti />}
 
-      <CoreText size="h3" color="muted" align="center" className="ttt-status">
-        {status}
-      </CoreText>
+      <CoreBox className="ttt-status">
+        <CoreText size="h3" color="muted" align="center">
+          {status}
+        </CoreText>
+      </CoreBox>
 
       <div className="ttt-board">
         {board.map((cell, i) => {

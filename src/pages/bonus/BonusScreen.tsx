@@ -1,6 +1,6 @@
 import './BonusScreen.css'
 
-import { CoreButton, CoreRow, CoreScreen, CoreText, Spacing } from '@core'
+import { CoreBox, CoreButton, CoreRow, CoreScreen, CoreText, Spacing } from '@core'
 import { BONUS_GAMES } from '@games/config'
 
 interface PlayGamesScreenProps {
@@ -43,10 +43,12 @@ export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
               <span className="pg-card-emoji">{game.emoji}</span>
             </div>
             <div className="pg-card-info">
-              <CoreText size="body" className="pg-card-title">
-                {game.title}
-              </CoreText>
-              <CoreText size="sm" color="muted" className="pg-card-desc">
+              <CoreBox marginBottom={3}>
+                <CoreText size="sm" style={{ fontWeight: 800 }}>
+                  {game.title}
+                </CoreText>
+              </CoreBox>
+              <CoreText size="sm" color="muted" style={{ fontSize: '0.72rem', lineHeight: 1.3 }}>
                 {game.description}
               </CoreText>
             </div>

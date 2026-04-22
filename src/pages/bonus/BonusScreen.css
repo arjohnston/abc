@@ -82,17 +82,3 @@
   border-top: 3px solid var(--card-dark);
   flex: 1;
 }
-
-.pg-card-title {
-  font-size: 0.9rem;
-  font-weight: 800;
-  color: var(--text);
-  margin-bottom: 3px;
-}
-
-.pg-card-desc {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  line-height: 1.3;
-}

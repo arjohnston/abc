@@ -1,6 +1,6 @@
 import './DinoGameScreen.css'
 
-import { CoreButton, CoreScreen, CoreText, Spacing } from '@core'
+import { CoreBox, CoreButton, CoreScreen, CoreText, Spacing } from '@core'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -371,9 +371,9 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
             <path d="M19 12H5M12 19l-7-7 7-7" />
           </svg>
         </CoreButton>
-        <CoreText size="h3" className="dino-title">
-          🦕 Dino Run
-        </CoreText>
+        <CoreBox flex={1}>
+          <CoreText size="h3">🦕 Dino Run</CoreText>
+        </CoreBox>
       </div>
 
       <div className="dino-canvas-area">

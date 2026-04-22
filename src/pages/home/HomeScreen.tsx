@@ -2,7 +2,7 @@ import './HomeScreen.css'
 
 import { SettingsModal } from '@common/components/SettingsModal/SettingsModal'
 import type { GameConfig, Section } from '@common/types/game'
-import { CoreButton, CoreRow, CoreText, Spacing } from '@core'
+import { CoreBox, CoreButton, CoreRow, CoreText, Spacing } from '@core'
 import { getGamesForSection, MINI_GAMES, SECTIONS } from '@games/config'
 import type { Stats } from '@hooks/useStats'
 import { Fragment, useEffect, useRef, useState } from 'react'
@@ -126,27 +126,29 @@ export function HomeScreen({
       )}
 
       <header className="home-header">
-        <CoreText size="h1" className="home-title">
-          <span className="title-letter" style={{ color: 'var(--green)' }}>
-            A
-          </span>
-          <span className="title-letter" style={{ color: 'var(--blue)' }}>
-            B
-          </span>
-          <span className="title-letter" style={{ color: 'var(--purple)' }}>
-            C
-          </span>
-          <span className="title-dot"> </span>
-          <span className="title-letter" style={{ color: 'var(--orange)' }}>
-            1
-          </span>
-          <span className="title-letter" style={{ color: 'var(--red)' }}>
-            2
-          </span>
-          <span className="title-letter" style={{ color: 'var(--yellow)' }}>
-            3
-          </span>
-        </CoreText>
+        <CoreBox className="home-title" marginBottom={8}>
+          <CoreText size="h1">
+            <span className="title-letter" style={{ color: 'var(--green)' }}>
+              A
+            </span>
+            <span className="title-letter" style={{ color: 'var(--blue)' }}>
+              B
+            </span>
+            <span className="title-letter" style={{ color: 'var(--purple)' }}>
+              C
+            </span>
+            <span className="title-dot"> </span>
+            <span className="title-letter" style={{ color: 'var(--orange)' }}>
+              1
+            </span>
+            <span className="title-letter" style={{ color: 'var(--red)' }}>
+              2
+            </span>
+            <span className="title-letter" style={{ color: 'var(--yellow)' }}>
+              3
+            </span>
+          </CoreText>
+        </CoreBox>
         <CoreText size="h3" color="muted">
           Pick a game and start learning!
         </CoreText>
@@ -172,12 +174,16 @@ export function HomeScreen({
 
       {(stats.totalPlays > 0 || totalStars > 0) && (
         <CoreRow justify="center" gap={Spacing.lg}>
-          <CoreText size="sm" className="stat">
-            🎮 {stats.totalPlays} played
-          </CoreText>
-          <CoreText size="sm" className="stat">
-            ⭐ {totalStars} stars
-          </CoreText>
+          <CoreBox className="stat">
+            <CoreText size="sm" color="muted">
+              🎮 {stats.totalPlays} played
+            </CoreText>
+          </CoreBox>
+          <CoreBox className="stat">
+            <CoreText size="sm" color="muted">
+              ⭐ {totalStars} stars
+            </CoreText>
+          </CoreBox>
         </CoreRow>
       )}
 

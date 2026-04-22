@@ -21,10 +21,6 @@
   align-self: flex-start;
 }
 
-.dino-title {
-  flex: 1;
-}
-
 .dino-stars {
   font-size: 22px;
   font-weight: 800;
