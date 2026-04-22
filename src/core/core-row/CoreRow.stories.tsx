@@ -4,7 +4,14 @@ import { CoreText } from '../core-text/CoreText'
 import { CoreRow } from './CoreRow'
 
 const Box = ({ label }: { label: string }) => (
-  <div style={{ padding: '8px 16px', background: 'var(--blue)', borderRadius: 8 }}>
+  <div
+    style={{
+      padding: '8px 16px',
+      background: 'var(--bg-card)',
+      border: '2px solid var(--blue)',
+      borderRadius: 8,
+    }}
+  >
     <CoreText size="sm">{label}</CoreText>
   </div>
 )
