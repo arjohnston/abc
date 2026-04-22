@@ -26,16 +26,26 @@ export function GamePreviewModal({ game, stars, onPlay, onClose }: GamePreviewMo
   return (
     <div
       className="gpm-backdrop"
-      onClick={() => {
-        if (readyRef.current) {
+      role="button"
+      tabIndex={0}
+      aria-label="Close preview"
+      onClick={(e) => {
+        if (e.target === e.currentTarget && readyRef.current) {
+          onClose()
+        }
+      }}
+      onKeyDown={(e) => {
+        if ((e.key === 'Enter' || e.key === 'Escape') && readyRef.current) {
           onClose()
         }
       }}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${game.title} preview`}
         className="gpm-card"
         style={{ '--gpm-color': game.color, '--gpm-dark': game.colorDark } as React.CSSProperties}
-        onClick={(e) => e.stopPropagation()}
       >
         {/* Banner */}
         <div className="gpm-banner">

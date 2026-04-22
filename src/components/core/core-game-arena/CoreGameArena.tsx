@@ -4,7 +4,7 @@ import { forwardRef } from 'react'
 
 import { buildSpacingStyle, type SharedLayoutProps } from '../shared/spacing'
 
-export interface CoreGameArenaProps extends SharedLayoutProps {}
+export type CoreGameArenaProps = SharedLayoutProps
 
 export const CoreGameArena = forwardRef<HTMLDivElement, CoreGameArenaProps>(
   ({ className, children, ...rest }, ref) => (

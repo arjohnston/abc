@@ -13,7 +13,9 @@ const TOTAL = 10
 const CIRCLE_R = 48
 const SPEED = 1.4
 
-interface Props { onBack: () => void }
+interface Props {
+  onBack: () => void
+}
 
 export function ClickCircleScreen({ onBack }: Props) {
   const [score, setScore] = useState(0)
@@ -31,9 +33,11 @@ export function ClickCircleScreen({ onBack }: Props) {
   const { randomize } = usePhysicsObject(arenaRef, circleRef, CIRCLE_R, SPEED)
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      e.stopPropagation()
-      if (hitLockedRef.current) return
+    (e?: React.MouseEvent) => {
+      e?.stopPropagation()
+      if (hitLockedRef.current) {
+        return
+      }
       hitLockedRef.current = true
 
       scoreRef.current += 1
@@ -85,8 +89,16 @@ export function ClickCircleScreen({ onBack }: Props) {
       <div className="cc-arena" ref={arenaRef}>
         <div
           ref={circleRef}
+          role="button"
+          tabIndex={0}
+          aria-label="Hit the circle"
           className={`cc-circle ${flash ? 'cc-circle--hit' : ''}`}
           onClick={handleClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              handleClick()
+            }
+          }}
           style={{ width: CIRCLE_R * 2, height: CIRCLE_R * 2 }}
         />
       </div>

@@ -17,7 +17,9 @@ function pickFemaleVoice(voices: SpeechSynthesisVoice[]): SpeechSynthesisVoice |
   const en = voices.filter((v) => v.lang.startsWith('en'))
   for (const hint of FEMALE_VOICE_HINTS) {
     const match = en.find((v) => v.name.toLowerCase().includes(hint))
-    if (match) return match
+    if (match) {
+      return match
+    }
   }
   return en.find((v) => v.localService) || en[0]
 }

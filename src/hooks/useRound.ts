@@ -22,13 +22,20 @@ interface UseRoundReturn {
  */
 export function useRound(
   total: number,
-  onComplete: (score: number, total: number, maxStars: number) => { stars: number; isNewBest: boolean },
+  onComplete: (
+    score: number,
+    total: number,
+    maxStars: number,
+  ) => { stars: number; isNewBest: boolean },
   maxStars = 3,
 ): UseRoundReturn {
   const [score, setScore] = useState(0)
   const [round, setRound] = useState(0)
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null)
-  const [completionResult, setCompletionResult] = useState<{ stars: number; isNewBest: boolean } | null>(null)
+  const [completionResult, setCompletionResult] = useState<{
+    stars: number
+    isNewBest: boolean
+  } | null>(null)
 
   // Refs track real values to avoid stale closures in advance()
   const scoreRef = useRef(0)
@@ -44,10 +51,15 @@ export function useRound(
       const newRound = roundRef.current + 1
 
       setFeedback(correct ? 'correct' : 'wrong')
-      if (correct) playCorrect()
-      else playWrong()
+      if (correct) {
+        playCorrect()
+      } else {
+        playWrong()
+      }
 
-      if (timeoutRef.current) clearTimeout(timeoutRef.current)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
       timeoutRef.current = setTimeout(() => {
         scoreRef.current = newScore
         roundRef.current = newRound
@@ -72,7 +84,9 @@ export function useRound(
   const flashWrong = useCallback(() => {
     setFeedback('wrong')
     playWrong()
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
     timeoutRef.current = setTimeout(() => {
       setFeedback(null)
       lockedRef.current = false
@@ -80,7 +94,9 @@ export function useRound(
   }, [playWrong])
 
   const restart = useCallback(() => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
     scoreRef.current = 0
     roundRef.current = 0
     lockedRef.current = false
@@ -91,7 +107,14 @@ export function useRound(
   }, [])
 
   // Clean up on unmount
-  useEffect(() => () => { if (timeoutRef.current) clearTimeout(timeoutRef.current) }, [])
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    },
+    [],
+  )
 
   return { score, round, feedback, lockedRef, completionResult, advance, flashWrong, restart }
 }

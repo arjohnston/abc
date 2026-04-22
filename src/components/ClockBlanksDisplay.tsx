@@ -1,6 +1,7 @@
 import './ClockBlanksDisplay.css'
 
 import { CoreCol } from '@core'
+
 import type { ClockItem, FeedbackState } from '../types/game'
 
 interface ClockBlanksDisplayProps {

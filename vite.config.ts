@@ -8,6 +8,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@core': path.resolve(__dirname, 'src/components/core/index.ts'),
+      '@games': path.resolve(__dirname, 'src/games'),
+      '@hooks': path.resolve(__dirname, 'src/hooks'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@types': path.resolve(__dirname, 'src/types'),
     },
   },
 })

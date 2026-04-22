@@ -1,6 +1,6 @@
 import './ChaseBallScreen.css'
 
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { GameComplete } from '../components/GameComplete'
 import { GameShell } from '../components/GameShell'
@@ -18,8 +18,13 @@ export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
   const ballRef = useRef<HTMLDivElement>(null)
   const mouseRef = useRef({ x: -999, y: -999 })
 
-  const { score, round, lockedRef, completionResult, advance, restart } = useRound(TOTAL, onComplete)
+  const { score, round, lockedRef, completionResult, advance, restart } = useRound(
+    TOTAL,
+    onComplete,
+  )
   const speak = useSpeech()
+  const randomizeRef = useRef<(() => void) | undefined>(undefined)
+  const [caught, setCaught] = useState(false)
 
   const { randomize } = usePhysicsObject(
     arenaRef,
@@ -28,31 +33,50 @@ export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
     SPEED,
     // onFrame: check proximity each tick
     (x, y) => {
-      if (lockedRef.current) return
+      if (lockedRef.current) {
+        return
+      }
       const dx = mouseRef.current.x - x
       const dy = mouseRef.current.y - y
       if (Math.sqrt(dx * dx + dy * dy) < BALL_R + 12) {
         lockedRef.current = true
+        setCaught(true)
         advance(true)
-        setTimeout(randomize, 520)
+        setTimeout(() => randomizeRef.current?.(), 520)
       }
     },
     lockedRef,
   )
 
+  useEffect(() => {
+    randomizeRef.current = randomize
+  }, [randomize])
+
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const rect = arenaRef.current?.getBoundingClientRect()
-    if (!rect) return
+    if (!rect) {
+      return
+    }
     mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top }
   }, [])
 
   const handleRestart = useCallback(() => {
+    setCaught(false)
     restart()
     speak('Hover over the ball to catch it!')
   }, [restart, speak])
 
   if (completionResult) {
-    return <GameComplete score={score} total={TOTAL} stars={completionResult.stars} isNewBest={completionResult.isNewBest} onRestart={handleRestart} onHome={onBack} />
+    return (
+      <GameComplete
+        score={score}
+        total={TOTAL}
+        stars={completionResult.stars}
+        isNewBest={completionResult.isNewBest}
+        onRestart={handleRestart}
+        onHome={onBack}
+      />
+    )
   }
 
   return (
@@ -60,7 +84,7 @@ export function ChaseBallScreen({ onBack, onComplete }: CustomGameScreenProps) {
       <div className="cbs-arena" ref={arenaRef} onMouseMove={handleMouseMove}>
         <div
           ref={ballRef}
-          className={`cbs-ball ${lockedRef.current ? 'cbs-ball--caught' : ''}`}
+          className={`cbs-ball ${caught ? 'cbs-ball--caught' : ''}`}
           style={{ width: BALL_R * 2, height: BALL_R * 2 }}
         >
           🎾
