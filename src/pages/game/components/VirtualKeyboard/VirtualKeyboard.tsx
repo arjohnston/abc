@@ -1,5 +1,7 @@
 import './VirtualKeyboard.css'
 
+import { CoreButton } from '@core'
+
 interface VirtualKeyboardProps {
   layout: 'letters' | 'numbers'
   onKeyPress: (key: string) => void
@@ -22,7 +24,7 @@ export function VirtualKeyboard({ layout, onKeyPress, disabled }: VirtualKeyboar
       {rows.map((row, ri) => (
         <div key={ri} className="vkb__row">
           {row.map((key) => (
-            <button
+            <CoreButton
               key={key}
               className="vkb__key"
               onPointerDown={(e) => {
@@ -34,7 +36,7 @@ export function VirtualKeyboard({ layout, onKeyPress, disabled }: VirtualKeyboar
               disabled={disabled}
             >
               {key}
-            </button>
+            </CoreButton>
           ))}
         </div>
       ))}

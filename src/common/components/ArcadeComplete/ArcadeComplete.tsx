@@ -1,8 +1,7 @@
 import './ArcadeComplete.css'
 
-import { Button } from '@common/components/Button/Button'
 import { Confetti } from '@common/components/Confetti/Confetti'
-import { CoreCol, CoreRow, CoreText, Spacing } from '@core'
+import { CoreButton, CoreCol, CoreRow, CoreText, Spacing } from '@core'
 
 interface ArcadeCompleteProps {
   emoji: string
@@ -35,12 +34,12 @@ export function ArcadeComplete({
           {subtitle}
         </CoreText>
         <CoreRow gap={Spacing.md} marginTop={Spacing.md}>
-          <Button variant="primary" onClick={onRestart}>
+          <CoreButton variant="primary" onClick={onRestart}>
             Play Again
-          </Button>
-          <Button variant="secondary" onClick={onHome}>
+          </CoreButton>
+          <CoreButton variant="secondary" onClick={onHome}>
             Home
-          </Button>
+          </CoreButton>
         </CoreRow>
       </CoreCol>
     </>

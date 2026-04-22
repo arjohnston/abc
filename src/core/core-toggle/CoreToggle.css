@@ -1,4 +1,4 @@
-.toggle-btn {
+.core-toggle {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -14,16 +14,16 @@
   transition: all 0.2s;
 }
 
-.toggle-btn:hover {
+.core-toggle:hover {
   border-color: var(--purple);
 }
 
-.toggle-btn.active {
+.core-toggle--active {
   border-color: var(--purple);
   color: var(--text);
 }
 
-.toggle-track {
+.core-toggle__track {
   width: 48px;
   height: 28px;
   background: var(--bg-light);
@@ -32,11 +32,11 @@
   transition: background 0.2s;
 }
 
-.toggle-btn.active .toggle-track {
+.core-toggle--active .core-toggle__track {
   background: var(--purple);
 }
 
-.toggle-thumb {
+.core-toggle__thumb {
   position: absolute;
   top: 3px;
   left: 3px;
@@ -47,6 +47,10 @@
   transition: transform 0.2s;
 }
 
-.toggle-btn.active .toggle-thumb {
+.core-toggle--active .core-toggle__thumb {
   transform: translateX(20px);
+}
+
+.core-toggle__label {
+  font-family: var(--font);
 }

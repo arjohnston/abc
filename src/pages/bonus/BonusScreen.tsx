@@ -1,7 +1,6 @@
 import './BonusScreen.css'
 
-import { BackButton } from '@common/components/BackButton/BackButton'
-import { CoreRow, CoreScreen, CoreText, Spacing } from '@core'
+import { CoreButton, CoreRow, CoreScreen, CoreText, Spacing } from '@core'
 import { BONUS_GAMES } from '@games/config'
 
 interface PlayGamesScreenProps {
@@ -13,13 +12,26 @@ export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
   return (
     <CoreScreen className="pg">
       <CoreRow align="center" gap={Spacing.sm} padding={Spacing.sm} paddingHorizontal={Spacing.md}>
-        <BackButton onClick={onBack} />
+        <CoreButton variant="ghost" aria-label="Back" onClick={onBack}>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </CoreButton>
         <CoreText size="h2">🎮 Play Games</CoreText>
       </CoreRow>
 
       <div className="pg-grid">
         {BONUS_GAMES.map((game) => (
-          <button
+          <CoreButton
             key={game.id}
             className="pg-card"
             style={
@@ -31,10 +43,14 @@ export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
               <span className="pg-card-emoji">{game.emoji}</span>
             </div>
             <div className="pg-card-info">
-              <div className="pg-card-title">{game.title}</div>
-              <div className="pg-card-desc">{game.description}</div>
+              <CoreText size="body" className="pg-card-title">
+                {game.title}
+              </CoreText>
+              <CoreText size="sm" color="muted" className="pg-card-desc">
+                {game.description}
+              </CoreText>
             </div>
-          </button>
+          </CoreButton>
         ))}
       </div>
     </CoreScreen>

@@ -1,8 +1,6 @@
 import './DinoGameScreen.css'
 
-import { BackButton } from '@common/components/BackButton/BackButton'
-import { Button } from '@common/components/Button/Button'
-import { CoreScreen, CoreText, Spacing } from '@core'
+import { CoreButton, CoreScreen, CoreText, Spacing } from '@core'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -359,7 +357,20 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
   return (
     <CoreScreen center padding={Spacing.md} gap={Spacing.md} className="dino-game">
       <div className="dino-topbar">
-        <BackButton onClick={onBack} />
+        <CoreButton variant="ghost" aria-label="Back" onClick={onBack}>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </CoreButton>
         <CoreText size="h3" className="dino-title">
           🦕 Dino Run
         </CoreText>
@@ -380,9 +391,9 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
               <div className="dino-gameover-emoji">💀</div>
               <div className="dino-gameover-title">Game Over!</div>
               <div className="dino-gameover-score">⭐ {coinsCollected}</div>
-              <Button variant="primary" onClick={startGame}>
+              <CoreButton variant="primary" onClick={startGame}>
                 Play Again
-              </Button>
+              </CoreButton>
             </div>
           )}
         </div>

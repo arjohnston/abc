@@ -1,9 +1,7 @@
 import './GameTopbar.css'
 
-import { BackButton } from '@common/components/BackButton/BackButton'
-import { ProgressBar } from '@common/components/ProgressBar/ProgressBar'
 import { ScoreBadge } from '@common/components/ScoreBadge/ScoreBadge'
-import { CoreRow, Spacing } from '@core'
+import { CoreButton, CoreProgressBar, CoreRow, Spacing } from '@core'
 
 interface GameTopbarProps {
   onBack: () => void
@@ -20,8 +18,21 @@ export function GameTopbar({ onBack, percent, score }: GameTopbarProps) {
       paddingHorizontal={Spacing.md}
       className="game-topbar"
     >
-      <BackButton onClick={onBack} />
-      <ProgressBar percent={percent} />
+      <CoreButton variant="ghost" aria-label="Back" onClick={onBack}>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7" />
+        </svg>
+      </CoreButton>
+      <CoreProgressBar percent={percent} />
       <ScoreBadge score={score} />
     </CoreRow>
   )

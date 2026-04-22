@@ -2,7 +2,7 @@ import './HomeScreen.css'
 
 import { SettingsModal } from '@common/components/SettingsModal/SettingsModal'
 import type { GameConfig, Section } from '@common/types/game'
-import { CoreRow, CoreText, Spacing } from '@core'
+import { CoreButton, CoreRow, CoreText, Spacing } from '@core'
 import { getGamesForSection, MINI_GAMES, SECTIONS } from '@games/config'
 import type { Stats } from '@hooks/useStats'
 import { Fragment, useEffect, useRef, useState } from 'react'
@@ -151,27 +151,33 @@ export function HomeScreen({
           Pick a game and start learning!
         </CoreText>
         <div className="home-icon-btns">
-          <button
+          <CoreButton
             className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}
             onClick={bonusUnlocked ? onShowBonus : undefined}
             data-tooltip={bonusUnlocked ? 'Play Games' : 'Complete Challenge to unlock!'}
+            aria-label={bonusUnlocked ? 'Play Games' : 'Locked'}
           >
             {bonusUnlocked ? '🎮' : '🔒'}
-          </button>
-          <button
+          </CoreButton>
+          <CoreButton
             className="home-icon-btn"
             onClick={() => setShowSettings(true)}
             data-tooltip="Settings"
+            aria-label="Settings"
           >
             ⚙️
-          </button>
+          </CoreButton>
         </div>
       </header>
 
       {(stats.totalPlays > 0 || totalStars > 0) && (
         <CoreRow justify="center" gap={Spacing.lg}>
-          <span className="stat">🎮 {stats.totalPlays} played</span>
-          <span className="stat">⭐ {totalStars} stars</span>
+          <CoreText size="sm" className="stat">
+            🎮 {stats.totalPlays} played
+          </CoreText>
+          <CoreText size="sm" className="stat">
+            ⭐ {totalStars} stars
+          </CoreText>
         </CoreRow>
       )}
 
