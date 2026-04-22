@@ -1,0 +1,62 @@
+.letter-display {
+  font-size: clamp(120px, 30vw, 200px);
+  font-weight: 900;
+  color: var(--game-color);
+  border-radius: 24px;
+  width: clamp(180px, 50vw, 280px);
+  height: clamp(180px, 50vw, 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  user-select: none;
+}
+
+.pop-correct {
+  animation: popCorrect 0.4s ease;
+  border-color: var(--green) !important;
+  background: rgba(88, 204, 2, 0.1);
+}
+
+@keyframes popCorrect {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.shake-wrong {
+  animation: shakeWrong 0.5s ease;
+  border-color: var(--red) !important;
+  background: rgba(255, 75, 75, 0.1);
+}
+
+@keyframes shakeWrong {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  15% {
+    transform: translateX(-12px);
+  }
+  30% {
+    transform: translateX(12px);
+  }
+  45% {
+    transform: translateX(-8px);
+  }
+  60% {
+    transform: translateX(8px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  90% {
+    transform: translateX(4px);
+  }
+}

@@ -17,17 +17,17 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
-      "@core": ["./src/components/core/index.ts"],
+      "@core": ["./src/core/index.ts"],
+      "@common": ["./src/common"],
+      "@common/*": ["./src/common/*"],
       "@games": ["./src/games"],
       "@games/*": ["./src/games/*"],
-      "@hooks": ["./src/hooks"],
-      "@hooks/*": ["./src/hooks/*"],
+      "@hooks": ["./src/common/hooks"],
+      "@hooks/*": ["./src/common/hooks/*"],
       "@pages": ["./src/pages"],
       "@pages/*": ["./src/pages/*"],
-      "@components": ["./src/components"],
-      "@components/*": ["./src/components/*"],
-      "@types": ["./src/types"],
-      "@types/*": ["./src/types/*"]
+      "@common/types": ["./src/common/types"],
+      "@common/types/*": ["./src/common/types/*"]
     }
   },
   "include": ["src"]

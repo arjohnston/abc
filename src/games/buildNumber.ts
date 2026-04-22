@@ -1,4 +1,5 @@
-import type { BuildNumberItem } from '../types/game'
+import type { BuildNumberItem } from '@common/types/game'
+
 import { shuffle } from './utils'
 
 const ONES = [

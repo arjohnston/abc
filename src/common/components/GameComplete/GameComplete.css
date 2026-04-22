@@ -1,0 +1,49 @@
+.game-complete {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.complete-star {
+  font-size: 56px;
+  color: var(--bg-light);
+  opacity: 0;
+  animation: starPop 0.4s ease forwards;
+}
+
+.complete-star--earned {
+  color: var(--yellow);
+}
+
+@keyframes starPop {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-20deg);
+  }
+  60% {
+    transform: scale(1.3) rotate(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.complete-new-best {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--yellow);
+  background: rgba(255, 200, 0, 0.15);
+  padding: 4px 16px;
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease 0.8s both;
+}

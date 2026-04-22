@@ -1,4 +1,4 @@
-import type { BuildWordItem } from '../types/game'
+import type { BuildWordItem } from '@common/types/game'
 
 const WORDS: BuildWordItem[] = [
   { emoji: '🐱', letters: ['C', 'A', 'T'], word: 'cat' },
@@ -17,7 +17,9 @@ function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    const tmp = a[i]; a[i] = a[j] as T; a[j] = tmp as T
+    const tmp = a[i]
+    a[i] = a[j] as T
+    a[j] = tmp as T
   }
   return a
 }

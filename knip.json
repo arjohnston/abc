@@ -1,4 +1,4 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
-  "ignore": ["src/components/core/**", "**/*.d.ts"]
+  "ignore": ["src/core/**", "**/*.d.ts"]
 }

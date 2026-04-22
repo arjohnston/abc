@@ -1,4 +1,4 @@
-import type { GameConfig, Section } from '../types/game'
+import type { GameConfig, Section } from '@common/types/game'
 
 /** Bonus mini-games that appear between sections once the next section is unlocked. */
 interface MiniGameEntry {

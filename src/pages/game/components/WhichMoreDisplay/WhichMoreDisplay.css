@@ -1,0 +1,60 @@
+.wm-box-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.wm-box {
+  width: clamp(130px, 32vw, 170px);
+  height: clamp(130px, 32vw, 170px);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  user-select: none;
+}
+
+.wm-objects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+
+.wm-object {
+  font-size: clamp(22px, 6vw, 32px);
+  display: inline-block;
+  animation: objectPop 0.25s ease backwards;
+}
+
+.wm-number {
+  font-size: clamp(80px, 20vw, 120px);
+  font-weight: 900;
+  color: var(--game-color);
+  line-height: 1;
+}
+
+.wm-box--correct {
+  border-color: var(--green) !important;
+  border-bottom-color: var(--green-dark) !important;
+  background: rgba(88, 204, 2, 0.12);
+  animation: popCorrect 0.4s ease;
+}
+
+.wm-box--wrong {
+  border-color: var(--red) !important;
+  border-bottom-color: var(--red-dark) !important;
+  background: rgba(255, 75, 75, 0.12);
+  animation: shakeWrong 0.5s ease;
+}
+
+.which-more__vs {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: clamp(50px, 13vw, 70px);
+}

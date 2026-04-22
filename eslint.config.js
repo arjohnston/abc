@@ -54,8 +54,8 @@ export default defineConfig([globalIgnores(['dist', 'storybook-static', '.storyb
     eqeqeq: ['error', 'always'],
     'no-restricted-imports': ['error', {
       patterns: [{
-        group: ['**/components/core', '**/components/core/**'],
-        message: "Import from '@core' instead of relative paths.",
+        group: ['**/core/**'],
+        message: "Import from '@core' instead of relative paths into src/core.",
       }],
     }],
   },
@@ -67,46 +67,36 @@ export default defineConfig([globalIgnores(['dist', 'storybook-static', '.storyb
     'no-restricted-imports': ['error', {
       patterns: [
         {
-          group: ['../components/**', '@components/**', '../pages/**', '@pages/**', '../hooks/**', '@hooks/**'],
-          message: 'Game logic must not import from UI layers (components, pages, hooks).',
+          group: ['@common/components/**', '@pages/**', '**/common/components/**', '**/pages/**'],
+          message: 'Game logic must not import from UI layers (components, pages).',
         },
       ],
     }],
   },
-}, // Hooks must not depend on UI
+}, // Hooks must not depend on UI or pages
 {
-  files: ['src/hooks/**'],
+  files: ['src/common/hooks/**'],
   rules: {
     'no-restricted-imports': ['error', {
       patterns: [
-        { group: ['../pages/**', '@pages/**'], message: 'Hooks must not import from pages.' },
-        { group: ['../components/**', '@components/**'], message: 'Hooks must not import from components.' },
+        { group: ['@pages/**', '**/pages/**'], message: 'Hooks must not import from pages.' },
+        { group: ['@common/components/**', '**/common/components/**'], message: 'Hooks must not import from components.' },
       ],
     }],
   },
-}, // Components must not import from pages
+}, // Common components must not import from pages
 {
-  files: ['src/components/**'],
+  files: ['src/common/components/**'],
   rules: {
     'no-restricted-imports': ['error', {
       patterns: [
-        { group: ['../../pages/**', '../pages/**', '@pages/**'], message: 'Components must not import from pages.' },
-      ],
-    }],
-  },
-}, // Pages must not import other pages (alias form; relative same-level is caught by code review)
-{
-  files: ['src/pages/**'],
-  rules: {
-    'no-restricted-imports': ['error', {
-      patterns: [
-        { group: ['@pages/*', '@pages/**'], message: 'Pages must not import from other pages.' },
+        { group: ['@pages/**', '**/pages/**'], message: 'Common components must not import from pages.' },
       ],
     }],
   },
 }, // ─── Test files — relax rules that don't apply in tests ──────────────────
 {
-  files: ['src/**/__tests__/**', 'src/test/**', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+  files: ['src/test/**', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
   rules: {
     'no-console': 'off',
     '@typescript-eslint/no-explicit-any': 'off',

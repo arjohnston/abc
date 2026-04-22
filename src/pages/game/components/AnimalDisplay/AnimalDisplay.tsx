@@ -1,0 +1,22 @@
+import './AnimalDisplay.css'
+
+import type { AnimalItem, FeedbackState } from '@common/types/game'
+
+import { GameBox } from '../GameBox/GameBox'
+
+interface AnimalDisplayProps {
+  item: AnimalItem
+  feedback: FeedbackState
+  animKey: string
+}
+
+export function AnimalDisplay({ item, feedback, animKey }: AnimalDisplayProps) {
+  const feedbackClass =
+    feedback === 'correct' ? 'pop-correct' : feedback === 'wrong' ? 'shake-wrong' : ''
+
+  return (
+    <GameBox key={animKey} className={`animal-display ${feedbackClass}`}>
+      <div className="animal-display__emoji">{item.emoji}</div>
+    </GameBox>
+  )
+}

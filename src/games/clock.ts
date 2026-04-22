@@ -1,4 +1,4 @@
-import type { ClockItem } from '../types/game'
+import type { ClockItem } from '@common/types/game'
 
 const HOUR_WORDS = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 const CLOCK_EMOJIS = ['🕐', '🕑', '🕒', '🕓', '🕔', '🕕', '🕖', '🕗', '🕘']

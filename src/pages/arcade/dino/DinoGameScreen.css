@@ -1,0 +1,101 @@
+.dino-game {
+  background: var(--bg);
+  user-select: none;
+}
+
+.dino-canvas-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.dino-topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  align-self: flex-start;
+}
+
+.dino-title {
+  flex: 1;
+}
+
+.dino-stars {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--yellow);
+}
+
+.dino-canvas-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.dino-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
+.dino-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 20px;
+}
+
+.dino-overlay-text {
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+}
+
+.dino-gameover-emoji {
+  font-size: 56px;
+  line-height: 1;
+}
+
+.dino-gameover-title {
+  font-size: clamp(24px, 6vw, 36px);
+  font-weight: 900;
+  color: #fff;
+}
+
+.dino-gameover-score {
+  font-size: clamp(18px, 4.5vw, 26px);
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 4px;
+}
+
+.dino-hearts {
+  display: flex;
+  gap: 10px;
+  font-size: 32px;
+}
+
+.dino-heart {
+  transition: opacity 0.2s;
+}
+
+.dino-heart--lost {
+  opacity: 0.25;
+  filter: grayscale(1);
+}

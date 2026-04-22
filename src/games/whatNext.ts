@@ -1,4 +1,5 @@
-import type { WhatNextItem } from '../types/game'
+import type { WhatNextItem } from '@common/types/game'
+
 import { shuffle } from './utils'
 
 // Letter sequences: A B → C, B C → D, …, X Y → Z

@@ -6,7 +6,7 @@ Read this fully before making any changes. It is the authoritative reference for
 
 ## Core Component Library
 
-All layout, text, and container primitives live in `src/components/core/`. Always import from the `@core` alias:
+All layout, text, and container primitives live in `src/core/`. Always import from the `@core` alias:
 
 ```ts
 import { CoreRow, CoreCol, CoreText, CoreScreen, Spacing } from '@core'
@@ -575,7 +575,7 @@ Core component class names follow the same convention:
 ## File Structure
 
 ```
-src/components/core/
+src/core/
 ├── index.ts                    # Barrel: all components, tokens, utils
 ├── tokens/
 │   ├── spacing.ts              # Spacing constants (8px grid)

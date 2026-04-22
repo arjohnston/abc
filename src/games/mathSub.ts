@@ -1,4 +1,5 @@
-import type { MathItem } from '../types/game'
+import type { MathItem } from '@common/types/game'
+
 import { shuffle } from './utils'
 
 const EMOJIS = ['🍎', '⭐', '🌸', '🐠', '🍪', '🎈', '🦋', '🍓', '🐣', '🐥']

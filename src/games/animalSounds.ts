@@ -1,4 +1,4 @@
-import type { AnimalItem } from '../types/game'
+import type { AnimalItem } from '@common/types/game'
 
 export const ANIMAL_ITEMS: AnimalItem[] = [
   { emoji: '🐊', name: 'alligator', key: 'A' },

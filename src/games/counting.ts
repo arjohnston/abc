@@ -1,4 +1,4 @@
-import type { CountingItem } from '../types/game'
+import type { CountingItem } from '@common/types/game'
 
 const COUNTING_OBJECTS: { emoji: string; singular: string; plural: string }[] = [
   { emoji: '🍎', singular: 'apple', plural: 'apples' },
