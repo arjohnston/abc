@@ -28,7 +28,7 @@
   font-weight: 800;
   letter-spacing: 0.5px;
   background: var(--game-color, var(--green));
-  color: white;
+  color: var(--bg);
   border: none;
   border-bottom: 4px solid var(--game-color-dark, var(--green-dark));
   transition: all 0.1s;
