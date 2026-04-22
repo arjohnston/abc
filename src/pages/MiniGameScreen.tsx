@@ -130,8 +130,11 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
   // Set initial target once on mount — grid is the initial value from useState
   useEffect(() => {
     const t = pickTarget(grid, START_POS)
-    setTarget(t)
-    speak(t)
+    const id = setTimeout(() => {
+      setTarget(t)
+      speak(t)
+    }, 0)
+    return () => clearTimeout(id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
