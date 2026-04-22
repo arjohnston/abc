@@ -30,7 +30,7 @@ export function WhatNextDisplay({ item, feedback, animKey, reversed }: WhatNextD
   ))
 
   return (
-    <CoreRow align="center" gap={12} wrap justify="center" className="what-next">
+    <CoreRow align="center" gap={12} wrap justify="center">
       {reversed ? (
         <>
           {blank}

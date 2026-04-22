@@ -156,7 +156,7 @@ export function HomeScreen({
       </header>
 
       {(stats.totalPlays > 0 || totalStars > 0) && (
-        <CoreRow justify="center" gap={24} className="stats-bar">
+        <CoreRow justify="center" gap={24}>
           <span className="stat">🎮 {stats.totalPlays} played</span>
           <span className="stat">⭐ {totalStars} stars</span>
         </CoreRow>

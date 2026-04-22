@@ -16,7 +16,7 @@ export function NumberBlanksDisplay({ display, label, slots, filled, feedback, s
   const activeSlot = filled.length
 
   return (
-    <CoreCol align="center" gap={24} className="number-blanks">
+    <CoreCol align="center" gap={24}>
       <div className="number-blanks__display">{display}</div>
       {label && <div className="number-blanks__label">{label}</div>}
       <div className="number-blanks__slots">

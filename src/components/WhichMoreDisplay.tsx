@@ -45,7 +45,7 @@ export function WhichMoreDisplay({ item, feedback, pressedKey, animKey }: WhichM
   }
 
   return (
-    <CoreRow key={animKey} align="flex-start" gap={16} className="which-more">
+    <CoreRow key={animKey} align="flex-start" gap={16}>
       <CountBox count={parseInt(item.left)} emoji={item.emoji} feedbackClass={getClass(item.left)} />
       <div className="which-more__vs">or</div>
       <CountBox count={parseInt(item.right)} emoji={item.emoji} feedbackClass={getClass(item.right)} />

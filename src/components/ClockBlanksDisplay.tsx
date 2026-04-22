@@ -40,7 +40,7 @@ export function ClockBlanksDisplay({ item, filled, feedback, shakeKey }: ClockBl
   const minuteSlots = Array.from({ length: 2 }, (_, i) => renderSlot(item.hourDigitCount + i))
 
   return (
-    <CoreCol align="center" gap={20} className="clock-blanks">
+    <CoreCol align="center" gap={20}>
       <div className="clock-blanks__emoji">{item.emoji}</div>
       <div className="clock-blanks__digital">{item.display}</div>
       <div className="clock-blanks__slots">

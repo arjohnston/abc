@@ -18,7 +18,7 @@ export function GameComplete({ score, total, stars, isNewBest, onRestart, onHome
     <>
       <Confetti />
       <CoreCol flex={1} align="center" justify="center" gap={12} padding={20} className="game-complete">
-        <CoreRow gap={8} marginBottom={8} className="complete-stars">
+        <CoreRow gap={8} marginBottom={8}>
           {[1, 2, 3].map((i) => (
             <span
               key={i}

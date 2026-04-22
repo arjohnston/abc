@@ -67,14 +67,6 @@
   border-top: 3px solid var(--gpm-dark);
 }
 
-.gpm-title {
-  margin: 0 0 6px;
-}
-
-.gpm-desc {
-  margin: 0 0 14px;
-}
-
 
 .gpm-star {
   font-size: 26px;
