@@ -66,19 +66,19 @@
   background: rgba(255, 75, 75, 0.22);
 }
 
-.settings-confirm-btns button {
+.settings-confirm-yes,
+.settings-confirm-no {
   flex: 1;
   padding: 12px;
   border-radius: 14px;
   font-size: 16px;
   font-weight: 800;
-  cursor: pointer;
   border: 3px solid transparent;
-  font-family: inherit;
   transition: opacity 0.15s;
 }
 
-.settings-confirm-btns button:hover {
+.settings-confirm-yes:hover,
+.settings-confirm-no:hover {
   opacity: 0.85;
 }
 

@@ -43,7 +43,7 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
             <CoreText size="sm" color="muted" align="center">
               This will erase all stars and progress. Are you sure?
             </CoreText>
-            <CoreRow gap={10} className="settings-confirm-btns">
+            <CoreRow gap={10}>
               <CoreButton className="settings-confirm-yes" onClick={handleReset}>
                 Yes, reset
               </CoreButton>

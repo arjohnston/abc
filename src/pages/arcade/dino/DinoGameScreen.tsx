@@ -355,7 +355,7 @@ export function DinoGameScreen({ onBack }: DinoGameScreenProps) {
   )
 
   return (
-    <CoreScreen center padding={Spacing.md} gap={Spacing.md} className="dino-game">
+    <CoreScreen center padding={Spacing.md} gap={Spacing.md} style={{ userSelect: 'none' }}>
       <div className="dino-topbar">
         <CoreButton variant="ghost" aria-label="Back" onClick={onBack}>
           <svg

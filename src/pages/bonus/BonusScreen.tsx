@@ -10,7 +10,7 @@ interface PlayGamesScreenProps {
 
 export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
   return (
-    <CoreScreen className="pg">
+    <CoreScreen>
       <CoreRow align="center" gap={Spacing.sm} padding={Spacing.sm} paddingHorizontal={Spacing.md}>
         <CoreButton variant="ghost" aria-label="Back" onClick={onBack}>
           <svg

@@ -59,7 +59,7 @@ export function GamePreviewModal({ game, stars, onPlay, onClose }: GamePreviewMo
           <CoreText size="sm" color="muted" style={{ marginBottom: '14px' }}>
             {game.description}
           </CoreText>
-          <CoreRow gap={Spacing.xxs} className="gpm-stars">
+          <CoreRow gap={Spacing.xxs}>
             {[1, 2, 3].map((i) => (
               <span key={i} className={`gpm-star ${i <= stars ? 'gpm-star--earned' : ''}`}>
                 ★
@@ -69,7 +69,7 @@ export function GamePreviewModal({ game, stars, onPlay, onClose }: GamePreviewMo
         </div>
 
         {/* Actions */}
-        <CoreRow gap={10} className="gpm-actions">
+        <CoreRow gap={10} paddingTop={12} paddingHorizontal={24} paddingBottom={24}>
           <button className="gpm-btn gpm-btn--cancel" onClick={onClose}>
             Cancel
           </button>
