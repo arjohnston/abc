@@ -1,6 +1,4 @@
-import './GameInstruction.css'
-
-import { CoreText } from '@core'
+import { CoreBox, CoreText } from '@core'
 
 interface GameInstructionProps {
   children: React.ReactNode
@@ -8,8 +6,10 @@ interface GameInstructionProps {
 
 export function GameInstruction({ children }: GameInstructionProps) {
   return (
-    <CoreText size="h3" color="muted" align="center" className="game-instruction">
-      {children}
-    </CoreText>
+    <CoreBox paddingTop={8} paddingHorizontal={20} paddingBottom={12}>
+      <CoreText size="h3" color="muted" align="center">
+        {children}
+      </CoreText>
+    </CoreBox>
   )
 }

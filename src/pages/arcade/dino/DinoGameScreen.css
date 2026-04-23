@@ -1,8 +1,3 @@
-.dino-game {
-  background: var(--bg);
-  user-select: none;
-}
-
 .dino-canvas-area {
   flex: 1;
   display: flex;
@@ -19,10 +14,6 @@
   gap: 12px;
   width: 100%;
   align-self: flex-start;
-}
-
-.dino-title {
-  flex: 1;
 }
 
 .dino-stars {
