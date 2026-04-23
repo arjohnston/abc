@@ -1,5 +1,7 @@
 import './MiniGameNode.css'
 
+import { CoreText } from '@core'
+
 interface MiniGameNodeProps {
   emoji: string
   title: string
@@ -22,11 +24,17 @@ export function MiniGameNode({
       data-tooltip={locked && lockHint ? lockHint : undefined}
     >
       <div className="mini-game-node__circle">
-        <span className="mini-game-node__emoji">{locked ? '🔒' : emoji}</span>
+        <CoreText size="sm" className="mini-game-node__emoji">
+          {locked ? '🔒' : emoji}
+        </CoreText>
       </div>
       <div className="mini-game-node__label">
-        <span className="mini-game-node__title">{title}</span>
-        <span className="mini-game-node__sub">{locked ? 'Locked' : 'Bonus!'}</span>
+        <CoreText size="sm" className="mini-game-node__title">
+          {title}
+        </CoreText>
+        <CoreText size="sm" className="mini-game-node__sub">
+          {locked ? 'Locked' : 'Bonus!'}
+        </CoreText>
       </div>
     </button>
   )

@@ -4,6 +4,7 @@ import { GameComplete } from '@common/components/GameComplete/GameComplete'
 import { GameInstruction } from '@common/components/GameInstruction/GameInstruction'
 import { GameShell } from '@common/components/GameShell/GameShell'
 import type { CustomGameScreenProps, SimonSaysGameConfig } from '@common/types/game'
+import { CoreText } from '@core'
 import { useKeyInput } from '@hooks/useKeyInput'
 import { useRound } from '@hooks/useRound'
 import { useSpeech } from '@hooks/useSpeech'
@@ -118,7 +119,9 @@ export function SimonSaysScreen({ game, onBack, onComplete }: CustomGameScreenPr
         <div
           className={`ss-char-wrap ${feedback === 'correct' ? 'ss-char--correct' : feedback === 'wrong' ? 'ss-char--wrong' : ''}`}
         >
-          <span className="ss-char">{currentRound.char}</span>
+          <CoreText size="sm" className="ss-char">
+            {currentRound.char}
+          </CoreText>
         </div>
 
         <GameInstruction>

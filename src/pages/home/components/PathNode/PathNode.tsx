@@ -1,6 +1,7 @@
 import './PathNode.css'
 
 import type { GameConfig } from '@common/types/game'
+import { CoreText } from '@core'
 
 interface PathNodeProps {
   game: GameConfig
@@ -29,18 +30,23 @@ export function PathNode({ game, stars, locked, onClick }: PathNodeProps) {
       disabled={locked}
     >
       <div className="path-node__circle">
-        <span className="path-node__emoji">{locked ? '🔒' : game.emoji}</span>
+        <CoreText size="sm" className="path-node__emoji">
+          {locked ? '🔒' : game.emoji}
+        </CoreText>
       </div>
       <div className="path-node__label">
-        <span className="path-node__title">{game.title}</span>
+        <CoreText size="sm" className="path-node__title">
+          {game.title}
+        </CoreText>
         <div className="path-node__stars">
           {[1, 2, 3].map((i) => (
-            <span
+            <CoreText
               key={i}
+              size="sm"
               className={`path-node__star ${i <= stars ? 'path-node__star--earned' : ''}`}
             >
               ★
-            </span>
+            </CoreText>
           ))}
         </div>
       </div>

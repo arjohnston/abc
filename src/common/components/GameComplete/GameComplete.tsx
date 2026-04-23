@@ -1,7 +1,7 @@
 import './GameComplete.css'
 
 import { Confetti } from '@common/components/Confetti/Confetti'
-import { CoreButton, CoreCol, CoreRow, CoreText, Spacing } from '@core'
+import { CoreBox, CoreButton, CoreCol, CoreRow, CoreText, Spacing } from '@core'
 
 interface GameCompleteProps {
   score: number
@@ -33,16 +33,23 @@ export function GameComplete({
       >
         <CoreRow gap={Spacing.xs} marginBottom={Spacing.xs}>
           {[1, 2, 3].map((i) => (
-            <span
+            <CoreText
               key={i}
+              size="sm"
               className={`complete-star${i <= stars ? ' complete-star--earned' : ''}`}
               style={{ animationDelay: `${i * 0.2}s` }}
             >
               ★
-            </span>
+            </CoreText>
           ))}
         </CoreRow>
-        {isNewBest && <div className="complete-new-best">New Best!</div>}
+        {isNewBest && (
+          <CoreBox className="complete-new-best">
+            <CoreText size="sm" color="yellow" style={{ fontSize: '18px', fontWeight: 800 }}>
+              New Best!
+            </CoreText>
+          </CoreBox>
+        )}
         <CoreText size="h1" color="game">
           Amazing!
         </CoreText>

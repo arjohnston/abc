@@ -2,6 +2,7 @@ import './SpaceMathScreen.css'
 
 import { Confetti } from '@common/components/Confetti/Confetti'
 import { GameShell } from '@common/components/GameShell/GameShell'
+import { CoreText } from '@core'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -337,9 +338,13 @@ export function SpaceMathScreen({ onBack }: Props) {
       {/* Lives */}
       <div className="spmath-lives">
         {Array.from({ length: LIVES_START }, (_, i) => (
-          <span key={i} className={`spmath-heart ${i < lives ? '' : 'spmath-heart--lost'}`}>
+          <CoreText
+            key={i}
+            size="sm"
+            className={`spmath-heart ${i < lives ? '' : 'spmath-heart--lost'}`}
+          >
             ❤️
-          </span>
+          </CoreText>
         ))}
       </div>
 
@@ -349,18 +354,24 @@ export function SpaceMathScreen({ onBack }: Props) {
       >
         <div className="spmath-eq">
           {Array.from({ length: question.left }, (_, i) => (
-            <span key={i} className="spmath-emoji">
+            <CoreText key={i} size="sm" className="spmath-emoji">
               {EMOJIS_ADD[question.left % EMOJIS_ADD.length]}
-            </span>
+            </CoreText>
           ))}
-          <span className="spmath-op">+</span>
+          <CoreText size="sm" className="spmath-op">
+            +
+          </CoreText>
           {Array.from({ length: question.right }, (_, i) => (
-            <span key={i} className="spmath-emoji">
+            <CoreText key={i} size="sm" className="spmath-emoji">
               {EMOJIS_ADD[question.right % EMOJIS_ADD.length]}
-            </span>
+            </CoreText>
           ))}
-          <span className="spmath-op">=</span>
-          <span className="spmath-ans">?</span>
+          <CoreText size="sm" className="spmath-op">
+            =
+          </CoreText>
+          <CoreText size="sm" className="spmath-ans">
+            ?
+          </CoreText>
         </div>
       </div>
 

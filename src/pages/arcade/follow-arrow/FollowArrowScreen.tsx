@@ -4,6 +4,7 @@ import { GameComplete } from '@common/components/GameComplete/GameComplete'
 import { GameInstruction } from '@common/components/GameInstruction/GameInstruction'
 import { GameShell } from '@common/components/GameShell/GameShell'
 import type { CustomGameScreenProps } from '@common/types/game'
+import { CoreText } from '@core'
 import { useKeyInput } from '@hooks/useKeyInput'
 import { useRound } from '@hooks/useRound'
 import { useSpeech } from '@hooks/useSpeech'
@@ -95,7 +96,9 @@ export function FollowArrowScreen({ onBack, onComplete }: CustomGameScreenProps)
           className={`fa-arrow-wrap fa-arrow-wrap--${feedback ?? 'idle'}`}
           style={{ '--arrow-color': COLOR[currentDir] } as React.CSSProperties}
         >
-          <span className="fa-arrow">{ARROW[currentDir]}</span>
+          <CoreText size="sm" className="fa-arrow">
+            {ARROW[currentDir]}
+          </CoreText>
         </div>
 
         <GameInstruction>

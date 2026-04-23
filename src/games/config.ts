@@ -137,17 +137,17 @@ export const BONUS_GAMES: BonusGameEntry[] = [
   },
 ]
 
-import { ANIMAL_ITEMS } from './animalSounds'
-import { generateBuildNumberItems } from './buildNumber'
-import { generateBuildWordItems } from './buildWord'
-import { generateClockItems } from './clock'
-import { COLOR_ITEMS } from './colorMatch'
-import { generateCountingItems } from './counting'
-import { generateAdditionItems } from './mathAdd'
-import { generateMathMostItems } from './mathMost'
-import { generateSubtractionItems } from './mathSub'
-import { generateWhatNextItems } from './whatNext'
-import { generateWhichMoreItems } from './whichMore'
+import { ANIMAL_ITEMS } from './animalSounds/animalSounds'
+import { generateBuildNumberItems } from './buildNumber/buildNumber'
+import { generateBuildWordItems } from './buildWord/buildWord'
+import { generateClockItems } from './clock/clock'
+import { COLOR_ITEMS } from './colorMatch/colorMatch'
+import { generateCountingItems } from './counting/counting'
+import { generateAdditionItems } from './mathAdd/mathAdd'
+import { generateMathMostItems } from './mathMost/mathMost'
+import { generateSubtractionItems } from './mathSub/mathSub'
+import { generateWhatNextItems } from './whatNext/whatNext'
+import { generateWhichMoreItems } from './whichMore/whichMore'
 
 export const SECTIONS: Section[] = [
   { id: 'basics', title: 'Basics', emoji: '🌱', starsToUnlock: 0 },

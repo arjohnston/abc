@@ -1,7 +1,7 @@
 import './ClockBlanksDisplay.css'
 
 import type { ClockItem, FeedbackState } from '@common/types/game'
-import { CoreCol } from '@core'
+import { CoreBox, CoreCol, CoreText } from '@core'
 
 interface ClockBlanksDisplayProps {
   item: ClockItem
@@ -45,7 +45,11 @@ export function ClockBlanksDisplay({ item, filled, feedback, shakeKey }: ClockBl
       <div className="clock-blanks__digital">{item.display}</div>
       <div className="clock-blanks__slots">
         {hourSlots}
-        <span className="clock-blanks__colon">:</span>
+        <CoreBox marginBottom={4}>
+          <CoreText size="sm" className="clock-blanks__colon">
+            :
+          </CoreText>
+        </CoreBox>
         {minuteSlots}
       </div>
     </CoreCol>
