@@ -1,6 +1,7 @@
 import './HearPressDisplay.css'
 
 import type { FeedbackState } from '@common/types/game'
+import { CoreText } from '@core'
 
 import { GameBox } from '../GameBox/GameBox'
 
@@ -15,7 +16,9 @@ export function HearPressDisplay({ feedback, animKey }: HearPressDisplayProps) {
 
   return (
     <GameBox key={animKey} className={`hear-press-display ${feedbackClass}`}>
-      <span className="hear-press-display__icon">👂</span>
+      <CoreText size="sm" className="hear-press-display__icon">
+        👂
+      </CoreText>
     </GameBox>
   )
 }

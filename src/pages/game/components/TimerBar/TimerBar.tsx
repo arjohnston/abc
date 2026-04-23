@@ -1,5 +1,6 @@
 import './TimerBar.css'
 
+import { CoreText } from '@core'
 import { useEffect, useRef, useState } from 'react'
 
 interface TimerBarProps {
@@ -44,7 +45,9 @@ export function TimerBar({ duration, running, onTimeUp }: TimerBarProps) {
         className={`timer-bar__fill ${isLow ? 'timer-bar__fill--low' : ''}`}
         style={{ width: `${percent}%` }}
       />
-      <span className="timer-bar__text">{Math.ceil(remaining)}s</span>
+      <CoreText size="sm" className="timer-bar__text">
+        {Math.ceil(remaining)}s
+      </CoreText>
     </div>
   )
 }

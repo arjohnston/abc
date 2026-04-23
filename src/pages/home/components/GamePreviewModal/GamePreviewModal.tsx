@@ -1,7 +1,7 @@
 import './GamePreviewModal.css'
 
 import type { GameConfig } from '@common/types/game'
-import { CoreRow, CoreText, Spacing } from '@core'
+import { CoreBox, CoreRow, CoreText, Spacing } from '@core'
 import { useEffect, useRef } from 'react'
 
 interface GamePreviewModalProps {
@@ -48,22 +48,30 @@ export function GamePreviewModal({ game, stars, onPlay, onClose }: GamePreviewMo
       >
         {/* Banner */}
         <div className="gpm-banner">
-          <span className="gpm-banner-emoji">{game.emoji}</span>
+          <CoreText size="sm" className="gpm-banner-emoji">
+            {game.emoji}
+          </CoreText>
         </div>
 
         {/* Info */}
         <div className="gpm-body">
-          <CoreText size="h2" style={{ marginBottom: '6px' }}>
-            {game.title}
-          </CoreText>
-          <CoreText size="sm" color="muted" style={{ marginBottom: '14px' }}>
-            {game.description}
-          </CoreText>
+          <CoreBox marginBottom={6}>
+            <CoreText size="h2">{game.title}</CoreText>
+          </CoreBox>
+          <CoreBox marginBottom={14}>
+            <CoreText size="sm" color="muted">
+              {game.description}
+            </CoreText>
+          </CoreBox>
           <CoreRow gap={Spacing.xxs}>
             {[1, 2, 3].map((i) => (
-              <span key={i} className={`gpm-star ${i <= stars ? 'gpm-star--earned' : ''}`}>
+              <CoreText
+                key={i}
+                size="sm"
+                className={`gpm-star ${i <= stars ? 'gpm-star--earned' : ''}`}
+              >
                 ★
-              </span>
+              </CoreText>
             ))}
           </CoreRow>
         </div>

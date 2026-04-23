@@ -40,7 +40,9 @@ export function BonusScreen({ onBack, onPlay }: PlayGamesScreenProps) {
             onClick={() => onPlay(game.id)}
           >
             <div className="pg-card-art">
-              <span className="pg-card-emoji">{game.emoji}</span>
+              <CoreText size="sm" className="pg-card-emoji">
+                {game.emoji}
+              </CoreText>
             </div>
             <div className="pg-card-info">
               <CoreBox marginBottom={3}>

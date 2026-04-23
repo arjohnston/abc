@@ -4,6 +4,7 @@ import { GameComplete } from '@common/components/GameComplete/GameComplete'
 import { GameInstruction } from '@common/components/GameInstruction/GameInstruction'
 import { GameShell } from '@common/components/GameShell/GameShell'
 import type { CustomGameScreenProps } from '@common/types/game'
+import { CoreText } from '@core'
 import { useRound } from '@hooks/useRound'
 import { useSpeech } from '@hooks/useSpeech'
 import { useEffect } from 'react'
@@ -88,7 +89,9 @@ export function MouseDirectionScreen({ onBack, onComplete }: CustomGameScreenPro
             style={{ '--zone-color': COLOR[dir] } as React.CSSProperties}
             onMouseEnter={() => handleHit(dir)}
           >
-            <span className="mds-zone-label">{LABELS[dir]}</span>
+            <CoreText size="sm" className="mds-zone-label">
+              {LABELS[dir]}
+            </CoreText>
           </div>
         ))}
         <div className="mds-center">🖱️</div>

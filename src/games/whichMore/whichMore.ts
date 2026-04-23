@@ -1,6 +1,6 @@
 import type { WhichMoreItem } from '@common/types/game'
 
-import { shuffle } from './utils'
+import { shuffle } from '../utils/utils'
 
 const EMOJIS = ['🍎', '⭐', '🌸', '🐠', '🍪', '🎈', '🦋', '🍓', '🐣', '🐥']
 

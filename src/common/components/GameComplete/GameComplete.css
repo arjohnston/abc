@@ -39,9 +39,6 @@
 }
 
 .complete-new-best {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--yellow);
   background: rgba(255, 200, 0, 0.15);
   padding: 4px 16px;
   border-radius: 8px;

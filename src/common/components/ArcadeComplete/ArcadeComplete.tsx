@@ -24,9 +24,12 @@ export function ArcadeComplete({
     <>
       <Confetti />
       <CoreCol flex={1} align="center" justify="center" gap={Spacing.sm} padding={20}>
-        <span className={['arcade-complete__emoji', emojiClassName].filter(Boolean).join(' ')}>
+        <CoreText
+          size="sm"
+          className={['arcade-complete__emoji', emojiClassName].filter(Boolean).join(' ')}
+        >
           {emoji}
-        </span>
+        </CoreText>
         <CoreText size="h2" color="green">
           {title}
         </CoreText>

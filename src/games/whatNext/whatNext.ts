@@ -1,6 +1,6 @@
 import type { WhatNextItem } from '@common/types/game'
 
-import { shuffle } from './utils'
+import { shuffle } from '../utils/utils'
 
 // Letter sequences: A B → C, B C → D, …, X Y → Z
 const LETTER_ITEMS: WhatNextItem[] = []

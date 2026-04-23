@@ -2,6 +2,7 @@ import './FroggerScreen.css'
 
 import { ArcadeComplete } from '@common/components/ArcadeComplete/ArcadeComplete'
 import { GameShell } from '@common/components/GameShell/GameShell'
+import { CoreText } from '@core'
 import { useSoundEffects } from '@hooks/useSoundEffects'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -230,8 +231,16 @@ export function FroggerScreen({ onBack }: Props) {
               className={`fg-lane ${i === 0 ? `fg-lane--goal ${celebrating ? 'fg-lane--celebrate' : ''}` : i === ROWS - 1 ? 'fg-lane--start' : i % 2 === 0 ? 'fg-lane--road-a' : 'fg-lane--road-b'}`}
               style={{ height: CELL_H }}
             >
-              {i === 0 && <span className="fg-zone-label">🏁 Cross here!</span>}
-              {i === ROWS - 1 && <span className="fg-zone-label">🌿 Start</span>}
+              {i === 0 && (
+                <CoreText size="sm" className="fg-zone-label">
+                  🏁 Cross here!
+                </CoreText>
+              )}
+              {i === ROWS - 1 && (
+                <CoreText size="sm" className="fg-zone-label">
+                  🌿 Start
+                </CoreText>
+              )}
             </div>
           ))}
 

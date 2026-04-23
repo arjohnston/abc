@@ -292,7 +292,9 @@ export function MiniGameScreen({ onBack }: MiniGameScreenProps) {
           <CoreText size="h3" color="muted">
             Find the
           </CoreText>
-          <span className="mini-game-target-char">{target}</span>
+          <CoreText size="sm" className="mini-game-target-char">
+            {target}
+          </CoreText>
         </div>
 
         <div className="mini-game-progress">
