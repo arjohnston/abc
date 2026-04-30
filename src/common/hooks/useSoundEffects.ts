@@ -22,36 +22,42 @@ function createOscillatorSound(
 export function useSoundEffects() {
   const ctxRef = useRef<AudioContext | null>(null)
 
-  const getCtx = useCallback(() => {
+  // iOS creates AudioContext in suspended state; must await resume() from a gesture
+  // before scheduling any nodes. Calling this as the first thing in a tap handler
+  // satisfies the gesture requirement.
+  const getCtx = useCallback(async () => {
     if (!ctxRef.current) {
       ctxRef.current = new AudioContext()
     }
-    return ctxRef.current
+    const ctx = ctxRef.current
+    if (ctx.state === 'suspended') {
+      await ctx.resume()
+    }
+    return ctx
   }, [])
 
-  const playCorrect = useCallback(() => {
-    const ctx = getCtx()
+  const playCorrect = useCallback(async () => {
+    const ctx = await getCtx()
     createOscillatorSound(ctx, 523.25, 0.15, 'sine', 0.25)
     setTimeout(() => createOscillatorSound(ctx, 659.25, 0.2, 'sine', 0.25), 100)
   }, [getCtx])
 
-  const playWrong = useCallback(() => {
-    const ctx = getCtx()
+  const playWrong = useCallback(async () => {
+    const ctx = await getCtx()
     createOscillatorSound(ctx, 200, 0.3, 'square', 0.15)
   }, [getCtx])
 
-  const playComplete = useCallback(() => {
-    const ctx = getCtx()
+  const playComplete = useCallback(async () => {
+    const ctx = await getCtx()
     const notes = [523.25, 659.25, 783.99, 1046.5]
     notes.forEach((freq, i) => {
       setTimeout(() => createOscillatorSound(ctx, freq, 0.25, 'sine', 0.2), i * 120)
     })
   }, [getCtx])
 
-  const playChomp = useCallback(() => {
-    const ctx = getCtx()
+  const playChomp = useCallback(async () => {
+    const ctx = await getCtx()
     const t = ctx.currentTime
-    // Body sweep: sawtooth crunch down
     const osc = ctx.createOscillator()
     osc.type = 'sawtooth'
     osc.frequency.setValueAtTime(520, t)
@@ -63,7 +69,6 @@ export function useSoundEffects() {
     gain.connect(ctx.destination)
     osc.start(t)
     osc.stop(t + 0.13)
-    // Click bite accent
     const osc2 = ctx.createOscillator()
     osc2.type = 'square'
     osc2.frequency.setValueAtTime(900, t)
@@ -77,10 +82,9 @@ export function useSoundEffects() {
     osc2.stop(t + 0.05)
   }, [getCtx])
 
-  const playOops = useCallback(() => {
-    const ctx = getCtx()
+  const playOops = useCallback(async () => {
+    const ctx = await getCtx()
     const t = ctx.currentTime
-    // Boing: pitch swoops up then falls
     const osc = ctx.createOscillator()
     osc.type = 'sine'
     osc.frequency.setValueAtTime(190, t)
