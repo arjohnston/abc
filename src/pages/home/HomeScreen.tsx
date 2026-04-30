@@ -154,20 +154,20 @@ export function HomeScreen({
         </CoreText>
         <div className="home-icon-btns">
           <CoreButton
-            className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}
-            onClick={bonusUnlocked ? onShowBonus : undefined}
-            data-tooltip={bonusUnlocked ? 'Play Games' : 'Complete Challenge to unlock!'}
-            aria-label={bonusUnlocked ? 'Play Games' : 'Locked'}
-          >
-            {bonusUnlocked ? '🎮' : '🔒'}
-          </CoreButton>
-          <CoreButton
             className="home-icon-btn"
             onClick={() => setShowSettings(true)}
             data-tooltip="Settings"
             aria-label="Settings"
           >
             ⚙️
+          </CoreButton>
+          <CoreButton
+            className={`home-icon-btn ${!bonusUnlocked ? 'home-icon-btn--locked' : ''}`}
+            onClick={bonusUnlocked ? onShowBonus : undefined}
+            data-tooltip={bonusUnlocked ? 'Play Games' : 'Complete Challenge to unlock!'}
+            aria-label={bonusUnlocked ? 'Play Games' : 'Locked'}
+          >
+            {bonusUnlocked ? '🎮' : '🔒'}
           </CoreButton>
         </div>
       </header>
