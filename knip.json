@@ -1,5 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
   "entry": ["scripts/*.js"],
+  "ignoreExportsUsedInFile": true,
   "ignore": ["src/core/**", "**/*.d.ts"]
 }
