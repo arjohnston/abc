@@ -26,7 +26,12 @@ export function useSoundEffects() {
     if (!ctxRef.current) {
       ctxRef.current = new AudioContext()
     }
-    return ctxRef.current
+    const ctx = ctxRef.current
+    // iOS starts AudioContext suspended — resume from the user gesture that triggered the sound
+    if (ctx.state === 'suspended') {
+      void ctx.resume()
+    }
+    return ctx
   }, [])
 
   const playCorrect = useCallback(() => {
