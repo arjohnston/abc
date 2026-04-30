@@ -57,6 +57,10 @@ export function SettingsModal({ isRandom, onToggleRandom, onReset, onClose }: Se
             🗑️ Reset Game
           </CoreButton>
         )}
+
+        <CoreText size="sm" color="muted" align="center" style={{ fontSize: '11px' }}>
+          {__APP_VERSION__}
+        </CoreText>
       </div>
     </div>
   )

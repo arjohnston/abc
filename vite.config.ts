@@ -1,10 +1,18 @@
+import { execSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import path from 'node:path'
 
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
+const { version } = JSON.parse(readFileSync('./package.json', 'utf-8')) as { version: string }
+const gitHash = execSync('git rev-parse --short HEAD').toString().trim()
+
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(`v${version} (${gitHash})`),
+  },
   plugins: [
     react(),
     VitePWA({
