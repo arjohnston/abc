@@ -22,9 +22,9 @@ function createOscillatorSound(
 export function useSoundEffects() {
   const ctxRef = useRef<AudioContext | null>(null)
 
-  // iOS creates AudioContext in suspended state; must await resume() from a gesture
-  // before scheduling any nodes. Calling this as the first thing in a tap handler
-  // satisfies the gesture requirement.
+  // iOS starts AudioContext suspended. resume() is only permitted from a proper
+  // user-activation trigger (click/pointerup/touchend) — not pointerdown.
+  // Callers must ensure sounds are triggered from onClick or equivalent.
   const getCtx = useCallback(async () => {
     if (!ctxRef.current) {
       ctxRef.current = new AudioContext()
