@@ -27,8 +27,8 @@ export function VirtualKeyboard({ layout, onKeyPress, disabled }: VirtualKeyboar
             <CoreButton
               key={key}
               className="vkb__key"
-              onPointerDown={(e) => {
-                e.preventDefault()
+              onPointerDown={(e) => e.preventDefault()}
+              onClick={() => {
                 if (!disabled) {
                   onKeyPress(key)
                 }
